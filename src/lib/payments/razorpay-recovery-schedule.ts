@@ -1,7 +1,10 @@
 const MINUTE_MS = 60_000;
 const HOUR_MS = 60 * MINUTE_MS;
 
-/** Cadence of `/api/cron/recover-unpaid-razorpay` (vercel.json: every 5 min). */
+/**
+ * Default cadence for in-app recovery callers. The cron route takes its cadence
+ * from `?interval=<minutes>` (GitHub Actions: 10; Vercel Hobby daily cron: full sweep).
+ */
 export const RAZORPAY_RECOVERY_RUN_INTERVAL_MS = 5 * MINUTE_MS;
 
 /**

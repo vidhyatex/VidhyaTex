@@ -15,6 +15,19 @@ function isAuthorized(request: NextRequest) {
   return request.headers.get("x-cron-secret")?.trim() === secret;
 }
 
+const MINUTE_MS = 60_000;
+const DAILY_RUN_INTERVAL_MS = 24 * 60 * MINUTE_MS;
+
+/**
+ * Callers pass `?interval=<minutes>` matching their schedule. Without it (the
+ * daily Vercel Hobby cron) every unpaid order in the lookback window is checked.
+ */
+function runIntervalFromRequest(request: NextRequest): number {
+  const minutes = Number(request.nextUrl.searchParams.get("interval"));
+  if (!Number.isFinite(minutes) || minutes < 1) return DAILY_RUN_INTERVAL_MS;
+  return Math.min(minutes, 24 * 60) * MINUTE_MS;
+}
+
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) {
     return NextResponse.json(
@@ -23,9 +36,16 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const runIntervalMs = runIntervalFromRequest(request);
+
   try {
     const recovered = await withRetry(
-      () => recoverUnpaidRazorpayOrders({ lookbackDays: 14, limit: 40 }),
+      () =>
+        recoverUnpaidRazorpayOrders({
+          lookbackDays: 14,
+          limit: 40,
+          runIntervalMs,
+        }),
       { label: "cron:recover-unpaid-razorpay", attempts: 3 },
     );
     const repaired = await withRetry(

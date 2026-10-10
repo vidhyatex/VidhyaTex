@@ -41,6 +41,8 @@ export async function recoverUnpaidRazorpayOrders(options?: {
   limit?: number;
   orderIds?: string[];
   nowMs?: number;
+  /** How often the caller runs; a longer interval checks more orders per run. */
+  runIntervalMs?: number;
 }): Promise<RecoverUnpaidRazorpayResult> {
   const lookbackDays = Math.max(1, Math.min(options?.lookbackDays ?? 14, 60));
   const limit = Math.max(1, Math.min(options?.limit ?? 40, 100));
@@ -87,6 +89,7 @@ export async function recoverUnpaidRazorpayOrders(options?: {
             orderId: order.id,
             createdAt: order.createdAt,
             nowMs,
+            runIntervalMs: options?.runIntervalMs,
           }),
         );
   const candidates = due.slice(0, limit);

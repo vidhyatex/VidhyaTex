@@ -70,7 +70,10 @@
     "teamId": "team_0n12u0UqdiwjYXvGXvXIDZG2",
     "accountEmail": "vidhyatex7@gmail.com",
     "projectSlug": "vidhyatex",
-    "productionHost": "vidhyatex.vercel.app"
+    "projectId": "prj_nESZkq4b6LY4CTKpy5Ya5EzOxUOS",
+    "productionHost": "vidhyatex.vercel.app",
+    "plan": "hobby",
+    "crons": "Hobby allows daily crons only: vercel.json runs Razorpay recovery 02:00 IST and abandoned carts 10:00 IST; .github/workflows/store-crons.yml runs them every 10 / 30 min. CRON_SECRET is set in Vercel (production, preview) and as a GitHub repo secret; local copy %USERPROFILE%\\.vidhyatex-cli\\cron-secret.txt"
   },
   "github": {
     "owner": "vidhyatex",
@@ -176,7 +179,7 @@
       "D1 vidhyatex-catalog not created; set its id in workers/vidhyatex-catalog/wrangler.jsonc (currently SET_AFTER_D1_CREATE) and in cloudflare.d1",
       "Supabase auth URL config (site_url / redirect URLs) must be set in the dashboard to https://vidhyatex.vercel.app to match supabase/config.toml",
       "workers/vidhyatex-shop-edge has no routes until a custom domain exists",
-      "Vercel project 'vidhyatex' not created yet; productionHost is the planned default",
+      "Vercel project 'vidhyatex' (imported from GitHub, renamed from 'vidhya-tex') has only CRON_SECRET; add the rest of the .env.example keys before the first production deploy",
       "No custom domain yet"
     ]
   },

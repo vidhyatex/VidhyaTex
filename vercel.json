@@ -7,11 +7,11 @@
   "crons": [
     {
       "path": "/api/cron/recover-unpaid-razorpay",
-      "schedule": "*/5 * * * *"
+      "schedule": "30 20 * * *"
     },
     {
       "path": "/api/cron/recover-abandoned-carts",
-      "schedule": "*/30 * * * *"
+      "schedule": "30 4 * * *"
     }
   ],
   "headers": [

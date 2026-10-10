@@ -1,0 +1,83 @@
+name: Store crons
+
+# Vercel Hobby only allows daily crons (see vercel.json), so the frequent jobs run here.
+# Needs the CRON_SECRET repo secret to match CRON_SECRET in Vercel.
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+    - cron: "5,35 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: store-crons-${{ github.event.schedule || 'manual' }}
+  cancel-in-progress: false
+
+env:
+  SITE_ORIGIN: https://vidhyatex.vercel.app
+
+jobs:
+  payments-and-stock:
+    name: Razorpay recovery and stock release
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '*/10 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Call cron endpoints
+        shell: bash
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${CRON_SECRET}" ]]; then
+            echo "::warning title=Cron skipped::CRON_SECRET repo secret is not set."
+            exit 0
+          fi
+
+          call() {
+            local path="$1"
+            local response
+            response="$(
+              curl --silent --show-error --connect-timeout 10 --max-time 90 \
+                --retry 2 --retry-delay 5 --retry-all-errors \
+                --header "Authorization: Bearer ${CRON_SECRET}" \
+                --user-agent "VidhyaTex-Store-Crons/1.0" \
+                "${SITE_ORIGIN}${path}"
+            )" || { echo "::error title=Request failed::${path}"; return 1; }
+            echo "${path}: ${response}"
+            grep -Fq '"ok":true' <<<"${response}" || { echo "::error title=Cron failed::${path}"; return 1; }
+          }
+
+          status=0
+          call "/api/cron/recover-unpaid-razorpay?interval=10" || status=1
+          call "/api/cron/release-expired-stock-reservations" || status=1
+          exit "${status}"
+
+  abandoned-carts:
+    name: Abandoned cart reminders
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '5,35 * * * *'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Call cron endpoint
+        shell: bash
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${CRON_SECRET}" ]]; then
+            echo "::warning title=Cron skipped::CRON_SECRET repo secret is not set."
+            exit 0
+          fi
+
+          response="$(
+            curl --silent --show-error --connect-timeout 10 --max-time 90 \
+              --retry 2 --retry-delay 5 --retry-all-errors \
+              --header "Authorization: Bearer ${CRON_SECRET}" \
+              --user-agent "VidhyaTex-Store-Crons/1.0" \
+              "${SITE_ORIGIN}/api/cron/recover-abandoned-carts"
+          )"
+          echo "${response}"
+          grep -Fq '"ok":true' <<<"${response}" || { echo "::error title=Cron failed::abandoned carts"; exit 1; }
