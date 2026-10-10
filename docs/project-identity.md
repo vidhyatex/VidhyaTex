@@ -14,6 +14,10 @@ npm run auth:setup                 # configure Supabase Auth from identity
 npm run auth:verify                # verify auth against identity project
 ```
 
+## Saved logins
+
+`cliAuth` in the identity file lists how to use the Vidhya Tex GitHub, Cloudflare and Vercel logins on this machine. They are kept apart from the default (THRY) logins: Cloudflare under `%USERPROFILE%\.vidhyatex-cli`, Vercel under `%USERPROFILE%\.vidhyatex-cli\vercel`. Run each `check` command before asking for a new login.
+
 ## Change process
 
 1. Edit `project.identity.json` first.

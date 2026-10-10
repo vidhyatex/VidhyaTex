@@ -1,89 +1,118 @@
 {
   "$schema": "./project.identity.schema.json",
-  "version": 1,
+  "version": 2,
   "project": {
-    "name": "THRY",
-    "slug": "thry",
-    "repo": "thrycoproduct-ux/thry",
-    "branch": "main"
+    "name": "Vidhya Tex",
+    "slug": "vidhyatex",
+    "repo": "vidhyatex/VidhyaTex",
+    "branch": "main",
+    "business": "Sarees / textiles"
   },
   "site": {
-    "canonicalOrigin": "https://thryco.com",
-    "wwwOrigin": "https://www.thryco.com",
+    "canonicalOrigin": "https://vidhyatex.vercel.app",
+    "wwwOrigin": "https://vidhyatex.vercel.app",
     "localOrigins": [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
-      "https://thryco.com",
-      "https://www.thryco.com",
-      "https://thry.thrycoproduct.workers.dev",
-      "https://thry-thryco.vercel.app",
-      "https://thry-self.vercel.app"
-    ]
+      "https://vidhyatex.vercel.app"
+    ],
+    "customDomain": null
   },
   "supabase": {
-    "projectRef": "azqgyxdzwlhdmjvkngbs",
-    "url": "https://azqgyxdzwlhdmjvkngbs.supabase.co",
-    "regionHint": "ap-south-1"
+    "projectRef": "zawfokxomwloatkzmzhq",
+    "url": "https://zawfokxomwloatkzmzhq.supabase.co",
+    "dashboardUrl": "https://supabase.com/dashboard/project/zawfokxomwloatkzmzhq"
   },
   "cloudflare": {
-    "accountEmail": "thrycoproduct@gmail.com",
-    "accountId": "77dfa9b757691b2321fe0630f01c8c6a",
-    "workerName": "thry",
-    "mediaWorkerName": "thry-media",
-    "catalogWorkerName": "thry-catalog",
-    "catalogWorkerUrl": "https://thry-catalog.thrycoproduct.workers.dev",
+    "accountEmail": "vidhyatex7@gmail.com",
+    "accountId": "eb44426b1fd72351f6b204ddb5d9b586",
+    "workerName": "vidhyatex",
+    "mediaWorkerName": "vidhyatex-media",
+    "catalogWorkerName": "vidhyatex-catalog",
     "catalogWranglerConfig": "workers/thry-catalog/wrangler.jsonc",
     "productionWranglerConfig": "wrangler.workers.new-account.jsonc",
     "mediaWranglerConfig": "workers/r2-media-proxy/wrangler.jsonc",
     "d1": {
-      "catalogDatabaseName": "thry-catalog",
-      "catalogDatabaseId": "85283c0d-4c77-4187-8d68-ff166a1a6d50",
+      "catalogDatabaseName": "vidhyatex-catalog",
+      "catalogDatabaseId": "",
       "primaryLocationHint": "APAC"
     },
     "r2": {
-      "mediaBucket": "thry-cdn",
-      "nextCacheBucket": "thry-next-cache",
-      "s3Endpoint": "https://77dfa9b757691b2321fe0630f01c8c6a.r2.cloudflarestorage.com",
-      "publicCdnHint": "https://pub-7298c413a12641b5ba5dd9bff2d9009f.r2.dev",
-      "mediaProxyUrl": "https://media.thryco.com"
+      "mediaBucket": "vidhyatex-cdn",
+      "nextCacheBucket": "vidhyatex-next-cache",
+      "s3Endpoint": "https://eb44426b1fd72351f6b204ddb5d9b586.r2.cloudflarestorage.com"
     }
   },
   "vercel": {
-    "teamSlug": "thryco",
-    "teamId": "team_DAup0iV9bvGvaL1mIGH9a7al",
-    "projectSlug": "thry",
-    "projectId": "prj_48M3Nk6JuE9KInZf1t51ww1V6K78",
-    "productionHost": "thryco.com"
+    "teamSlug": "vidhyatex7-8135",
+    "teamId": "team_0n12u0UqdiwjYXvGXvXIDZG2",
+    "accountEmail": "vidhyatex7@gmail.com",
+    "projectSlug": "vidhyatex",
+    "productionHost": "vidhyatex.vercel.app"
   },
   "github": {
-    "owner": "thrycoproduct-ux",
-    "repo": "thry",
-    "pushAccount": "thrycoproduct-ux"
+    "owner": "vidhyatex",
+    "repo": "VidhyaTex",
+    "pushAccount": "vidhyatex"
+  },
+  "cliAuth": {
+    "description": "Logins for this project are stored separately from the machine's default (THRY) logins. Always use these; never ask the user to log in again unless the check command fails.",
+    "github": {
+      "account": "vidhyatex",
+      "use": "gh auth switch -h github.com -u vidhyatex",
+      "check": "gh api user --jq .login",
+      "scopes": ["repo", "workflow", "read:org", "gist", "delete_repo"]
+    },
+    "cloudflare": {
+      "account": "vidhyatex7@gmail.com",
+      "use": "$env:XDG_CONFIG_HOME = \"$HOME\\.vidhyatex-cli\"; npx wrangler <command>; Remove-Item Env:XDG_CONFIG_HOME",
+      "caution": "XDG_CONFIG_HOME also hides the GitHub CLI login, so clear it right after the wrangler command.",
+      "check": "$env:XDG_CONFIG_HOME = \"$HOME\\.vidhyatex-cli\"; npx wrangler whoami; Remove-Item Env:XDG_CONFIG_HOME",
+      "credentialsPath": "%USERPROFILE%\\.vidhyatex-cli\\.wrangler\\config\\default.toml"
+    },
+    "vercel": {
+      "account": "vidhyatex7-8135",
+      "use": "npx vercel <command> --global-config \"$HOME\\.vidhyatex-cli\\vercel\"",
+      "check": "npx vercel whoami --global-config \"$HOME\\.vidhyatex-cli\\vercel\"",
+      "credentialsPath": "%USERPROFILE%\\.vidhyatex-cli\\vercel\\auth.json"
+    },
+    "supabase": {
+      "account": "Vidhya Tex Supabase (project zawfokxomwloatkzmzhq)",
+      "use": "No CLI login yet. Keys go in .env.local only (copy from dashboardUrl > Project Settings > API).",
+      "check": "Invoke-WebRequest https://zawfokxomwloatkzmzhq.supabase.co/rest/v1/  (401 = project reachable)"
+    },
+    "cursorMcpWarning": "The Cursor MCP servers for Supabase, Vercel and Cloudflare are logged into THRY accounts. Never use them for Vidhya Tex; use the CLIs above instead."
   },
   "authRedirectOrigins": [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://thryco.com",
-    "https://www.thryco.com",
-    "https://thry.thrycoproduct.workers.dev",
-    "https://thry-thryco.vercel.app",
-    "https://thry-self.vercel.app"
+    "https://vidhyatex.vercel.app"
   ],
   "forbidden": {
-    "description": "Never use these for THRY deploys, R2, env, or wrangler login.",
+    "description": "Never use these for Vidhya Tex deploys, R2, env, auth, git push, or CLI login. THRY is a separate brand with its own secrets.",
     "cloudflareAccountEmails": [
+      "thrycoproduct@gmail.com",
       "shaarunew01@gmail.com",
       "sripalanitextilesonline@gmail.com"
     ],
     "cloudflareAccountIds": [
+      "77dfa9b757691b2321fe0630f01c8c6a",
       "542992b23690c0c07bb23e5fecffa6ec"
     ],
     "supabaseProjectRefs": [
+      "azqgyxdzwlhdmjvkngbs",
       "xytdexahcdyhykvuwpys",
       "rzwbpjjayarptlwjfpzm",
       "qhtwwyqlsnckorndmhmt"
     ],
     "siteHosts": [
+      "thryco.com",
+      "www.thryco.com",
+      "media.thryco.com",
+      "thry.thrycoproduct.workers.dev",
+      "thry-catalog.thrycoproduct.workers.dev",
+      "thry-thryco.vercel.app",
+      "thry-self.vercel.app",
       "hubsofcraftss.com",
       "www.hubsofcraftss.com",
       "hubofcraftss.com",
@@ -94,15 +123,35 @@
       "hubs-of-craftss-project.vercel.app"
     ],
     "r2Buckets": [
+      "thry-cdn",
+      "thry-next-cache",
       "hubofcraftss-cdn",
       "hubofcraftss-next-cache"
+    ],
+    "d1Databases": ["thry-catalog"],
+    "vercelTeams": ["thryco", "team_DAup0iV9bvGvaL1mIGH9a7al"],
+    "vercelProjects": ["prj_48M3Nk6JuE9KInZf1t51ww1V6K78"],
+    "githubRepos": ["thrycoproduct-ux/THRY", "thrycoproduct-ux/thry"],
+    "githubAccounts": ["thrycoproduct-ux"]
+  },
+  "status": {
+    "updated": "2026-10-10",
+    "done": [
+      "GitHub repo vidhyatex/VidhyaTex holds the code; THRY git remote removed",
+      "Cloudflare, Vercel and GitHub CLI logins for Vidhya Tex set up (see cliAuth)",
+      "Supabase project zawfokxomwloatkzmzhq confirmed reachable"
+    ],
+    "pending": [
+      "Brand details (address, phone, email, GSTIN, social links, logo) not provided yet",
+      "Code still contains THRY names/text/config (wrangler files, src/config/site.ts, .env.example, workers/*) - rebrand next",
+      "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet",
+      "Vercel project 'vidhyatex' not created yet; productionHost is the planned default",
+      "No custom domain yet"
     ]
   },
   "notes": [
-    "THRY is a NEW shop. Secrets stay in .env.local — never commit them.",
-    "Cloudflare account: thrycoproduct@gmail.com / 77dfa9b757691b2321fe0630f01c8c6a",
-    "Supabase project azqgyxdzwlhdmjvkngbs is the only allowed DB/auth project.",
-    "Run npm run validate:identity before auth, R2, wrangler, or deploy work.",
-    "Shop DNS: thryco.com / www are Cloudflare Worker custom domains on thry-shop-edge → Vercel origin (thry-thryco.vercel.app). Media is media.thryco.com (thry-media). Zone may stay Free; Workers Paid (standard) is required for shop-edge traffic."
+    "Vidhya Tex is a sarees/textiles shop, a separate brand built from the THRY codebase. Never touch THRY repos, accounts or infrastructure.",
+    "Secrets stay in .env.local (gitignored) and in Vercel/Cloudflare settings - never commit them, never put them in this file.",
+    "Run npm run validate:identity before auth, R2, wrangler, or deploy work."
   ]
 }

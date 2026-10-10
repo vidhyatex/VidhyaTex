@@ -7,6 +7,7 @@
  *   node scripts/validate-project-identity.mjs --strict-wrangler-login
  */
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import dotenv from "dotenv";
@@ -162,6 +163,7 @@ if (identity.cloudflare.mediaWranglerConfig) {
 
 // --- Optional live wrangler login check ---
 if (strictWranglerLogin) {
+  process.env.XDG_CONFIG_HOME ||= path.join(os.homedir(), ".vidhyatex-cli");
   try {
     const wranglerCli = path.join(
       PROJECT_ROOT,
