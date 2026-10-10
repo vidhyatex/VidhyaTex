@@ -72,6 +72,8 @@
     "projectSlug": "vidhyatex",
     "projectId": "prj_nESZkq4b6LY4CTKpy5Ya5EzOxUOS",
     "productionHost": "vidhyatex.vercel.app",
+    "extraDomains": ["vidhya-tex.vercel.app"],
+    "deploymentProtection": "Vercel Authentication on preview / *-vidhyatex7-8135.vercel.app URLs; production domains are public",
     "plan": "hobby",
     "crons": "Hobby allows daily crons only: vercel.json runs Razorpay recovery 02:00 IST and abandoned carts 10:00 IST; .github/workflows/store-crons.yml runs them every 10 / 30 min. CRON_SECRET is set in Vercel (production, preview) and as a GitHub repo secret; local copy %USERPROFILE%\\.vidhyatex-cli\\cron-secret.txt"
   },
@@ -103,8 +105,12 @@
     },
     "supabase": {
       "account": "Vidhya Tex Supabase (project zawfokxomwloatkzmzhq)",
-      "use": "No CLI login yet. Keys go in .env.local only (copy from dashboardUrl > Project Settings > API).",
-      "check": "Invoke-WebRequest https://zawfokxomwloatkzmzhq.supabase.co/rest/v1/  (401 = project reachable)"
+      "use": "Management API token in %USERPROFILE%\\.vidhyatex-cli\\supabase-token.txt (header Authorization: Bearer <token>, https://api.supabase.com/v1/projects/zawfokxomwloatkzmzhq/...). DB password in %USERPROFILE%\\.vidhyatex-cli\\supabase-db-password.txt. Never copy either into the repo.",
+      "poolerHost": "aws-0-ap-south-1.pooler.supabase.com",
+      "poolerUser": "postgres.zawfokxomwloatkzmzhq",
+      "poolerPorts": { "transaction": 6543, "session": 5432 },
+      "databaseUrlTemplate": "postgresql://postgres.zawfokxomwloatkzmzhq:<url-encoded password>@aws-0-ap-south-1.pooler.supabase.com:6543/postgres",
+      "check": "Invoke-RestMethod https://api.supabase.com/v1/projects -Headers @{Authorization=\"Bearer $((Get-Content $HOME\\.vidhyatex-cli\\supabase-token.txt).Trim())\"}"
     },
     "cursorMcpWarning": "The Cursor MCP servers for Supabase, Vercel and Cloudflare are logged into THRY accounts. Never use them for Vidhya Tex; use the CLIs above instead."
   },
@@ -169,17 +175,21 @@
       "Storefront text rebranded from THRY / 3D-printed / craft copy to Vidhya Tex sarees (pages, policies, emails, checkout, packing slips)",
       "Order number display prefix is VT (e.g. VT26100001); packing slip brand is VIDHYA TEX",
       "Site theme matches the logo: yellow #F5C518, black #1C1814, gold #C9A227, ink text #2B2118 (globals.css, emails, payment popup)",
-      "THRY and other-shop names, hosts, scripts, images and Supabase refs removed from the repo (wrangler configs, workers, scripts, docs, supabase/config.toml, GitHub workflows)"
+      "THRY and other-shop names, hosts, scripts, images and Supabase refs removed from the repo (wrangler configs, workers, scripts, docs, supabase/config.toml, GitHub workflows)",
+      "Supabase database set up 2026-10-10: drizzle push (17 tables) + supabase/01 sections 3-4, 02-enable-graphql, 03..17 SQL, block-disposable-auth-signup; 14 saree collections seeded",
+      "Supabase auth site_url and redirect allow list set to https://vidhyatex.vercel.app (+ localhost)",
+      "Vercel env set: Supabase (ref, URL, anon, service role, DATABASE_URL pooler 6543), NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_S3_BUCKET, NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy, RESEND_FROM_EMAIL, ORDER_ACCESS_SECRET, CRON_SECRET"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
       "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL)",
+      "R2 is not enabled on the Cloudflare account (API error 10042): owner must enable R2 in the dashboard, then create bucket vidhyatex-cdn and an R2 API token; set S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY in Vercel and change NEXT_PUBLIC_CDN_URL (temporarily https://vidhyatex.vercel.app) to the bucket's public URL",
       "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet; configs expect workers.dev subdomain 'vidhyatex' (media proxy https://vidhyatex-media.vidhyatex.workers.dev)",
       "D1 vidhyatex-catalog not created; set its id in workers/vidhyatex-catalog/wrangler.jsonc (currently SET_AFTER_D1_CREATE) and in cloudflare.d1",
-      "Supabase auth URL config (site_url / redirect URLs) must be set in the dashboard to https://vidhyatex.vercel.app to match supabase/config.toml",
       "workers/vidhyatex-shop-edge has no routes until a custom domain exists",
-      "Vercel project 'vidhyatex' (imported from GitHub, renamed from 'vidhya-tex') has only CRON_SECRET; add the rest of the .env.example keys before the first production deploy",
+      "Vercel env still missing: Razorpay, Resend API key, Upstash Redis, R2 (S3_*), media proxy and catalog worker keys",
+      "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>",
       "No custom domain yet"
     ]
   },

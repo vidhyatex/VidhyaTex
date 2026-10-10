@@ -50,6 +50,11 @@ function missingMediaBucketError() {
 }
 
 function getAwsClient() {
+  if (!env.S3_ACCESS_KEY_ID || !env.S3_SECRET_ACCESS_KEY) {
+    throw new Error(
+      "Media storage keys missing (S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY). Create an R2 API token for bucket vidhyatex-cdn and add both keys in Vercel.",
+    );
+  }
   return new AwsClient({
     accessKeyId: env.S3_ACCESS_KEY_ID,
     secretAccessKey: env.S3_SECRET_ACCESS_KEY,

@@ -21,8 +21,9 @@ export const env = createEnv({
     NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
     DATABASE_SERVICE_ROLE: z.string(),
     S3_ENDPOINT: z.string().url(),
-    S3_ACCESS_KEY_ID: z.string(),
-    S3_SECRET_ACCESS_KEY: z.string(),
+    /** R2 S3 API keys; only media upload/delete needs them, so the storefront runs without. */
+    S3_ACCESS_KEY_ID: z.string().optional(),
+    S3_SECRET_ACCESS_KEY: z.string().optional(),
     /** Optional Worker R2 proxy for Vercel (binding path; avoids dead S3 API keys). */
     R2_MEDIA_PROXY_URL: z.string().url().optional(),
     R2_MEDIA_PROXY_SECRET: z.string().min(16).optional(),
