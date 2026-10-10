@@ -10,7 +10,7 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const PDP = "/shop/baby-shivan-idol";
 
 const results = [];
@@ -93,9 +93,9 @@ try {
       break;
     }
   }
-  const hasCallback = /thryco\.com\/auth\/callback/i.test(decoded);
+  const hasCallback = /vidhyatex\.vercel\.app\/auth\/callback/i.test(decoded);
   const hasNextCart = /auth\/callback\?next=\/cart/i.test(decoded);
-  ok("OAuth redirect_to targets thryco.com/auth/callback", hasCallback);
+  ok("OAuth redirect_to targets vidhyatex.vercel.app/auth/callback", hasCallback);
   ok(
     "OAuth next returns to /cart after Google",
     hasNextCart,

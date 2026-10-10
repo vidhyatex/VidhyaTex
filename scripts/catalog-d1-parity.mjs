@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Compare the live thry-catalog D1 mirror with Supabase (source of truth).
+ * Compare the live vidhyatex-catalog D1 mirror with Supabase (source of truth).
  *
  *   node scripts/catalog-d1-parity.mjs
  *

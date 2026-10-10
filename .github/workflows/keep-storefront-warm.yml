@@ -21,7 +21,7 @@ jobs:
       - name: Warm public routes
         shell: bash
         env:
-          SITE_ORIGIN: https://hubsofcraftss.com
+          SITE_ORIGIN: https://vidhyatex.vercel.app
         run: |
           set -euo pipefail
 
@@ -46,7 +46,7 @@ jobs:
                 --retry-delay 2 \
                 --retry-max-time 150 \
                 --retry-all-errors \
-                --user-agent "HubOfCraftss-Production-Warmup/1.0" \
+                --user-agent "VidhyaTex-Production-Warmup/1.0" \
                 --output "$body" \
                 --write-out "%{http_code} %{url_effective}" \
                 "${SITE_ORIGIN}${path}"
@@ -86,7 +86,7 @@ jobs:
       - name: Release expired stock reservations
         shell: bash
         env:
-          SITE_ORIGIN: https://hubsofcraftss.com
+          SITE_ORIGIN: https://vidhyatex.vercel.app
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           set -euo pipefail
@@ -106,7 +106,7 @@ jobs:
               --retry 2 \
               --retry-delay 3 \
               --header "Authorization: Bearer ${CRON_SECRET}" \
-              --user-agent "HubOfCraftss-Production-Warmup/1.0" \
+              --user-agent "VidhyaTex-Production-Warmup/1.0" \
               "${SITE_ORIGIN}/api/cron/release-expired-stock-reservations"
           )"
 

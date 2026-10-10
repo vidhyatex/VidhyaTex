@@ -1,10 +1,10 @@
 import { writeFileSync } from "node:fs";
 
-const BASE = "https://thryco.com";
+const BASE = "https://vidhyatex.vercel.app";
 
 async function get(path) {
   const res = await fetch(`${BASE}${path}`, {
-    headers: { "user-agent": "Mozilla/5.0 THRY-kolam-probe" },
+    headers: { "user-agent": "Mozilla/5.0 Vidhya Tex-kolam-probe" },
     redirect: "follow",
   });
   const text = await res.text();

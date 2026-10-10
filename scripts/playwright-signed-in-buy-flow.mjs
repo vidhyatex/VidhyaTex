@@ -10,17 +10,17 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const PDP = "/shop/baby-shivan-idol";
 const DEBUG_PORT = 9222;
 const CHROME =
   process.env.CHROME_PATH ||
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const PROFILE_DIR = path.join(os.tmpdir(), "thry-pw-chrome-profile");
+const PROFILE_DIR = path.join(os.tmpdir(), "vidhyatex-pw-chrome-profile");
 
 const ADDRESS = {
   fullName: "Signed In Test Buyer",
-  email: "signed-in-test@thryco.com",
+  email: "signed-in-test@vidhyatex.vercel.app",
   mobile: "9123456789",
   pin: "600001",
   line1: "12 Signed In Street",
@@ -55,7 +55,7 @@ console.log("\n========================================");
 console.log("  Opening REAL Google Chrome...");
 console.log("  Sign in with Google in that window.");
 console.log("  (Not Playwright Chromium — Google allows this)");
-console.log("  Waiting up to 5 minutes after you land on THRY...");
+console.log("  Waiting up to 5 minutes after you land on Vidhya Tex...");
 console.log("========================================\n");
 
 const chrome = spawn(
@@ -83,7 +83,7 @@ const page = context.pages()[0] || (await context.newPage());
 page.setDefaultTimeout(5 * 60 * 1000);
 
 try {
-  if (!page.url().includes("thryco.com") && !page.url().includes("accounts.google")) {
+  if (!page.url().includes("vidhyatex.vercel.app") && !page.url().includes("accounts.google")) {
     await page.goto(`${BASE}/sign-in?from=%2Fcart`, {
       waitUntil: "domcontentloaded",
     });
@@ -103,7 +103,7 @@ try {
       const h = url.hostname;
       const p = url.pathname;
       return (
-        h.includes("thryco.com") &&
+        h.includes("vidhyatex.vercel.app") &&
         !p.includes("/sign-in") &&
         !p.includes("/auth/callback")
       );

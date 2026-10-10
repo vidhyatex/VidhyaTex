@@ -2,21 +2,21 @@
  * Auth cart remove → refresh must stay empty (no cookie resurrection).
  *
  * Always runs a logic check (mirrors shouldShowGuestCart).
- * Optional CDP signed-in flow: THRY_CART_CDP=1 node scripts/playwright-auth-cart-remove-refresh.mjs
+ * Optional CDP signed-in flow: VIDHYATEX_CART_CDP=1 node scripts/playwright-auth-cart-remove-refresh.mjs
  */
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
-const RUN_CDP = process.env.THRY_CART_CDP === "1";
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
+const RUN_CDP = process.env.VIDHYATEX_CART_CDP === "1";
 const PDP = "/shop/baby-shivan-idol";
 const DEBUG_PORT = 9223;
 const CHROME =
   process.env.CHROME_PATH ||
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const PROFILE_DIR = path.join(os.tmpdir(), "thry-pw-cart-remove-profile");
+const PROFILE_DIR = path.join(os.tmpdir(), "vidhyatex-pw-cart-remove-profile");
 
 const results = [];
 function ok(name, pass, detail = "") {
@@ -116,7 +116,7 @@ async function runCdpSignedInFlow() {
 
     await page.waitForURL(
       (url) =>
-        url.hostname.includes("thryco.com") &&
+        url.hostname.includes("vidhyatex.vercel.app") &&
         !url.pathname.includes("/sign-in") &&
         !url.pathname.includes("/auth/callback"),
       { timeout: 5 * 60 * 1000 },
@@ -188,7 +188,7 @@ if (RUN_CDP) {
   await runCdpSignedInFlow();
 } else {
   console.log(
-    "\n(Skip CDP signed-in flow — set THRY_CART_CDP=1 to run interactive remove→refresh)\n",
+    "\n(Skip CDP signed-in flow — set VIDHYATEX_CART_CDP=1 to run interactive remove→refresh)\n",
   );
 }
 

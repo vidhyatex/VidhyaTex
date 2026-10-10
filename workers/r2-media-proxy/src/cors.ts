@@ -1,5 +1,5 @@
 /**
- * Browser PUT CORS for THRY storefronts only.
+ * Browser PUT CORS for Vidhya Tex storefronts only.
  * Unknown origins get no Access-Control-Allow-Origin (no `*` fallback).
  */
 
@@ -9,17 +9,13 @@ const EXACT_ORIGINS = new Set([
   "https://localhost",
   "http://localhost",
   "capacitor://localhost",
-  "https://thry-thryco.vercel.app",
-  "https://thry-self.vercel.app",
-  "https://thryco.com",
-  "https://www.thryco.com",
-  "https://thry.thrycoproduct.workers.dev",
+  "https://vidhyatex.vercel.app",
+  "https://vidhyatex.vidhyatex.workers.dev",
 ]);
 
 const PREVIEW_ORIGIN_PATTERNS = [
-  /^https:\/\/thry(-[\w]+)*-thryco\.vercel\.app$/i,
-  /^https:\/\/thry-self-[\w-]+\.vercel\.app$/i,
-  /^https:\/\/thry[\w-]*\.thrycoproduct\.workers\.dev$/i,
+  /^https:\/\/vidhyatex(-[\w]+)*-vidhyatex7-8135\.vercel\.app$/i,
+  /^https:\/\/vidhyatex[\w-]*\.vidhyatex\.workers\.dev$/i,
 ];
 
 export function isAllowedCorsOrigin(origin: string): boolean {

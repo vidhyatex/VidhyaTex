@@ -6,8 +6,8 @@ describe("buildCanonicalRedirectUrl", () => {
   it("redirects workers.dev to the canonical origin", () => {
     expect(
       buildCanonicalRedirectUrl(
-        "https://thry.thrycoproduct.workers.dev/shop",
-        "thry.thrycoproduct.workers.dev",
+        "https://vidhyatex.vidhyatex.workers.dev/shop",
+        "vidhyatex.vidhyatex.workers.dev",
         CANONICAL,
       ),
     ).toBe("http://localhost:3000/shop");
@@ -16,8 +16,8 @@ describe("buildCanonicalRedirectUrl", () => {
   it("preserves query strings through redirect", () => {
     expect(
       buildCanonicalRedirectUrl(
-        "https://thry.thrycoproduct.workers.dev/?code=abc123",
-        "thry.thrycoproduct.workers.dev",
+        "https://vidhyatex.vidhyatex.workers.dev/?code=abc123",
+        "vidhyatex.vidhyatex.workers.dev",
         CANONICAL,
       ),
     ).toBe("http://localhost:3000/?code=abc123");

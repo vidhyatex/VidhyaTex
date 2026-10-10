@@ -1,15 +1,15 @@
 import db from "../db";
 import * as schema from "../schema";
 import { slugify } from "@/lib/utils";
-import { SAKTHI_COLLECTION_LABELS } from "./sakthiCollections";
+import { SAREE_COLLECTION_LABELS } from "./sareeCollections";
 import { collectionPlaceholderImage } from "./collectionPlaceholders";
 
 const seedCollections = async () => {
   try {
     await db.delete(schema.collections);
 
-    for (let i = 0; i < SAKTHI_COLLECTION_LABELS.length; i++) {
-      const label = SAKTHI_COLLECTION_LABELS[i];
+    for (let i = 0; i < SAREE_COLLECTION_LABELS.length; i++) {
+      const label = SAREE_COLLECTION_LABELS[i];
       const slug = slugify(label);
       const imageKey = collectionPlaceholderImage(label);
 

@@ -1,5 +1,5 @@
 const url =
-  "https://thryco.com/collections/silicon-mould-and-mould-making-kit-collections";
+  "https://vidhyatex.vercel.app/collections/silicon-mould-and-mould-making-kit-collections";
 
 function pick(html, ...res) {
   for (const re of res) {

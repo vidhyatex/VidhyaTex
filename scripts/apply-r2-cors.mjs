@@ -1,5 +1,5 @@
 /**
- * Apply production R2 CORS for browser digital Zip PUTs (admin on thryco.com).
+ * Apply production R2 CORS for browser digital Zip PUTs (admin on vidhyatex.vercel.app).
  *
  * Usage (Cloudflare MCP / API token with R2 edit):
  *   CLOUDFLARE_API_TOKEN=... node scripts/apply-r2-cors.mjs
@@ -47,7 +47,7 @@ function toApiRules(corsJson) {
   const entries = Array.isArray(corsJson) ? corsJson : corsJson.rules || [];
   return {
     rules: entries.map((rule, index) => ({
-      id: rule.id || `thry-cors-${index + 1}`,
+      id: rule.id || `vidhyatex-cors-${index + 1}`,
       allowed: {
         origins: rule.AllowedOrigins || rule.allowed?.origins || [],
         methods: rule.AllowedMethods || rule.allowed?.methods || [

@@ -15,7 +15,7 @@ function esc(v) {
 
 const collections = [
   {
-    id: "thry_col_statues",
+    id: "vidhyatex_col_statues",
     label: "Resin art essentials",
     slug: "3d-printed-statues",
     title: "Resin art essentials",
@@ -26,11 +26,11 @@ const collections = [
     featured_image_alt: "img-4457.webp",
   },
   {
-    id: "thry_col_craft",
+    id: "vidhyatex_col_craft",
     label: "Clay cutters collection",
     slug: "art-craft",
     title: "Clay cutters collection",
-    description: "Detailed Clay cutters uniquely designed from Thry co",
+    description: "Detailed Clay cutters uniquely designed from Vidhya Tex",
     sort_order: 1,
     featured_image_id: "yni96e2xdvqprahutq1s25ql",
     featured_image_key: "uploads/upload-1U5INHtiDEdmha5BMrfaR.png",

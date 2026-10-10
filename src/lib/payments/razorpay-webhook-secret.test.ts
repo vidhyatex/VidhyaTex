@@ -17,7 +17,7 @@ describe("razorpay webhook secret validation", () => {
       ),
     ).toBe(false);
     expect(
-      isLikelyRazorpayWebhookSecret("https://thryco.com/api/razorpay/webhook"),
+      isLikelyRazorpayWebhookSecret("https://vidhyatex.vercel.app/api/razorpay/webhook"),
     ).toBe(false);
     expect(isLikelyRazorpayWebhookSecret("short")).toBe(false);
   });

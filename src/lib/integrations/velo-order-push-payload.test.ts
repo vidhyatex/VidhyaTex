@@ -4,23 +4,21 @@ import {
 } from "./velo-order-push-payload";
 
 describe("velo order push payload", () => {
-  it("uses the documented default Velo push URL", () => {
-    expect(DEFAULT_VELO_ORDER_PUSH_URL).toBe(
-      "https://rzwbpjjayarptlwjfpzm.supabase.co/functions/v1/notify-velo-order-push",
-    );
+  it("has no default Velo push URL (must be configured per shop)", () => {
+    expect(DEFAULT_VELO_ORDER_PUSH_URL).toBe("");
   });
 
   it("builds payload with summed quantity, IST time, and trimmed shop URL", () => {
     expect(
       buildVeloOrderPushPayload({
-        shopBaseUrl: "https://www.sairaghavendratex.com/",
+        shopBaseUrl: "https://vidhyatex.vercel.app/",
         orderId: "ord_123",
         customerName: " Priya ",
         lineQuantities: [1, 2],
         createdAt: "2026-07-11T10:52:00.000Z",
       }),
     ).toEqual({
-      shopBaseUrl: "https://www.sairaghavendratex.com",
+      shopBaseUrl: "https://vidhyatex.vercel.app",
       orderId: "ord_123",
       customerName: "Priya",
       quantity: 3,
@@ -33,13 +31,13 @@ describe("velo order push payload", () => {
   it("defaults customer name and minimum quantity", () => {
     expect(
       buildVeloOrderPushPayload({
-        shopBaseUrl: "https://www.sairaghavendratex.com",
+        shopBaseUrl: "https://vidhyatex.vercel.app",
         orderId: "ord_456",
         customerName: "",
         lineQuantities: [],
       }),
     ).toEqual({
-      shopBaseUrl: "https://www.sairaghavendratex.com",
+      shopBaseUrl: "https://vidhyatex.vercel.app",
       orderId: "ord_456",
       customerName: "Guest",
       quantity: 1,

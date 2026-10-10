@@ -1,9 +1,9 @@
 import fs from "node:fs";
 
-const dbId = "85283c0d-4c77-4187-8d68-ff166a1a6d50";
-const worker = fs.readFileSync("workers/thry-catalog/dist-worker.js", "utf8");
+const dbId = "SET_AFTER_D1_CREATE";
+const worker = fs.readFileSync("workers/vidhyatex-catalog/dist-worker.js", "utf8");
 const secrets = JSON.parse(
-  fs.readFileSync("workers/thry-catalog/.secrets.local.json", "utf8"),
+  fs.readFileSync("workers/vidhyatex-catalog/.secrets.local.json", "utf8"),
 );
 const CHUNK = 5000;
 const parts = [];
@@ -79,7 +79,7 @@ fs.writeFileSync(
   ].join("\\r\\n");
   const upload = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/workers/scripts/thry-catalog",
+    path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog",
     query: { include_subdomain_availability: "true" },
     body,
     contentType: "multipart/form-data; boundary=" + b,
@@ -89,7 +89,7 @@ fs.writeFileSync(
   try {
     subdomain = await cloudflare.request({
       method: "POST",
-      path: "/accounts/" + accountId + "/workers/scripts/thry-catalog/subdomain",
+      path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog/subdomain",
       body: { enabled: true },
     });
   } catch (e) {

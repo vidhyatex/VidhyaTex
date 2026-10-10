@@ -47,8 +47,8 @@ describe("contact links", () => {
   });
 
   it("builds mailto only for a usable shop email", () => {
-    expect(shopMailtoHref("thrycoproduct@gmail.com")).toBe(
-      "mailto:thrycoproduct@gmail.com",
+    expect(shopMailtoHref("vidhyatex7@gmail.com")).toBe(
+      "mailto:vidhyatex7@gmail.com",
     );
     expect(shopMailtoHref("")).toBeNull();
     expect(shopMailtoHref("not-an-email")).toBeNull();

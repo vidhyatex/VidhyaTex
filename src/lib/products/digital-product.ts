@@ -160,7 +160,7 @@ export function formatDigitalUploadNetworkError(error: unknown): string {
       message,
     )
   ) {
-    return "Could not reach file storage from this browser (often R2 CORS or network). Retry, or use Chrome. If it keeps failing, check Cloudflare R2 bucket CORS for thryco.com.";
+    return "Could not reach file storage from this browser (often R2 CORS or network). Retry, or use Chrome. If it keeps failing, check Cloudflare R2 bucket CORS for vidhyatex.vercel.app.";
   }
   return message.trim() || "Please retry.";
 }

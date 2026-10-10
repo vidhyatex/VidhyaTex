@@ -12,7 +12,7 @@ const { resolveDatabaseUrl } = await import(
 );
 
 const legacy =
-  "postgresql://postgres:xxx@db.qhtwwyqlsnckorndmhmt.supabase.co:5432/postgres";
+  "postgresql://postgres:xxx@db.zawfokxomwloatkzmzhq.supabase.co:5432/postgres";
 const rewritten = resolveDatabaseUrl(legacy);
 const host = new URL(rewritten.replace(/^postgresql:/i, "http:")).host;
 console.log("rewrite sample host:", host);

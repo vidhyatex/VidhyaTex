@@ -1,12 +1,12 @@
 /**
- * Deploy thry-catalog via Cloudflare API using token from env or wrangler config.
+ * Deploy vidhyatex-catalog via Cloudflare API using token from env or wrangler config.
  */
 import { readFileSync, existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-const accountId = "77dfa9b757691b2321fe0630f01c8c6a";
-const scriptName = "thry-catalog";
-const dbId = "85283c0d-4c77-4187-8d68-ff166a1a6d50";
+const accountId = "eb44426b1fd72351f6b204ddb5d9b586";
+const scriptName = "vidhyatex-catalog";
+const dbId = "SET_AFTER_D1_CREATE";
 
 function findToken() {
   if (process.env.CLOUDFLARE_API_TOKEN) return process.env.CLOUDFLARE_API_TOKEN.trim();
@@ -42,9 +42,9 @@ if (!token) {
   process.exit(2);
 }
 
-const workerCode = readFileSync("workers/thry-catalog/dist-worker.js", "utf8");
+const workerCode = readFileSync("workers/vidhyatex-catalog/dist-worker.js", "utf8");
 const secrets = JSON.parse(
-  readFileSync("workers/thry-catalog/.secrets.local.json", "utf8"),
+  readFileSync("workers/vidhyatex-catalog/.secrets.local.json", "utf8"),
 );
 
 const metadata = {
@@ -92,7 +92,7 @@ const res = await fetch(url, {
 });
 const json = await res.json();
 writeFileSync(
-  "workers/thry-catalog/_last-deploy-result.json",
+  "workers/vidhyatex-catalog/_last-deploy-result.json",
   JSON.stringify({ status: res.status, json }, null, 2),
 );
 console.log(

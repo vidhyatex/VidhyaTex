@@ -1,12 +1,12 @@
 /**
- * Full website Playwright validation for THRY storefront.
+ * Full website Playwright validation for Vidhya Tex storefront.
  * Covers: routes, CDN, images, nav, cart/checkout-to-Razorpay, auth pages, mobile.
  *
  * Usage: node scripts/playwright-validate-site.mjs [baseUrl]
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const SAMPLE_KEY = "uploads/upload-bat0Jc4NISjTbZoNSmUlQ.png";
 const CARD_BUDGET = 120_000;
 const PDP_SLUG = "baby-shivan-idol";
@@ -67,7 +67,7 @@ async function measureBytes(url) {
 
 async function apiChecks() {
   console.log("\n=== API / CDN ===");
-  const health = await fetch("https://media.thryco.com/health").then(async (r) => ({
+  const health = await fetch("https://vidhyatex-media.vidhyatex.workers.dev/health").then(async (r) => ({
     status: r.status,
     json: await r.json().catch(() => null),
   }));
@@ -84,7 +84,7 @@ async function apiChecks() {
     `https://pub-7298c413a12641b5ba5dd9bff2d9009f.r2.dev/${SAMPLE_KEY}`,
   );
   const resized = await measureBytes(
-    `https://media.thryco.com/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
+    `https://vidhyatex-media.vidhyatex.workers.dev/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
   );
   ok(
     "CDN WebP resize",
@@ -92,7 +92,7 @@ async function apiChecks() {
     `${raw.bytes} -> ${resized.bytes}`,
   );
   const head = await fetch(
-    `https://media.thryco.com/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
+    `https://vidhyatex-media.vidhyatex.workers.dev/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
     { method: "HEAD" },
   );
   ok("CDN HEAD", head.status === 200, `status=${head.status}`);
@@ -136,7 +136,7 @@ async function checkPage(page, path, opts = {}) {
       .map((img) => img.src)
       .slice(0, 5),
   );
-  const cdn = (html.match(/media\.thryco\.com\/cdn\//g) || []).length;
+  const cdn = (html.match(/vidhyatex-media\.vidhyatex\.workers\.dev\/cdn\//g) || []).length;
   const hasMain = await page.locator("main, [role='main'], body").count();
 
   const statusOk = allowRedirect ? status >= 200 && status < 400 : status === 200;
@@ -250,7 +250,7 @@ async function buyFlow(page) {
   await page.getByRole("dialog").waitFor({ timeout: 15000 });
   const dialog = page.getByRole("dialog");
   await dialog.getByPlaceholder("Enter full name").fill("Site Validation Buyer");
-  await dialog.getByPlaceholder("Enter email (optional)").fill("validate@thryco.com");
+  await dialog.getByPlaceholder("Enter email (optional)").fill("validate@vidhyatex.vercel.app");
   await dialog.getByPlaceholder("Enter mobile number").fill("9123456789");
   await dialog.getByPlaceholder("6-digit PIN code").fill("600001");
   await page.waitForTimeout(2000);
@@ -324,7 +324,7 @@ async function authGated(page) {
   }
 }
 
-console.log(`\nTHRY full-site validation → ${BASE}\n`);
+console.log(`\nVidhya Tex full-site validation → ${BASE}\n`);
 await apiChecks();
 
 const browser = await chromium.launch({ headless: true });

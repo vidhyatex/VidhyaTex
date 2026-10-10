@@ -4,7 +4,7 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const SAMPLE_KEY = "uploads/upload-bat0Jc4NISjTbZoNSmUlQ.png";
 const CARD_BUDGET = 120_000; // bytes
 
@@ -40,9 +40,9 @@ async function measureBytes(url) {
 
 async function apiChecks() {
   console.log("\n=== API / CDN ===");
-  const health = await fetchJson("https://media.thryco.com/health");
+  const health = await fetchJson("https://vidhyatex-media.vidhyatex.workers.dev/health");
   ok(
-    "media.thryco.com /health",
+    "vidhyatex-media.vidhyatex.workers.dev /health",
     health.status === 200 && health.json?.ok === true,
     JSON.stringify(health.json),
   );
@@ -56,7 +56,7 @@ async function apiChecks() {
     `https://pub-7298c413a12641b5ba5dd9bff2d9009f.r2.dev/${SAMPLE_KEY}`,
   );
   const resized = await measureBytes(
-    `https://media.thryco.com/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
+    `https://vidhyatex-media.vidhyatex.workers.dev/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
   );
   ok(
     "CDN resize returns WebP",
@@ -70,7 +70,7 @@ async function apiChecks() {
   );
 
   const head = await fetch(
-    `https://media.thryco.com/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
+    `https://vidhyatex-media.vidhyatex.workers.dev/cdn/w=400,q=75,f=webp/${SAMPLE_KEY}`,
     { method: "HEAD" },
   );
   ok("CDN HEAD supported", head.status === 200, `status=${head.status}`);
@@ -113,7 +113,7 @@ async function browserChecks() {
     await page.waitForTimeout(2500);
     const status = resp?.status() ?? 0;
     const html = await page.content();
-    const cdnCount = (html.match(/media\.thryco\.com\/cdn\//g) || []).length;
+    const cdnCount = (html.match(/vidhyatex-media\.vidhyatex\.workers\.dev\/cdn\//g) || []).length;
     const r2Count = (html.match(/r2\.dev/g) || []).length;
     // Only flag images that finished loading and failed (ignore lazy off-screen).
     const brokenImgs = await page.evaluate(() =>
@@ -152,7 +152,7 @@ async function browserChecks() {
     ok(`${path} HTTP 200`, status === 200, `status=${status}`);
     if (path === "/" || path === "/shop") {
       ok(
-        `${path} uses media.thryco.com/cdn`,
+        `${path} uses vidhyatex-media.vidhyatex.workers.dev/cdn`,
         cdnCount >= 1,
         `cdn=${cdnCount} r2=${r2Count}`,
       );
@@ -165,7 +165,7 @@ async function browserChecks() {
 
     if (path === "/") {
       const preloadCdn = heroMeta.preload.some((h) =>
-        h.includes("media.thryco.com/cdn/"),
+        h.includes("vidhyatex-media.vidhyatex.workers.dev/cdn/"),
       );
       const highOk =
         heroMeta.high.length > 0 &&
@@ -200,7 +200,7 @@ async function browserChecks() {
     });
     await page.waitForTimeout(2000);
     const html = await page.content();
-    const cdnCount = (html.match(/media\.thryco\.com\/cdn\//g) || []).length;
+    const cdnCount = (html.match(/vidhyatex-media\.vidhyatex\.workers\.dev\/cdn\//g) || []).length;
     const brokenImgs = await page.evaluate(() =>
       [...document.images]
         .filter(
@@ -227,7 +227,7 @@ async function browserChecks() {
   const failedImages = imageResponses.filter(
     (r) =>
       r.status >= 400 &&
-      (r.url.includes("media.thryco.com") || r.url.includes("r2.dev")),
+      (r.url.includes("vidhyatex-media.vidhyatex.workers.dev") || r.url.includes("r2.dev")),
   );
   ok(
     "No failed CDN/R2 image responses",
@@ -292,7 +292,7 @@ async function browserChecks() {
     ok(
       "LCP image served via CDN (when image)",
       !lcp.url ||
-        lcp.url.includes("media.thryco.com/cdn/") ||
+        lcp.url.includes("vidhyatex-media.vidhyatex.workers.dev/cdn/") ||
         !/\.(png|jpe?g|webp)/i.test(lcp.url),
       lcp.url.slice(0, 120),
     );

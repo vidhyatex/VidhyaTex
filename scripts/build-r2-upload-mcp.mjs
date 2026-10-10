@@ -9,7 +9,7 @@ for (let i = 0; i < 8; i++) {
   const body = ${JSON.stringify(chunk)};
   const res = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/r2/buckets/thry-cdn/objects/internal/catalog-seed/chunk-${i}.json",
+    path: "/accounts/" + accountId + "/r2/buckets/vidhyatex-cdn/objects/internal/catalog-seed/chunk-${i}.json",
     body,
     contentType: "application/json",
     rawBody: true,

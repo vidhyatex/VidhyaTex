@@ -14,11 +14,11 @@ await page.goto(
 await page.waitForTimeout(4000);
 console.log(
   await page.evaluate(() => ({
-    nav: document.documentElement.dataset.thryNavHydrated,
+    nav: document.documentElement.dataset.vidhyatexNavHydrated,
     sticky: !!document.querySelector('[aria-label="Buy product"]'),
-    iab: document.querySelector("[data-thry-iab]")?.getAttribute("data-thry-iab"),
+    iab: document.querySelector("[data-vidhyatex-iab]")?.getAttribute("data-vidhyatex-iab"),
     browseText: document
-      .querySelector('[data-thry-iab="browse"]')
+      .querySelector('[data-vidhyatex-iab="browse"]')
       ?.textContent?.slice(0, 80),
   })),
 );

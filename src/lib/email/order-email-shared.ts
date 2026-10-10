@@ -130,9 +130,9 @@ export function buildEmailLayoutHtml(params: {
   const preheader = escapeHtml(params.preheader);
   return `<!DOCTYPE html>
 <html lang="en">
-  <body style="margin:0;padding:0;background:#f6f6f6;font-family:Arial,Helvetica,sans-serif;color:#111;">
+  <body style="margin:0;padding:0;background:#fff8e1;font-family:Arial,Helvetica,sans-serif;color:#111;">
     <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${preheader}</div>
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#f6f6f6;padding:24px 12px;">
+    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#fff8e1;padding:24px 12px;">
       <tr>
         <td align="center">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px;background:#ffffff;border-radius:8px;padding:24px;">
@@ -226,8 +226,8 @@ export function buildLineItemsTableHtml(
 
   return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin-bottom:20px;">
     <tr>
-      <th align="left" colspan="2" style="padding:8px 0;border-bottom:2px solid #111;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">Product</th>
-      <th align="right" style="padding:8px 0;border-bottom:2px solid #111;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">Amount</th>
+      <th align="left" colspan="2" style="padding:8px 0;border-bottom:2px solid #c9a227;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">Product</th>
+      <th align="right" style="padding:8px 0;border-bottom:2px solid #c9a227;font-size:12px;text-transform:uppercase;letter-spacing:0.04em;">Amount</th>
     </tr>
     ${rows}
   </table>`;

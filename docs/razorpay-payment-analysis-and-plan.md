@@ -1,7 +1,7 @@
 # Razorpay Payment Analysis & Robust Fix Plan
 
 Saved: 28 Aug 2026  
-Site: thryco.com | Payment: Razorpay (primary)
+Site: vidhyatex.vercel.app | Payment: Razorpay (primary)
 
 ---
 
@@ -57,7 +57,7 @@ Site: thryco.com | Payment: Razorpay (primary)
 - OR verify API timed out (DB connection issues)
 - OR webhook failed (signature/connection error)
 
-**Result:** Customer thinks they paid. Money is with Razorpay. But THRY shows "unpaid" → no dispatch → customer contacts you.
+**Result:** Customer thinks they paid. Money is with Razorpay. But Vidhya Tex shows "unpaid" → no dispatch → customer contacts you.
 
 ### Problem 2: HIGH ABANDONMENT (14/28 = 50% on Aug 26)
 
@@ -208,7 +208,7 @@ When someone abandons:
 ### Remaining Action (manual):
 1. **Run manual recovery** for the 7 lost orders
 2. **Verify webhook secret** is correct in admin settings (Razorpay Dashboard → Webhooks)
-3. **Check Razorpay Dashboard** → Settings → Webhooks → ensure thryco.com webhook URL is active and showing recent deliveries
+3. **Check Razorpay Dashboard** → Settings → Webhooks → ensure vidhyatex.vercel.app webhook URL is active and showing recent deliveries
 
 ---
 

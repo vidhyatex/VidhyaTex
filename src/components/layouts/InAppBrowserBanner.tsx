@@ -11,7 +11,7 @@ import {
 import { useCheckoutChrome } from "@/providers/CheckoutChromeProvider";
 import { cn } from "@/lib/utils";
 
-const DISMISS_KEY = "thry:in-app-browser-banner-dismissed";
+const DISMISS_KEY = "vidhyatex:in-app-browser-banner-dismissed";
 
 type Props = {
   /** Server-detected from User-Agent so first HTML paint is correct. */
@@ -67,7 +67,7 @@ export function InAppBrowserBanner({
 
   const appName = inAppBrowserLabel(kind);
   const pageUrl =
-    typeof window !== "undefined" ? window.location.href : "https://thryco.com";
+    typeof window !== "undefined" ? window.location.href : "https://vidhyatex.vercel.app";
   const android = isAndroidUa;
 
   const openInChrome = () => {
@@ -94,7 +94,7 @@ export function InAppBrowserBanner({
       <div
         className="fixed inset-x-0 top-3 z-[120] px-3 md:px-4"
         role="status"
-        data-thry-iab="checkout"
+        data-vidhyatex-iab="checkout"
       >
         <div className="mx-auto flex max-w-lg items-start gap-3 rounded-xl border border-amber-500/50 bg-amber-50/95 p-3 text-amber-950 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-amber-50/90 dark:bg-amber-950/95 dark:text-amber-50">
           <div className="min-w-0 flex-1 space-y-2">
@@ -149,7 +149,7 @@ export function InAppBrowserBanner({
         "top-[var(--store-header-offset-mobile)] md:top-[var(--store-header-offset-desktop)]",
       )}
       role="status"
-      data-thry-iab="browse"
+      data-vidhyatex-iab="browse"
     >
       <div className="mx-auto flex max-w-3xl items-center gap-2 px-3 py-2 md:px-4">
         <p className="min-w-0 flex-1 truncate text-xs text-foreground sm:text-sm">

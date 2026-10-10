@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { buildInstagramShortLinkTarget } from "@/lib/marketing/instagram-short-links";
 
-/** thryco.com/ig/<code> → collection/shop page tagged with Instagram UTMs. */
+/** vidhyatex.vercel.app/ig/<code> → collection/shop page tagged with Instagram UTMs. */
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ code: string }> },

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const workerCode = readFileSync(
-  "workers/thry-catalog/dist-worker.js",
+  "workers/vidhyatex-catalog/dist-worker.js",
   "utf8",
 );
 
@@ -12,7 +12,7 @@ const deploy = `async () => {
     compatibility_date: "2026-08-14",
     keep_bindings: ["secret_text"],
     bindings: [
-      { type: "d1", name: "DB", id: "85283c0d-4c77-4187-8d68-ff166a1a6d50" },
+      { type: "d1", name: "DB", id: "SET_AFTER_D1_CREATE" },
     ],
   };
   const b = "----B" + Date.now();
@@ -31,7 +31,7 @@ const deploy = `async () => {
   ].join("\\r\\n");
   const upload = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/workers/scripts/thry-catalog",
+    path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog",
     query: { include_subdomain_availability: "true" },
     body,
     contentType: "multipart/form-data; boundary=" + b,
@@ -45,5 +45,5 @@ const deploy = `async () => {
   };
 }`;
 
-writeFileSync("workers/thry-catalog/_mcp-deploy-keep.js", deploy);
+writeFileSync("workers/vidhyatex-catalog/_mcp-deploy-keep.js", deploy);
 console.log("bytes", deploy.length);

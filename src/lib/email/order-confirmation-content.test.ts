@@ -31,7 +31,7 @@ describe("order confirmation email content", () => {
         name: "Mandala Kit",
         quantity: 1,
         unitPrice: 1000,
-        imageUrl: "https://thryco.com/images/products/mandala.jpg",
+        imageUrl: "https://vidhyatex.vercel.app/images/products/mandala.jpg",
         imageAlt: "Mandala Kit",
         productCode: "MK-001",
       },
@@ -44,7 +44,7 @@ describe("order confirmation email content", () => {
       postalCode: "635126",
       country: "India",
     },
-    orderUrl: "https://thryco.com/orders/ord_test123?token=abc",
+    orderUrl: "https://vidhyatex.vercel.app/orders/ord_test123?token=abc",
   };
 
   it("builds a subject with order id", () => {
@@ -133,7 +133,7 @@ describe("order confirmation email content", () => {
           name: "Ganesha silicon mould",
           quantity: 1,
           unitPrice: 449,
-          imageUrl: "https://thryco.com/images/products/ganesha.jpg",
+          imageUrl: "https://vidhyatex.vercel.app/images/products/ganesha.jpg",
           imageAlt: "Ganesha",
           productCode: "ST000178",
         },

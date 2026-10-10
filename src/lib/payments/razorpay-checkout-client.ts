@@ -401,7 +401,7 @@ export async function openRazorpayCheckout(params: {
       description: session.description ?? "Vidhya Tex order",
       order_id: session.razorpayOrderId,
       prefill: session.prefill,
-      theme: { color: session.themeColor || "#c03078" },
+      theme: { color: session.themeColor || "#1c1814" },
       // Docs: retry.enabled is for web; max_count is Android/iOS SDK only.
       retry: { enabled: true },
       modal: {

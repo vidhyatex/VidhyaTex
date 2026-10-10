@@ -21,7 +21,7 @@ jobs:
       - name: Run lifecycle cleanup cron
         shell: bash
         env:
-          SITE_ORIGIN: https://hubsofcraftss.com
+          SITE_ORIGIN: https://vidhyatex.vercel.app
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           set -euo pipefail
@@ -41,7 +41,7 @@ jobs:
               --retry 2 \
               --retry-delay 5 \
               --header "Authorization: Bearer ${CRON_SECRET}" \
-              --user-agent "HubOfCraftss-Nightly-Maintenance/1.0" \
+              --user-agent "VidhyaTex-Nightly-Maintenance/1.0" \
               "${SITE_ORIGIN}/api/cron/lifecycle-cleanup"
           )"
 

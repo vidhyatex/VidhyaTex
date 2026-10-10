@@ -19,7 +19,7 @@ for (const [label, token] of [
   ["userToken", userToken],
 ]) {
   const r = await fetch(
-    "https://api.cloudflare.com/client/v4/zones?name=thryco.com",
+    "https://api.cloudflare.com/client/v4/zones?name=vidhyatex.vercel.app",
     { headers: { Authorization: `Bearer ${token}` } },
   );
   const j = await r.json();

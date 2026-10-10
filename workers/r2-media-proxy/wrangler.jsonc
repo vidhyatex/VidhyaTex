@@ -1,9 +1,10 @@
 {
   "$schema": "../../node_modules/wrangler/config-schema.json",
-  "name": "thry-media",
-  "account_id": "77dfa9b757691b2321fe0630f01c8c6a",
+  "name": "vidhyatex-media",
+  "account_id": "eb44426b1fd72351f6b204ddb5d9b586",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-14",
+  // Served on vidhyatex-media.<subdomain>.workers.dev until a media custom domain exists.
   "workers_dev": true,
   "images": {
     "binding": "IMAGES"
@@ -11,7 +12,7 @@
   "r2_buckets": [
     {
       "binding": "MEDIA_BUCKET",
-      "bucket_name": "thry-cdn"
+      "bucket_name": "vidhyatex-cdn"
     }
   ],
   "secrets": {
@@ -19,11 +20,5 @@
   },
   "observability": {
     "enabled": true
-  },
-  "routes": [
-    {
-      "pattern": "media.thryco.com",
-      "custom_domain": true
-    }
-  ]
+  }
 }

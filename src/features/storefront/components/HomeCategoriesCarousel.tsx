@@ -136,7 +136,7 @@ export function HomeCategoriesCarousel({
             <div key={node.id} className="w-full">
               <ViewTransitionLink
                 href={`/collections/${node.slug}`}
-                className="group block w-full rounded-[1.25rem] border border-brand-teal/20 bg-card p-1.5 shadow-sm transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-brand-magenta/40 hover:shadow-[0_18px_40px_-18px_rgba(192,48,120,0.35)] sm:overflow-hidden sm:bg-muted/30 sm:p-0"
+                className="group block w-full rounded-[1.25rem] border border-brand-teal/20 bg-card p-1.5 shadow-sm transition-[border-color,box-shadow,transform] duration-300 hover:-translate-y-1 hover:border-brand-magenta/40 hover:shadow-[0_18px_40px_-18px_rgba(28,24,20,0.35)] sm:overflow-hidden sm:bg-muted/30 sm:p-0"
               >
                 <CollectionCardSurface
                   label={node.label}

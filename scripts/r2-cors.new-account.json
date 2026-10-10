@@ -1,14 +1,14 @@
 [
   {
-    "id": "thry-admin-digital-upload",
+    "id": "vidhyatex-admin-digital-upload",
     "AllowedOrigins": [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
-      "https://thryco.com",
-      "https://www.thryco.com",
-      "https://thry-thryco.vercel.app",
-      "https://thry-self.vercel.app",
-      "https://thry.thrycoproduct.workers.dev"
+      "https://vidhyatex.vercel.app",
+      "https://vidhyatex.vercel.app",
+      "https://vidhyatex.vercel.app",
+      "https://vidhyatex.vercel.app",
+      "https://vidhyatex.vidhyatex.workers.dev"
     ],
     "AllowedMethods": ["GET", "PUT", "HEAD"],
     "AllowedHeaders": ["Content-Type", "Content-Length", "Authorization"],

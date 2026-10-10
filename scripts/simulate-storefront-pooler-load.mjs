@@ -5,7 +5,7 @@
  *
  * Usage:
  *   node scripts/simulate-storefront-pooler-load.mjs
- *   node scripts/simulate-storefront-pooler-load.mjs --base https://thryco.com --concurrency 25
+ *   node scripts/simulate-storefront-pooler-load.mjs --base https://vidhyatex.vercel.app --concurrency 25
  */
 
 const args = process.argv.slice(2);
@@ -16,7 +16,7 @@ function readArg(name, fallback) {
   return args[idx + 1] ?? fallback;
 }
 
-const BASE = readArg("--base", "https://thryco.com").replace(/\/$/, "");
+const BASE = readArg("--base", "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const CONCURRENCY = Number(readArg("--concurrency", "20"));
 const TIMEOUT_MS = Number(readArg("--timeout", "30000"));
 
@@ -27,7 +27,7 @@ async function fetchWithTiming(url) {
   try {
     const res = await fetch(url, {
       signal: controller.signal,
-      headers: { "user-agent": "thry-pooler-sim/1.0" },
+      headers: { "user-agent": "vidhyatex-pooler-sim/1.0" },
       redirect: "follow",
     });
     const ms = Date.now() - started;

@@ -32,7 +32,7 @@ function safeEqual(a: string, b: string): boolean {
 
 /**
  * Short-lived client upload token for the Vidhya Tex R2 media proxy.
- * Client PUTs bytes to thry-media; Vercel never sees the image body.
+ * Client PUTs bytes to vidhyatex-media; Vercel never sees the image body.
  */
 export function createMediaProxyUploadToken(
   storagePath: string,

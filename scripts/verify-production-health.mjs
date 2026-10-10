@@ -1,5 +1,5 @@
 const secret = process.env.CRON_SECRET?.trim();
-const origin = process.env.SITE_ORIGIN ?? "https://thryco.com";
+const origin = process.env.SITE_ORIGIN ?? "https://vidhyatex.vercel.app";
 
 async function check(label, url, init) {
   const res = await fetch(url, init);

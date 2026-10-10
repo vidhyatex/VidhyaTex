@@ -11,18 +11,18 @@
  *
  * Usage:
  *   node scripts/playwright-atc-industry.mjs
- *   THRY_BASE_URL=http://localhost:3000 node scripts/playwright-atc-industry.mjs
+ *   VIDHYATEX_BASE_URL=http://localhost:3000 node scripts/playwright-atc-industry.mjs
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.env.THRY_BASE_URL || "https://thryco.com").replace(
+const BASE = (process.env.VIDHYATEX_BASE_URL || "https://vidhyatex.vercel.app").replace(
   /\/$/,
   "",
 );
 const SIMPLE_PDP =
-  process.env.THRY_PDP_SIMPLE || "/shop/baby-shivan-idol";
+  process.env.VIDHYATEX_PDP_SIMPLE || "/shop/baby-shivan-idol";
 const OPTIONS_PDP =
-  process.env.THRY_PDP_OPTIONS ||
+  process.env.VIDHYATEX_PDP_OPTIONS ||
   "/shop/shivan-silicon-mould-making-master-mould-with-wall-set";
 
 const IG_UA =

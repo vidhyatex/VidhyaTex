@@ -17,8 +17,8 @@ describe("in-app-browser", () => {
   });
 
   it("builds an Android Chrome intent URL", () => {
-    expect(buildAndroidChromeIntentUrl("https://thryco.com/shop")).toBe(
-      "intent://thryco.com/shop#Intent;scheme=https;package=com.android.chrome;end",
+    expect(buildAndroidChromeIntentUrl("https://vidhyatex.vercel.app/shop")).toBe(
+      "intent://vidhyatex.vercel.app/shop#Intent;scheme=https;package=com.android.chrome;end",
     );
   });
 

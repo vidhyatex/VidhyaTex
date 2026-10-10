@@ -16,7 +16,7 @@ await page.goto(
 await page.waitForTimeout(3000);
 console.log(
   await page.evaluate(() => {
-    const browse = document.querySelector('[data-thry-iab="browse"]');
+    const browse = document.querySelector('[data-vidhyatex-iab="browse"]');
     const sticky = document.querySelector('[aria-label="Buy product"]');
     const r = browse?.getBoundingClientRect();
     return {

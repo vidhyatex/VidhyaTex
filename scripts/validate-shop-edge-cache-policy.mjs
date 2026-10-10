@@ -1,6 +1,6 @@
 /**
  * Pure helpers mirrored for offline validation of edge-cache policy.
- * Keep in sync with workers/thry-shop-edge/src/index.ts rules.
+ * Keep in sync with workers/vidhyatex-shop-edge/src/index.ts rules.
  */
 const PRIVATE_PREFIXES = [
   "/cart",

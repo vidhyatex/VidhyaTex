@@ -1,11 +1,11 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const workerCode = readFileSync(
-  "workers/thry-catalog/dist-worker.js",
+  "workers/vidhyatex-catalog/dist-worker.js",
   "utf8",
 );
 const secrets = JSON.parse(
-  readFileSync("workers/thry-catalog/.secrets.local.json", "utf8"),
+  readFileSync("workers/vidhyatex-catalog/.secrets.local.json", "utf8"),
 );
 
 // Step 1: upload worker source to R2 as text
@@ -13,14 +13,14 @@ const uploadR2 = `async () => {
   const workerCode = ${JSON.stringify(workerCode)};
   const res = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/r2/buckets/thry-cdn/objects/internal/thry-catalog-worker.js",
+    path: "/accounts/" + accountId + "/r2/buckets/vidhyatex-cdn/objects/internal/vidhyatex-catalog-worker.js",
     body: workerCode,
     contentType: "application/javascript",
     rawBody: true,
   });
   return { ok: res.success, status: res.status, errors: res.errors };
 }`;
-writeFileSync("workers/thry-catalog/_mcp-r2-upload-worker.js", uploadR2);
+writeFileSync("workers/vidhyatex-catalog/_mcp-r2-upload-worker.js", uploadR2);
 
 // Step 2: deploy using keep_bindings inherit secrets from existing worker where possible,
 // but we still need to set bindings. Use secret_text from local secrets.
@@ -30,7 +30,7 @@ const deploy = `async () => {
     main_module: "worker.js",
     compatibility_date: "2026-08-14",
     bindings: [
-      { type: "d1", name: "DB", id: "85283c0d-4c77-4187-8d68-ff166a1a6d50" },
+      { type: "d1", name: "DB", id: "SET_AFTER_D1_CREATE" },
       { type: "secret_text", name: "CATALOG_SYNC_SECRET", text: ${JSON.stringify(secrets.CATALOG_SYNC_SECRET)} },
       { type: "secret_text", name: "SUPABASE_URL", text: ${JSON.stringify(secrets.SUPABASE_URL)} },
       { type: "secret_text", name: "SUPABASE_ANON_KEY", text: ${JSON.stringify(secrets.SUPABASE_ANON_KEY)} },
@@ -52,7 +52,7 @@ const deploy = `async () => {
   ].join("\\r\\n");
   const upload = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/workers/scripts/thry-catalog",
+    path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog",
     query: { include_subdomain_availability: "true" },
     body,
     contentType: "multipart/form-data; boundary=" + b,
@@ -62,7 +62,7 @@ const deploy = `async () => {
   try {
     subdomain = await cloudflare.request({
       method: "POST",
-      path: "/accounts/" + accountId + "/workers/scripts/thry-catalog/subdomain",
+      path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog/subdomain",
       body: { enabled: true },
     });
   } catch (e) {
@@ -76,5 +76,5 @@ const deploy = `async () => {
     subdomainErrors: subdomain.errors,
   };
 }`;
-writeFileSync("workers/thry-catalog/_mcp-deploy-code.js", deploy);
+writeFileSync("workers/vidhyatex-catalog/_mcp-deploy-code.js", deploy);
 console.log("deploy_bytes", deploy.length);

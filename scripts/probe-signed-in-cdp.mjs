@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 const browser = await chromium.connectOverCDP("http://127.0.0.1:9222");
 const context = browser.contexts()[0];
 const page =
-  context.pages().find((p) => p.url().includes("thryco.com")) ||
+  context.pages().find((p) => p.url().includes("vidhyatex.vercel.app")) ||
   context.pages()[0];
 const cookies = await context.cookies();
 const hasAuth = cookies.some(
@@ -19,7 +19,7 @@ const empty = await page
 const frames = page
   .frames()
   .map((f) => f.url())
-  .filter((u) => /razorpay|thryco/i.test(u))
+  .filter((u) => /razorpay|vidhyatex/i.test(u))
   .slice(0, 5);
 console.log(
   JSON.stringify(

@@ -190,7 +190,7 @@ export function buildOrderConfirmationHtml(
       ${pinLine}
     </div>
     <p style="margin:0 0 24px;">
-      <a href="${orderUrl}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;padding:12px 18px;border-radius:6px;font-weight:600;">View order</a>
+      <a href="${orderUrl}" style="display:inline-block;background:#1c1814;color:#f5c518;text-decoration:none;padding:12px 18px;border-radius:6px;font-weight:600;">View order</a>
     </p>
     ${buildEmailFooterHtml()}
   `;

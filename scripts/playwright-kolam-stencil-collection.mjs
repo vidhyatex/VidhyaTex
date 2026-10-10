@@ -6,7 +6,7 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const COLLECTION = "/collections/stencil-collections";
 
 const results = [];

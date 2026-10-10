@@ -3,7 +3,7 @@ import {
   normalizeInstagramShortCode,
 } from "./instagram-short-links";
 
-const ORIGIN = "https://thryco.com";
+const ORIGIN = "https://vidhyatex.vercel.app";
 
 describe("instagram short links", () => {
   it("maps known codes to collections with UTM tags", () => {

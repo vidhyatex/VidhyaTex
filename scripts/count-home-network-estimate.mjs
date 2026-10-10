@@ -1,4 +1,4 @@
-const res = await fetch("https://thryco.com/", {
+const res = await fetch("https://vidhyatex.vercel.app/", {
   headers: {
     "User-Agent":
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -23,11 +23,11 @@ const r2 = new Set();
 for (const m of html.matchAll(/https:\/\/pub-[^"'\s]+/g)) r2.add(m[0]);
 
 const thirdParty = new Set();
-for (const m of html.matchAll(/https:\/\/(?!thryco\.com)[^"'\s]+/g)) {
+for (const m of html.matchAll(/https:\/\/(?!vidhyatex\.vercel\.app)[^"'\s]+/g)) {
   thirdParty.add(m[0].split(/["'?]/)[0]);
 }
 
-const thryStatic = [...scripts, ...styles, ...preloads].filter((u) =>
+const siteStatic = [...scripts, ...styles, ...preloads].filter((u) =>
   u.startsWith("/_next/"),
 );
 

@@ -1,0 +1,13 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "vidhyatex-shop-edge",
+  "account_id": "eb44426b1fd72351f6b204ddb5d9b586",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-14",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  }
+  // Fronts a custom domain → Vercel. Add custom_domain routes (apex + www) and set
+  // APEX / WWW in src/index.ts once Vidhya Tex owns a domain; not deployed until then.
+}

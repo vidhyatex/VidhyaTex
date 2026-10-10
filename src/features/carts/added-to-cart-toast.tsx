@@ -6,7 +6,7 @@ import type { useToast } from "@/components/ui/use-toast";
 
 type ToastFn = ReturnType<typeof useToast>["toast"];
 
-export const CART_ADDED_EVENT = "thry:cart-added";
+export const CART_ADDED_EVENT = "vidhyatex:cart-added";
 
 /** Notify header/mobile cart badges to pulse after a successful add. */
 export function notifyCartAdded() {

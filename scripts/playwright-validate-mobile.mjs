@@ -1,5 +1,5 @@
 /**
- * Industry-style mobile validation for THRY.
+ * Industry-style mobile validation for Vidhya Tex.
  * Devices: iPhone SE, iPhone 13, Pixel 7
  * Covers: routes, touch UI, CDN, buy-to-Razorpay, horizontal overflow, tap targets.
  *
@@ -7,7 +7,7 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const PDP = "/shop/baby-shivan-idol";
 
 const DEVICE_LIST = [
@@ -153,7 +153,7 @@ async function validateDevice(browser, device) {
       () => document.documentElement.scrollWidth > window.innerWidth + 2,
     );
     const html = await page.content();
-    const cdn = (html.match(/media\.thryco\.com\/cdn\//g) || []).length;
+    const cdn = (html.match(/vidhyatex-media\.vidhyatex\.workers\.dev\/cdn\//g) || []).length;
     ok(
       `${device.name} ${path} loads`,
       status >= 200 && status < 400,
@@ -224,7 +224,7 @@ async function validateDevice(browser, device) {
       await dialog.getByPlaceholder("Enter full name").fill("Mobile Test Buyer");
       await dialog
         .getByPlaceholder("Enter email (optional)")
-        .fill("mobile-test@thryco.com");
+        .fill("mobile-test@vidhyatex.vercel.app");
       await dialog.getByPlaceholder("Enter mobile number").fill("9123456789");
       await dialog.getByPlaceholder("6-digit PIN code").fill("600001");
       await page.waitForTimeout(2000);
@@ -265,13 +265,13 @@ async function validateDevice(browser, device) {
     // Fresh page for lab LCP (checkout/Razorpay can leave the buy page noisy)
     const lcpPage = await context.newPage();
     await lcpPage.addInitScript(() => {
-      window.__thryLcp = null;
+      window.__vidhyatexLcp = null;
       try {
         const po = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           const latest = entries[entries.length - 1];
           if (latest) {
-            window.__thryLcp = {
+            window.__vidhyatexLcp = {
               ms: Math.round(latest.startTime),
               url: String(latest.url || "").slice(0, 80),
             };
@@ -285,7 +285,7 @@ async function validateDevice(browser, device) {
     await lcpPage.goto(`${BASE}/`, { waitUntil: "networkidle", timeout: 90000 });
     await lcpPage.waitForTimeout(4000);
     const lcp = await lcpPage.evaluate(() => {
-      if (window.__thryLcp?.ms) return window.__thryLcp;
+      if (window.__vidhyatexLcp?.ms) return window.__vidhyatexLcp;
       const entries = performance.getEntriesByType("largest-contentful-paint");
       const latest = entries[entries.length - 1];
       return latest

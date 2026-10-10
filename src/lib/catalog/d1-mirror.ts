@@ -29,7 +29,7 @@ export type CatalogSyncResult =
   | { ok: false; error: string };
 
 /**
- * Best-effort Supabase→D1 sync via thry-catalog Worker.
+ * Best-effort Supabase→D1 sync via vidhyatex-catalog Worker.
  * Never throws — catalog writes must not fail if mirror is down.
  */
 export async function syncCatalogMirror(): Promise<CatalogSyncResult> {

@@ -51,7 +51,7 @@
     "workerName": "vidhyatex",
     "mediaWorkerName": "vidhyatex-media",
     "catalogWorkerName": "vidhyatex-catalog",
-    "catalogWranglerConfig": "workers/thry-catalog/wrangler.jsonc",
+    "catalogWranglerConfig": "workers/vidhyatex-catalog/wrangler.jsonc",
     "productionWranglerConfig": "wrangler.workers.new-account.jsonc",
     "mediaWranglerConfig": "workers/r2-media-proxy/wrangler.jsonc",
     "d1": {
@@ -164,15 +164,18 @@
       "Supabase project zawfokxomwloatkzmzhq confirmed reachable",
       "Shop name, address, phone/WhatsApp, email and enhanced logo applied (site.ts, header, icons, emails, SEO)",
       "Storefront text rebranded from THRY / 3D-printed / craft copy to Vidhya Tex sarees (pages, policies, emails, checkout, packing slips)",
-      "Order number display prefix is VT (e.g. VT26100001); packing slip brand is VIDHYA TEX"
+      "Order number display prefix is VT (e.g. VT26100001); packing slip brand is VIDHYA TEX",
+      "Site theme matches the logo: yellow #F5C518, black #1C1814, gold #C9A227, ink text #2B2118 (globals.css, emails, payment popup)",
+      "THRY and other-shop names, hosts, scripts, images and Supabase refs removed from the repo (wrangler configs, workers, scripts, docs, supabase/config.toml, GitHub workflows)"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
-      "Site colour theme is still THRY pink/lilac; should move to the logo's yellow/black/gold",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
       "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL)",
-      "THRY names remain in wrangler*.jsonc, .env.example, workers/*, scripts/* and docs/*; update when Cloudflare resources are created (wrangler-production test fails until then - intended guard)",
-      "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet",
+      "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet; configs expect workers.dev subdomain 'vidhyatex' (media proxy https://vidhyatex-media.vidhyatex.workers.dev)",
+      "D1 vidhyatex-catalog not created; set its id in workers/vidhyatex-catalog/wrangler.jsonc (currently SET_AFTER_D1_CREATE) and in cloudflare.d1",
+      "Supabase auth URL config (site_url / redirect URLs) must be set in the dashboard to https://vidhyatex.vercel.app to match supabase/config.toml",
+      "workers/vidhyatex-shop-edge has no routes until a custom domain exists",
       "Vercel project 'vidhyatex' not created yet; productionHost is the planned default",
       "No custom domain yet"
     ]

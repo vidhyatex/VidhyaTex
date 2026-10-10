@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  hiyori-app:
+  vidhyatex-app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: hiyori-app
+    container_name: vidhyatex-app
     restart: unless-stopped
     ports:
       - "3000:3000"
@@ -36,9 +36,9 @@ services:
     # Security: run as non-root user (optional, but recommended)
     # user: "node"
     networks:
-      - hiyori-network
+      - vidhyatex-network
 
 networks:
-  hiyori-network:
+  vidhyatex-network:
     driver: bridge
 

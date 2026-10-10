@@ -5,53 +5,52 @@
 @layer base {
   :root {
     /*
-      Vidhya Tex — locked to wordmark gradient
-      #f472b6 rose → #e879f9 magenta → #a78bfa lilac → #fbbf24 gold
+      Vidhya Tex — taken from the logo badge
+      #F5C518 yellow · #1C1814 black · #C9A227 gold · #2B2118 espresso text
+      Token names (rose/magenta/purple…) are legacy; values are logo colours.
     */
-    --background: 330 55% 98%;
-    --foreground: 280 22% 18%;
+    --background: 45 100% 98%; /* ivory */
+    --foreground: 28 28% 13%; /* #2B2118 */
 
     --card: 0 0% 100%;
-    --card-foreground: 280 22% 18%;
+    --card-foreground: 28 28% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 280 22% 18%;
+    --popover-foreground: 28 28% 13%;
 
-    /* CTA: slightly deeper rose for white text contrast */
-    --primary: 329 72% 52%;
-    --primary-foreground: 0 0% 100%;
+    /* CTA: logo black with logo yellow text */
+    --primary: 30 18% 10%; /* #1C1814 */
+    --primary-foreground: 47 92% 53%; /* #F5C518 */
 
-    /* Soft lilac wash (#a78bfa family) */
-    --secondary: 255 70% 95%;
-    --secondary-foreground: 255 40% 28%;
+    /* Soft yellow wash */
+    --secondary: 47 90% 92%;
+    --secondary-foreground: 28 28% 13%;
 
-    --muted: 300 40% 96%;
-    --muted-foreground: 280 12% 40%;
+    --muted: 42 45% 95%;
+    --muted-foreground: 30 12% 36%;
 
-    /* Soft magenta wash (#e879f9 family) */
-    --accent: 292 60% 95%;
-    --accent-foreground: 292 40% 28%;
+    /* Pale gold wash */
+    --accent: 45 70% 91%;
+    --accent-foreground: 28 28% 13%;
 
-    --destructive: 0 72% 46%;
+    --destructive: 0 72% 42%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 300 28% 90%;
-    --input: 300 28% 90%;
-    --ring: 329 72% 52%;
+    --border: 42 38% 84%;
+    --input: 42 38% 84%;
+    --ring: 46 68% 47%;
 
-    /* Exact wordmark stops */
-    --brand-rose: 329 86% 70%; /* #f472b6 */
-    --brand-magenta: 292 91% 73%; /* #e879f9 */
-    --brand-purple: 255 91% 76%; /* #a78bfa */
-    --brand-gold: 43 97% 56%; /* #fbbf24 */
-    --brand-cream: 330 55% 98%;
-    --brand-lavender: 255 70% 94%;
-    /* Legacy aliases remapped into the logo family */
-    --brand-teal: 255 45% 58%;
-    --brand-lime: 43 70% 50%;
-    --brand-orange: 340 85% 65%;
-    --brand-yellow: 43 97% 56%;
-    --brand-cyan: 255 60% 78%;
+    --brand-rose: 28 28% 15%; /* main accent: espresso */
+    --brand-magenta: 40 82% 36%; /* deep amber #A8740F */
+    --brand-purple: 30 18% 22%; /* charcoal brown */
+    --brand-gold: 46 68% 47%; /* #C9A227 */
+    --brand-cream: 45 100% 97%;
+    --brand-lavender: 47 85% 90%; /* pale yellow */
+    --brand-teal: 40 55% 40%;
+    --brand-lime: 46 68% 47%;
+    --brand-orange: 38 85% 45%;
+    --brand-yellow: 47 92% 53%; /* #F5C518 */
+    --brand-cyan: 45 60% 80%;
 
     --radius: 0.5rem;
     --mobile-nav-height: calc(3.5rem + env(safe-area-inset-bottom, 0px));
@@ -117,45 +116,45 @@
   }
 
   .dark {
-    --background: 280 18% 9%;
-    --foreground: 330 30% 96%;
+    --background: 30 18% 8%;
+    --foreground: 45 60% 94%;
 
-    --card: 280 16% 12%;
-    --card-foreground: 330 30% 96%;
+    --card: 30 16% 11%;
+    --card-foreground: 45 60% 94%;
 
-    --popover: 280 16% 12%;
-    --popover-foreground: 330 30% 96%;
+    --popover: 30 16% 11%;
+    --popover-foreground: 45 60% 94%;
 
-    --primary: 329 86% 70%;
-    --primary-foreground: 280 30% 10%;
+    --primary: 47 92% 53%;
+    --primary-foreground: 30 18% 10%;
 
-    --secondary: 255 22% 16%;
-    --secondary-foreground: 255 70% 90%;
+    --secondary: 35 16% 16%;
+    --secondary-foreground: 47 85% 88%;
 
-    --muted: 280 14% 16%;
-    --muted-foreground: 280 10% 72%;
+    --muted: 30 13% 15%;
+    --muted-foreground: 40 15% 70%;
 
-    --accent: 292 22% 18%;
-    --accent-foreground: 292 70% 85%;
+    --accent: 40 20% 18%;
+    --accent-foreground: 47 80% 85%;
 
     --destructive: 0 62% 42%;
-    --destructive-foreground: 330 30% 96%;
+    --destructive-foreground: 45 60% 94%;
 
-    --border: 280 14% 20%;
-    --input: 280 14% 20%;
-    --ring: 329 86% 70%;
+    --border: 30 12% 21%;
+    --input: 30 12% 21%;
+    --ring: 47 92% 53%;
 
-    --brand-rose: 329 86% 70%;
-    --brand-magenta: 292 91% 73%;
-    --brand-purple: 255 91% 76%;
-    --brand-gold: 43 97% 56%;
-    --brand-cream: 280 14% 14%;
-    --brand-lavender: 255 30% 70%;
-    --brand-teal: 255 45% 68%;
-    --brand-lime: 43 70% 58%;
-    --brand-orange: 340 80% 68%;
-    --brand-yellow: 43 97% 56%;
-    --brand-cyan: 255 55% 75%;
+    --brand-rose: 47 92% 60%;
+    --brand-magenta: 42 85% 55%;
+    --brand-purple: 40 30% 70%;
+    --brand-gold: 46 68% 52%;
+    --brand-cream: 30 14% 13%;
+    --brand-lavender: 40 25% 22%;
+    --brand-teal: 42 55% 55%;
+    --brand-lime: 46 68% 52%;
+    --brand-orange: 38 85% 55%;
+    --brand-yellow: 47 92% 53%;
+    --brand-cyan: 45 40% 60%;
   }
 }
 
@@ -325,16 +324,16 @@ html {
   }
 }
 
-/* Soft colourful atmosphere — logo rose · magenta · lilac · gold */
+/* Warm ivory atmosphere — logo yellow · gold glow */
 .storefront-atmosphere {
   background: radial-gradient(
       120% 80% at 0% 0%,
-      hsl(var(--brand-rose) / 0.18),
+      hsl(var(--brand-yellow) / 0.16),
       transparent 55%
     ),
     radial-gradient(
       90% 70% at 100% 8%,
-      hsl(var(--brand-magenta) / 0.14),
+      hsl(var(--brand-gold) / 0.1),
       transparent 50%
     ),
     radial-gradient(
@@ -382,20 +381,21 @@ html {
   will-change: transform;
 }
 
-/* Clean announcement rail — soft blush, no pennants / LED strip */
+/* Announcement rail — logo yellow band with gold rule */
 .announcement-craft {
   --announcement-rail-height: 2.15rem;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   touch-action: manipulation;
-  border-bottom: 1px solid hsl(var(--brand-rose) / 0.18);
-  background: linear-gradient(
-    180deg,
-    hsl(330 55% 99%) 0%,
-    hsl(300 42% 97%) 100%
-  );
-  box-shadow: inset 0 1px 0 hsl(var(--brand-rose) / 0.08);
+  border-bottom: 1px solid hsl(var(--brand-gold) / 0.45);
+  background: linear-gradient(180deg, hsl(47 92% 58%) 0%, hsl(47 92% 53%) 100%);
+  /* Always dark-on-yellow, in light and dark mode */
+  --foreground: 30 18% 10%;
+  --brand-rose: 30 18% 10%;
+  --brand-gold: 30 18% 28%;
+  color: hsl(var(--foreground));
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.25);
   contain: layout paint;
 }
 
@@ -415,7 +415,7 @@ html {
   );
 }
 
-/* Shared craft-paper accents — rose · gold · cream */
+/* Shared paper accents — espresso · gold · ivory */
 .craft-washi {
   display: block;
   width: 0.55rem;
@@ -439,8 +439,8 @@ html {
 .craft-kraft {
   position: relative;
   overflow: hidden;
-  border: 1px solid hsl(336 28% 84%);
-  background: linear-gradient(180deg, hsl(337 70% 97%), hsl(336 50% 95%));
+  border: 1px solid hsl(42 38% 82%);
+  background: linear-gradient(180deg, hsl(45 100% 97%), hsl(45 80% 93%));
   box-shadow: 0 10px 28px -22px hsl(var(--brand-rose) / 0.35);
 }
 
@@ -470,7 +470,7 @@ html {
   top: -1px;
   height: 10px;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10' viewBox='0 0 48 10' preserveAspectRatio='none'%3E%3Cpath fill='%23fdf0f5' d='M0 10 V4 Q6 0 12 4 T24 4 T36 4 T48 4 V10Z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='10' viewBox='0 0 48 10' preserveAspectRatio='none'%3E%3Cpath fill='%23fff9e6' d='M0 10 V4 Q6 0 12 4 T24 4 T36 4 T48 4 V10Z'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-size: 48px 10px;
 }

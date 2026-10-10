@@ -1,5 +1,5 @@
 /**
- * Load Hub of craftss project.identity.json — single public source of truth.
+ * Load Vidhya Tex project.identity.json — single public source of truth.
  * Secrets never live here; only IDs, hosts, and account pins.
  */
 import fs from "node:fs";
@@ -41,7 +41,7 @@ export function loadProjectIdentity() {
     );
   }
 
-  if (identity.version !== 1) {
+  if (![1, 2].includes(identity.version)) {
     fail(`Unsupported identity version: ${identity.version}`);
   }
 

@@ -40,7 +40,7 @@ function ReelProductCard({
 
   return (
     <ViewTransitionLink href={`/shop/${slug}`} className="group block w-full">
-      <article className="relative aspect-[9/16] w-full min-h-[220px] overflow-hidden rounded-2xl border border-brand-teal/25 bg-muted shadow-[0_16px_40px_-20px_rgba(72,168,180,0.4)]">
+      <article className="relative aspect-[9/16] w-full min-h-[220px] overflow-hidden rounded-2xl border border-brand-teal/25 bg-muted shadow-[0_16px_40px_-20px_rgba(201,162,39,0.4)]">
         <StorefrontImage
           src={imageSrc}
           alt={featuredImage.alt || name}

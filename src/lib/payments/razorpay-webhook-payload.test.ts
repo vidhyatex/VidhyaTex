@@ -9,7 +9,7 @@ describe("resolveRazorpayWebhookIds", () => {
           entity: {
             id: "pay_abc",
             order_id: "order_xyz",
-            notes: { shop_order_id: "ord_thry_1" },
+            notes: { shop_order_id: "ord_vt_1" },
           },
         },
       },
@@ -19,7 +19,7 @@ describe("resolveRazorpayWebhookIds", () => {
       skipped: false,
       razorpayPaymentId: "pay_abc",
       razorpayOrderId: "order_xyz",
-      shopOrderId: "ord_thry_1",
+      shopOrderId: "ord_vt_1",
     });
   });
 
@@ -30,21 +30,21 @@ describe("resolveRazorpayWebhookIds", () => {
         payment: {
           entity: {
             id: "pay_linkpay",
-            notes: { shop_order_id: "ord_thry_2" },
+            notes: { shop_order_id: "ord_vt_2" },
           },
         },
         payment_link: {
           entity: {
             id: "plink_1",
-            reference_id: "ord_thry_2",
-            notes: { shop_order_id: "ord_thry_2" },
+            reference_id: "ord_vt_2",
+            notes: { shop_order_id: "ord_vt_2" },
           },
         },
       },
     });
 
     expect(ids.skipped).toBe(false);
-    expect(ids.shopOrderId).toBe("ord_thry_2");
+    expect(ids.shopOrderId).toBe("ord_vt_2");
     expect(ids.razorpayPaymentId).toBe("pay_linkpay");
     expect(ids.razorpayOrderId).toBe("");
   });

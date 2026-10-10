@@ -1,7 +1,7 @@
 /**
  * Applies all mini D1 seed batches via Cloudflare MCP-compatible SQL files.
  * This script prints a single combined SQL for local wrangler when token exists:
- *   npx wrangler d1 execute thry-catalog --remote --file=scripts/_d1-all-products.sql --config workers/thry-catalog/wrangler.jsonc
+ *   npx wrangler d1 execute vidhyatex-catalog --remote --file=scripts/_d1-all-products.sql --config workers/vidhyatex-catalog/wrangler.jsonc
  */
 import fs from "node:fs";
 

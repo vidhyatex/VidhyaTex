@@ -1,5 +1,5 @@
 /**
- * Thin R2 proxy for THRY on Vercel (no MEDIA_BUCKET on the Next host).
+ * Thin R2 proxy for Vidhya Tex on Vercel (no MEDIA_BUCKET on the Next host).
  *
  * Auth:
  * - Authorization: Bearer <MEDIA_PROXY_SECRET> (server / Vercel)
@@ -271,7 +271,7 @@ async function handleCdnGet(
   const canonicalHit = await cache.match(canonicalRequest);
   if (canonicalHit && canonicalHit.ok) {
     const headers = new Headers(canonicalHit.headers);
-    headers.set("X-THRY-CDN-Canonical", "w=400");
+    headers.set("X-VidhyaTex-CDN-Canonical", "w=400");
     Object.entries(corsHeaders(request)).forEach(([k, v]) => headers.set(k, v));
     const reused = new Response(canonicalHit.body, {
       status: 200,
@@ -316,7 +316,7 @@ async function handleCdnGet(
     "Cache-Control",
     "public, max-age=3600, stale-while-revalidate=86400",
   );
-  headers.set("X-THRY-CDN-Fallback", "original");
+  headers.set("X-VidhyaTex-CDN-Fallback", "original");
   Object.entries(corsHeaders(request)).forEach(([k, v]) => headers.set(k, v));
 
   const response = new Response(originalBytes, { status: 200, headers });

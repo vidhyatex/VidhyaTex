@@ -41,11 +41,11 @@ export function cdnPresetForWidth(_width: number): CdnImageOptions {
   return { ...CDN_PRESETS.card };
 }
 
-const DEFAULT_MEDIA_ORIGIN = "https://media.thryco.com";
+const DEFAULT_MEDIA_ORIGIN = "https://vidhyatex-media.vidhyatex.workers.dev";
 const FALLBACK = "/images/vidhyatex-logo.png";
 
 export function getImageDeliveryMode(): ImageDeliveryMode {
-  // Cloudflare /cdn is live on media.thryco.com (validated ~98% smaller WebP).
+  // Cloudflare /cdn is live on vidhyatex-media.vidhyatex.workers.dev (validated ~98% smaller WebP).
   // Set NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy to roll back to raw R2 URLs.
   const raw = String(
     process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE ?? "cloudflare",
@@ -86,7 +86,7 @@ export function extractMediaObjectKey(keyOrUrl: string): string | null {
   if (raw.startsWith("http://") || raw.startsWith("https://")) {
     try {
       const url = new URL(raw);
-      if (url.hostname === "media.thryco.com" || url.origin === mediaOrigin()) {
+      if (url.hostname === "vidhyatex-media.vidhyatex.workers.dev" || url.origin === mediaOrigin()) {
         const m = url.pathname.match(/^\/cdn\/[^/]+\/(.+)$/);
         return m?.[1] ? decodeURIComponent(m[1]) : null;
       }
@@ -111,7 +111,7 @@ export function extractMediaObjectKey(keyOrUrl: string): string | null {
 }
 
 /**
- * Build a Cloudflare Images resize URL on media.thryco.com.
+ * Build a Cloudflare Images resize URL on vidhyatex-media.vidhyatex.workers.dev.
  * Falls back to the original key/URL when mode is legacy or key is not CDN media.
  */
 export function cdnImageUrl(

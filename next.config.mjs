@@ -82,7 +82,7 @@ const nextConfig = {
         : []),
       {
         protocol: "https",
-        hostname: "media.thryco.com",
+        hostname: "vidhyatex-media.vidhyatex.workers.dev",
         pathname: "/**",
       },
       {
@@ -112,9 +112,9 @@ const nextConfig = {
     // production alias (used by previews / legacy callbacks).
     serverActions: {
       allowedOrigins: [
-        "thryco.com",
-        "www.thryco.com",
-        "thry-thryco.vercel.app",
+        "vidhyatex.vercel.app",
+        "vidhyatex.vercel.app",
+        "vidhyatex.vercel.app",
       ],
     },
     // (Next 15+) moved to top-level `serverExternalPackages`.

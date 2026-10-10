@@ -4,17 +4,17 @@
  * - In-app browser prompt is a top strip (not bottom sheet covering buy zone)
  *
  * Usage:
- *   THRY_BASE_URL=http://localhost:3000 node scripts/playwright-pdp-sticky-atc.mjs
- *   THRY_BASE_URL=https://thryco.com node scripts/playwright-pdp-sticky-atc.mjs
+ *   VIDHYATEX_BASE_URL=http://localhost:3000 node scripts/playwright-pdp-sticky-atc.mjs
+ *   VIDHYATEX_BASE_URL=https://vidhyatex.vercel.app node scripts/playwright-pdp-sticky-atc.mjs
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.env.THRY_BASE_URL || "http://localhost:3000").replace(
+const BASE = (process.env.VIDHYATEX_BASE_URL || "http://localhost:3000").replace(
   /\/$/,
   "",
 );
 const SLUG =
-  process.env.THRY_PDP_SLUG ||
+  process.env.VIDHYATEX_PDP_SLUG ||
   "shivan-silicon-mould-making-master-mould-with-wall-set";
 const URL = `${BASE}/shop/${SLUG}`;
 

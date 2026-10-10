@@ -1,0 +1,22 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "vidhyatex-catalog",
+  "account_id": "eb44426b1fd72351f6b204ddb5d9b586",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-14",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": ["*/30 * * * *"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "vidhyatex-catalog",
+      // Fill in after `wrangler d1 create vidhyatex-catalog`, and record it in project.identity.json.
+      "database_id": "SET_AFTER_D1_CREATE"
+    }
+  ]
+}

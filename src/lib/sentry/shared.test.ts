@@ -98,7 +98,7 @@ describe("sentry shared helpers", () => {
         "InvalidStateError: Transition was aborted because of invalid state",
       ),
     ).toBe(true);
-    // THRY-T: Next.js RSC flight abort
+    // Sentry issue T: Next.js RSC flight abort
     expect(isSentryClientNoiseMessage("Connection closed.")).toBe(true);
     expect(isSentryClientNoiseMessage("Error: Connection closed.")).toBe(true);
     expect(

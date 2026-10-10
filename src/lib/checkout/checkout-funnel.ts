@@ -24,7 +24,7 @@ export const CHECKOUT_FUNNEL_EVENT_TYPES = [
 export type CheckoutFunnelEventType =
   (typeof CHECKOUT_FUNNEL_EVENT_TYPES)[number];
 
-const FUNNEL_SESSION_KEY = "thry_checkout_funnel_sid";
+const FUNNEL_SESSION_KEY = "vidhyatex_checkout_funnel_sid";
 
 export function getOrCreateFunnelSessionId(): string {
   if (typeof window === "undefined") return "server";

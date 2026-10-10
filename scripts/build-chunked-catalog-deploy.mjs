@@ -2,7 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 
 const worker = fs.readFileSync(
-  "workers/thry-catalog/dist-worker.js",
+  "workers/vidhyatex-catalog/dist-worker.js",
   "utf8",
 );
 if (/[^\x00-\x7f]/.test(worker)) {
@@ -30,7 +30,7 @@ const code = `async () => {
     compatibility_date: "2026-08-14",
     keep_bindings: ["secret_text"],
     bindings: [
-      { type: "d1", name: "DB", id: "85283c0d-4c77-4187-8d68-ff166a1a6d50" },
+      { type: "d1", name: "DB", id: "SET_AFTER_D1_CREATE" },
     ],
   };
   const b = "----B" + Date.now();
@@ -49,7 +49,7 @@ const code = `async () => {
   ].join("\\r\\n");
   const upload = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/workers/scripts/thry-catalog",
+    path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog",
     query: { include_subdomain_availability: "true" },
     body,
     contentType: "multipart/form-data; boundary=" + b,
@@ -60,7 +60,7 @@ const code = `async () => {
   }
   const schedules = await cloudflare.request({
     method: "PUT",
-    path: "/accounts/" + accountId + "/workers/scripts/thry-catalog/schedules",
+    path: "/accounts/" + accountId + "/workers/scripts/vidhyatex-catalog/schedules",
     body: [{ cron: "*/30 * * * *" }],
   });
   return {
@@ -75,7 +75,7 @@ const code = `async () => {
   };
 }`;
 
-fs.writeFileSync("workers/thry-catalog/_mcp-deploy-chunked.js", code);
+fs.writeFileSync("workers/vidhyatex-catalog/_mcp-deploy-chunked.js", code);
 console.log(
   JSON.stringify({
     parts: parts.length,

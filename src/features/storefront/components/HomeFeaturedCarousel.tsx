@@ -65,7 +65,7 @@ function FeaturedSlide({
   const imageSrc = keytoUrl(featuredImage?.key);
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-teal/15 bg-card shadow-[0_14px_36px_-22px_rgba(72,168,180,0.4)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-brand-teal/15 bg-card shadow-[0_14px_36px_-22px_rgba(201,162,39,0.4)]">
       <div className="relative w-full aspect-[3/4] max-h-[min(72vh,440px)] bg-muted">
         <ViewTransitionLink href={`/shop/${slug}`} className="absolute inset-0">
           <StorefrontImage

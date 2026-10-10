@@ -210,7 +210,7 @@ function TrustFeatures() {
           <div className="mb-3 flex justify-center">
             <span
               className={cn(
-                "inline-flex h-12 w-12 items-center justify-center rounded-full bg-card shadow-[0_8px_24px_-12px_rgba(192,48,120,0.35)] ring-1 ring-brand-rose/15",
+                "inline-flex h-12 w-12 items-center justify-center rounded-full bg-card shadow-[0_8px_24px_-12px_rgba(28,24,20,0.35)] ring-1 ring-brand-rose/15",
               )}
             >
               <Icon className={cn("h-6 w-6", iconClass)} />

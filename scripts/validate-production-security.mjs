@@ -4,7 +4,7 @@
  * Usage: node scripts/validate-production-security.mjs [baseUrl]
  */
 
-const BASE = (process.argv[2] ?? "https://www.sairaghavendratex.com").replace(
+const BASE = (process.argv[2] ?? "https://vidhyatex.vercel.app").replace(
   /\/$/,
   "",
 );
@@ -88,7 +88,7 @@ async function checkRoute(route) {
 }
 
 async function checkHttpsRedirect() {
-  const res = await fetch("http://www.sairaghavendratex.com/", {
+  const res = await fetch("http://vidhyatex.vercel.app/", {
     redirect: "manual",
   });
   if (![301, 308, 302, 307].includes(res.status)) {

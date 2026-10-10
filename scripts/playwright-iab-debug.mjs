@@ -22,8 +22,8 @@ console.log({
 });
 console.log(
   await page.evaluate(() => ({
-    detect: document.documentElement.dataset.thryIabDetect,
-    iab: document.querySelector("[data-thry-iab]")?.getAttribute("data-thry-iab"),
+    detect: document.documentElement.dataset.vidhyatexIabDetect,
+    iab: document.querySelector("[data-vidhyatex-iab]")?.getAttribute("data-vidhyatex-iab"),
     sticky: !!document.querySelector('[aria-label="Buy product"]'),
     mailBtn: !!document.querySelector('[aria-label="Quick actions"]'),
   })),

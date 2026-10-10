@@ -1,30 +1,38 @@
-/** Vidhya Tex palette — locked to wordmark gradient stops */
+/**
+ * Vidhya Tex palette — taken from the logo badge.
+ * Keys keep their legacy names (rose, magenta, …) so existing callers still work.
+ */
 export const brandColors = {
-  rose: "#f472b6",
-  roseDeep: "#e94a9a",
-  roseLight: "#fdf2f8",
-  magenta: "#e879f9",
-  purple: "#a78bfa",
-  purpleDeep: "#7c5cfc",
-  gold: "#fbbf24",
-  goldSoft: "#fde68a",
-  cream: "#fdf2f8",
-  white: "#fffafc",
-  lavender: "#ede9fe",
-  /* Legacy aliases remapped into the logo family */
-  teal: "#a78bfa",
-  lime: "#fbbf24",
-  orange: "#fb7185",
-  yellow: "#fbbf24",
-  cyan: "#c4b5fd",
+  yellow: "#f5c518",
+  black: "#1c1814",
+  espresso: "#2b2118",
+  gold: "#c9a227",
+  goldSoft: "#f3e2a0",
+  amber: "#a8740f",
+  ivory: "#fffbf0",
+  rose: "#2b2118",
+  roseDeep: "#1c1814",
+  roseLight: "#fff6d9",
+  magenta: "#a8740f",
+  purple: "#3a3128",
+  purpleDeep: "#1c1814",
+  cream: "#fffbf0",
+  white: "#fffdf7",
+  lavender: "#fdf1c4",
+  teal: "#9c7a1c",
+  lime: "#c9a227",
+  orange: "#d48a0b",
+  cyan: "#efe0a8",
 } as const;
 
 export const brandRgb = {
-  rose: "244, 114, 182",
-  magenta: "232, 121, 249",
-  purple: "167, 139, 250",
-  gold: "251, 191, 36",
-  orange: "251, 113, 133",
-  teal: "167, 139, 250",
-  lime: "251, 191, 36",
+  yellow: "245, 197, 24",
+  black: "28, 24, 20",
+  gold: "201, 162, 39",
+  rose: "43, 33, 24",
+  magenta: "168, 116, 15",
+  purple: "58, 49, 40",
+  orange: "212, 138, 11",
+  teal: "156, 122, 28",
+  lime: "201, 162, 39",
 } as const;

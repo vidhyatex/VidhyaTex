@@ -1,5 +1,5 @@
 /**
- * Short, typeable Instagram campaign links: thryco.com/ig/<code>.
+ * Short, typeable Instagram campaign links: vidhyatex.vercel.app/ig/<code>.
  *
  * Instagram renders raw URLs in DMs as non-tappable text for non-followers /
  * pending message requests, and does not report DM link clicks. These short

@@ -1,5 +1,5 @@
 -- Internal paid-order reference: YYMM + 4-digit monthly sequence (e.g. 26090001).
--- Displayed with the THRY prefix (THRY26090001).
+-- Displayed with the Vidhya Tex prefix (VT26090001).
 -- Assigned when payment becomes paid (not at checkout create).
 
 ALTER TABLE public.orders

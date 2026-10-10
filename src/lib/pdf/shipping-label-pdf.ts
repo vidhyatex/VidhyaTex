@@ -90,7 +90,7 @@ export async function savePdfBlob(
 const DEFAULT_LOGO_PATHS = [
   "/logo.png",
   "/logo2.png",
-  "/images/ssr-tex-emblem.png",
+  "/images/vidhyatex-logo.png",
 ];
 let defaultLogoCache: string | null | undefined;
 

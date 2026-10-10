@@ -10,7 +10,7 @@ const CDN =
   "https://pub-7298c413a12641b5ba5dd9bff2d9009f.r2.dev";
 const MEDIA =
   process.env.NEXT_PUBLIC_MEDIA_CDN_ORIGIN?.replace(/\/$/, "") ||
-  "https://media.thryco.com";
+  "https://vidhyatex-media.vidhyatex.workers.dev";
 
 const key =
   process.argv[2]?.trim() || "uploads/upload-bat0Jc4NISjTbZoNSmUlQ.png";
@@ -38,7 +38,7 @@ if (raw.status !== 200) {
   process.exit(1);
 }
 if (resized.status !== 200) {
-  console.error("FAIL: CF resize URL did not return 200 — deploy thry-media?");
+  console.error("FAIL: CF resize URL did not return 200 — deploy vidhyatex-media?");
   process.exit(1);
 }
 if (!String(resized.type || "").includes("image/")) {

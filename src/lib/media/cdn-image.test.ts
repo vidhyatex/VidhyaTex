@@ -41,11 +41,11 @@ describe("cdn-image", () => {
     expect(extractMediaObjectKey("/images/local.svg")).toBeNull();
   });
 
-  it("builds media.thryco.com /cdn resize URLs", () => {
+  it("builds vidhyatex-media.vidhyatex.workers.dev /cdn resize URLs", () => {
     process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE = "cloudflare";
     const url = cdnImageUrl("uploads/upload-abc.png", CDN_PRESETS.card);
     expect(url).toBe(
-      "https://media.thryco.com/cdn/w=400,q=75,f=webp/uploads/upload-abc.png",
+      "https://vidhyatex-media.vidhyatex.workers.dev/cdn/w=400,q=75,f=webp/uploads/upload-abc.png",
     );
   });
 
@@ -82,7 +82,7 @@ describe("cdn-image", () => {
     process.env.NEXT_PUBLIC_IMAGE_DELIVERY_MODE = "cloudflare";
     const url = cdnImageUrl("uploads/upload-hero.png", CDN_PRESETS.heroMobile);
     expect(url).toBe(
-      `https://media.thryco.com/cdn/w=${CDN_SAFE_WIDTH},q=75,f=webp/uploads/upload-hero.png`,
+      `https://vidhyatex-media.vidhyatex.workers.dev/cdn/w=${CDN_SAFE_WIDTH},q=75,f=webp/uploads/upload-hero.png`,
     );
     expect(CDN_PRESETS.heroMobile).toEqual({
       width: CDN_SAFE_WIDTH,

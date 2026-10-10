@@ -1,15 +1,15 @@
-/** Neutral placeholders for empty/new Vidhya Tex catalogs (no Hub/Sakthi assets). */
-export const SAKTHI_MEDIA_BASE = "https://placehold.co/600x800/png?text=Vidhya+Tex+";
+/** Neutral placeholders for empty/new Vidhya Tex catalogs (no third-party assets). */
+export const PLACEHOLDER_MEDIA_BASE = "https://placehold.co/600x800/png?text=Vidhya+Tex+";
 
 export const SAREE_SHOP_MODEL_IMAGES = [
-  `${SAKTHI_MEDIA_BASE}1`,
-  `${SAKTHI_MEDIA_BASE}2`,
-  `${SAKTHI_MEDIA_BASE}3`,
-  `${SAKTHI_MEDIA_BASE}4`,
-  `${SAKTHI_MEDIA_BASE}5`,
-  `${SAKTHI_MEDIA_BASE}6`,
-  `${SAKTHI_MEDIA_BASE}7`,
-  `${SAKTHI_MEDIA_BASE}8`,
+  `${PLACEHOLDER_MEDIA_BASE}1`,
+  `${PLACEHOLDER_MEDIA_BASE}2`,
+  `${PLACEHOLDER_MEDIA_BASE}3`,
+  `${PLACEHOLDER_MEDIA_BASE}4`,
+  `${PLACEHOLDER_MEDIA_BASE}5`,
+  `${PLACEHOLDER_MEDIA_BASE}6`,
+  `${PLACEHOLDER_MEDIA_BASE}7`,
+  `${PLACEHOLDER_MEDIA_BASE}8`,
 ] as const;
 
 const COLLECTION_IMAGE_BY_LABEL: Record<string, string> = {};

@@ -76,7 +76,7 @@ export function resolveSocialImageUrl(
 
   const input = keyOrUrl.trim();
 
-  // Prefer crawlable media.thryco.com/cdn JPEG for uploads keys (incl. from .r2.dev URLs).
+  // Prefer crawlable vidhyatex-media.vidhyatex.workers.dev/cdn JPEG for uploads keys (incl. from .r2.dev URLs).
   const mediaKey = extractMediaObjectKey(input);
   if (mediaKey?.startsWith("uploads/") && getImageDeliveryMode() !== "legacy") {
     const cdnUrl = buildCdnSocialUrl(mediaKey);

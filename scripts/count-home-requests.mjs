@@ -1,4 +1,4 @@
-const ORIGIN = "https://thryco.com";
+const ORIGIN = "https://vidhyatex.vercel.app";
 const seen = new Set();
 const queue = ["/"];
 const max = 120;
@@ -17,7 +17,7 @@ function normalize(url) {
 function extractUrls(html) {
   const found = [];
   const re =
-    /(?:src|href)=["']([^"']+)["']|"(https:\/\/thryco\.com[^"]+)"|"(https:\/\/www\.thryco\.com[^"]+)"|"(https:\/\/media\.thryco\.com[^"]+)"/gi;
+    /(?:src|href)=["']([^"']+)["']|"(https:\/\/vidhyatex\.vercel\.app[^"]+)"|"(https:\/\/vidhyatex\.vercel\.app[^"]+)"|"(https:\/\/vidhyatex-media\.vidhyatex\.workers\.dev[^"]+)"/gi;
   let m;
   while ((m = re.exec(html))) {
     const raw = m[1] || m[2] || m[3] || m[4];
@@ -33,7 +33,7 @@ while (queue.length > 0 && seen.size < max) {
   seen.add(key);
 
   const res = await fetch(new URL(key, ORIGIN), {
-    headers: { "User-Agent": "Mozilla/5.0 (compatible; THRY-request-counter/1.0)" },
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; Vidhya Tex-request-counter/1.0)" },
     redirect: "follow",
   });
   const type = res.headers.get("content-type") || "";
@@ -67,7 +67,7 @@ for (const u of seen) {
 console.log(
   JSON.stringify(
     {
-      totalUniqueThryRequests: seen.size,
+      totalUniqueSiteRequests: seen.size,
       buckets,
       note: "HTML+JS crawl only; runtime fetches (RSC flight, client nav) may add more",
     },

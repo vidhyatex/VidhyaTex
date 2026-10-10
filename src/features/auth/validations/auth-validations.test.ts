@@ -2,7 +2,7 @@ import { authSchema, passwordCreateSchema, signupSchema } from "./index";
 
 describe("passwordCreateSchema", () => {
   it("accepts a short simple password", () => {
-    expect(passwordCreateSchema.safeParse("thry12").success).toBe(true);
+    expect(passwordCreateSchema.safeParse("vtex12").success).toBe(true);
   });
 
   it("rejects under 6 characters", () => {

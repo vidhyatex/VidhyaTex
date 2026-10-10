@@ -4,18 +4,18 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const code = fs.readFileSync(
-  path.join(root, "workers/thry-catalog/dist-worker.js"),
+  path.join(root, "workers/vidhyatex-catalog/dist-worker.js"),
   "utf8",
 );
 const secrets = JSON.parse(
   fs.readFileSync(
-    path.join(root, "workers/thry-catalog/.secrets.local.json"),
+    path.join(root, "workers/vidhyatex-catalog/.secrets.local.json"),
     "utf8",
   ),
 );
 
-const dbId = "85283c0d-4c77-4187-8d68-ff166a1a6d50";
-const scriptName = "thry-catalog";
+const dbId = "SET_AFTER_D1_CREATE";
+const scriptName = "vidhyatex-catalog";
 
 const mcpCode = `async () => {
   const scriptName = ${JSON.stringify(scriptName)};
@@ -75,7 +75,7 @@ const mcpCode = `async () => {
 }`;
 
 fs.writeFileSync(
-  path.join(root, "workers/thry-catalog/_mcp-deploy-code.js"),
+  path.join(root, "workers/vidhyatex-catalog/_mcp-deploy-code.js"),
   mcpCode,
 );
 console.log("wrote mcp deploy code bytes", mcpCode.length);

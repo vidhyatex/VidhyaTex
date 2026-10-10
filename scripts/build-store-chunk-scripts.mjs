@@ -1,13 +1,13 @@
 import { readFileSync, writeFileSync } from "node:fs";
 
 const parts = JSON.parse(
-  readFileSync("workers/thry-catalog/_chunks.json", "utf8"),
+  readFileSync("workers/vidhyatex-catalog/_chunks.json", "utf8"),
 );
 
 for (let i = 0; i < parts.length; i++) {
   const chunk = parts[i];
   const code = `async () => {
-  const dbId = "85283c0d-4c77-4187-8d68-ff166a1a6d50";
+  const dbId = "SET_AFTER_D1_CREATE";
   const chunk = ${JSON.stringify(chunk)};
   const res = await cloudflare.request({
     method: "POST",
@@ -19,6 +19,6 @@ for (let i = 0; i < parts.length; i++) {
   });
   return { success: res.success, errors: res.errors, i: ${i}, chunkLen: chunk.length };
 }`;
-  writeFileSync(`workers/thry-catalog/_store-chunk-${i}.js`, code);
+  writeFileSync(`workers/vidhyatex-catalog/_store-chunk-${i}.js`, code);
   console.log(i, code.length);
 }

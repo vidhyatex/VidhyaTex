@@ -36,7 +36,7 @@ if (!supabaseUrl || !anonKey) {
 const syncSecret =
   env.CATALOG_SYNC_SECRET || crypto.randomBytes(32).toString("hex");
 
-const secretsPath = path.join(root, "workers/thry-catalog/.secrets.local.json");
+const secretsPath = path.join(root, "workers/vidhyatex-catalog/.secrets.local.json");
 fs.writeFileSync(
   secretsPath,
   JSON.stringify(

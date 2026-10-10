@@ -18,7 +18,7 @@ console.log(
     return {
       ua,
       hasIg: /instagram/i.test(ua),
-      island: document.querySelector("[data-thry-sticky-island]")?.outerHTML,
+      island: document.querySelector("[data-vidhyatex-sticky-island]")?.outerHTML,
     };
   }),
 );

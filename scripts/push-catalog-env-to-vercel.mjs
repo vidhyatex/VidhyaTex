@@ -7,8 +7,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const TEAM_ID = "team_DAup0iV9bvGvaL1mIGH9a7al";
-const PROJECT_ID = "prj_48M3Nk6JuE9KInZf1t51ww1V6K78";
+const TEAM_ID = "team_0n12u0UqdiwjYXvGXvXIDZG2";
+const PROJECT_ID = "";
 const token = process.env.VERCEL_TOKEN?.trim();
 if (!token) {
   console.error("Set VERCEL_TOKEN first");
@@ -30,7 +30,7 @@ function parseEnvLocal() {
 const local = parseEnvLocal();
 const workerUrl =
   local.CATALOG_WORKER_URL ||
-  "https://thry-catalog.thrycoproduct.workers.dev";
+  "https://vidhyatex-catalog.vidhyatex.workers.dev";
 const syncSecret = local.CATALOG_SYNC_SECRET;
 if (!syncSecret) {
   console.error("CATALOG_SYNC_SECRET missing in .env.local");

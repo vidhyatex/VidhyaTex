@@ -1,5 +1,5 @@
 /**
- * Enable Google single-tap sign-in on Supabase Auth for THRY.
+ * Enable Google single-tap sign-in on Supabase Auth for Vidhya Tex.
  *
  * Prerequisites (put in .env.local):
  *   SUPABASE_ACCESS_TOKEN   — https://supabase.com/dashboard/account/tokens
@@ -7,7 +7,7 @@
  *   GOOGLE_CLIENT_SECRET
  *
  * Google Cloud Web client Authorized redirect URI (exact):
- *   https://azqgyxdzwlhdmjvkngbs.supabase.co/auth/v1/callback
+ *   https://zawfokxomwloatkzmzhq.supabase.co/auth/v1/callback
  *
  * Run: node scripts/enable-google-signin.mjs
  */
@@ -33,9 +33,9 @@ How to finish Google single-tap (about 3 minutes):
 
 1) Google Cloud Console → APIs & Services → Credentials
    Create OAuth client ID → Application type: Web application
-   Name: THRY Web
+   Name: Vidhya Tex Web
    Authorized redirect URIs — add exactly:
-     https://azqgyxdzwlhdmjvkngbs.supabase.co/auth/v1/callback
+     https://zawfokxomwloatkzmzhq.supabase.co/auth/v1/callback
 
 2) Copy Client ID + Client Secret into .env.local:
      GOOGLE_CLIENT_ID=....apps.googleusercontent.com

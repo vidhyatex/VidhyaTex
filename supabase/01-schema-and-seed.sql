@@ -1,12 +1,12 @@
 -- =============================================================================
--- Sakthi Textiles – HiyoRi database setup
+-- Vidhya Tex – database setup
 -- Run in Supabase Dashboard → SQL Editor → New query → Run
--- Project: qhtwwyqlsnckorndmhmt
+-- Project: zawfokxomwloatkzmzhq
 -- =============================================================================
 -- SAFE: Drops app tables only (not auth.users). Run once on a fresh project.
 -- =============================================================================
 
--- Extensions (GraphQL API used by HiyoRi storefront)
+-- Extensions (GraphQL API used by the storefront)
 CREATE EXTENSION IF NOT EXISTS "pg_graphql";
 
 -- -----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON address TO authenticated;
 GRANT SELECT ON address TO anon;
 
 -- -----------------------------------------------------------------------------
--- 5. SEED DATA – Sakthi Textiles (saree categories + sample products)
+-- 5. SEED DATA – Vidhya Tex (saree categories + sample products)
 -- -----------------------------------------------------------------------------
 INSERT INTO medias (id, key, alt) VALUES
   ('m1', 'public/silk-sarees.jpg', 'Silk Sarees'),

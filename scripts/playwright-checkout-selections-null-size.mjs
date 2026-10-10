@@ -6,7 +6,7 @@
  */
 import { chromium, devices } from "playwright";
 
-const BASE = (process.argv[2] || "https://thryco.com").replace(/\/$/, "");
+const BASE = (process.argv[2] || "https://vidhyatex.vercel.app").replace(/\/$/, "");
 const results = [];
 function ok(name, pass, detail = "") {
   results.push({ name, pass: !!pass, detail: String(detail || "") });

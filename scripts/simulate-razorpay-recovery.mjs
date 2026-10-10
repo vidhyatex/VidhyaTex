@@ -200,11 +200,11 @@ async function simulatePaymentLinkApi(config) {
       currency: "INR",
       accept_partial: false,
       reference_id: `sim_${Date.now()}`.slice(0, 40),
-      description: "THRY validation — cancel immediately",
+      description: "Vidhya Tex validation — cancel immediately",
       expire_by: Math.floor(Date.now() / 1000) + 20 * 60,
       notify: { sms: false, email: false },
       reminder_enable: false,
-      notes: { source: "thry_simulation" },
+      notes: { source: "vidhyatex_simulation" },
     }),
   });
 
@@ -278,7 +278,7 @@ async function main() {
     console.log(applied);
   } else if (unpaid.wouldMarkPaid.length > 0) {
     console.log(
-      "\nCaptured payments exist. Re-run with --apply to mark them paid on THRY.",
+      "\nCaptured payments exist. Re-run with --apply to mark them paid on Vidhya Tex.",
     );
   } else {
     console.log("\nNo captured-but-unpaid orders. Recovery cron would be a no-op.");

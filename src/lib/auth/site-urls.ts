@@ -1,5 +1,5 @@
 /** Canonical storefront origin(s) used for auth redirects and SEO. */
-const DEFAULT_PRODUCTION_ORIGIN = "https://thryco.com";
+const DEFAULT_PRODUCTION_ORIGIN = "https://vidhyatex.vercel.app";
 
 function normalizeOrigin(value: string): string {
   const trimmed = value.trim().replace(/\/$/, "");
@@ -34,8 +34,8 @@ export function getAllowedAuthOrigins(): string[] {
     canonical,
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://thryco.com",
-    "https://www.thryco.com",
+    "https://vidhyatex.vercel.app",
+    "https://vidhyatex.vercel.app",
   ]);
 
   try {

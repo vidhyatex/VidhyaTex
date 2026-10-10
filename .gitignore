@@ -63,11 +63,11 @@ wrangler.workers.new-account.jsonc
 
 .dev.vars.new-account
 
-scripts/.thry-r2-secrets.local.json
-workers/thry-catalog/.secrets.local.json
-workers/thry-catalog/dist-worker.js
-workers/thry-catalog/_deploy-payload.json
-workers/thry-catalog/_mcp-deploy-code.js
+scripts/.vidhyatex-r2-secrets.local.json
+workers/vidhyatex-catalog/.secrets.local.json
+workers/vidhyatex-catalog/dist-worker.js
+workers/vidhyatex-catalog/_deploy-payload.json
+workers/vidhyatex-catalog/_mcp-deploy-code.js
 scripts/_d1-products-seed.json
 scripts/_d1-collections-seed.json
 scripts/_d1-products-compact.json
@@ -79,19 +79,19 @@ scripts/_d1-parse-debug.txt
 scripts/tmp-parse-products-export.mjs
 scripts/tmp-save-collections.mjs
 scripts/fetch-collections-seed.mjs
-workers/thry-catalog/_mcp-deploy-code.b64
-workers/thry-catalog/_mcp-deploy-code.js
-workers/thry-catalog/_deploy-payload.json
-workers/thry-catalog/dist-worker.js
-workers/thry-catalog/.secrets.local.json
+workers/vidhyatex-catalog/_mcp-deploy-code.b64
+workers/vidhyatex-catalog/_mcp-deploy-code.js
+workers/vidhyatex-catalog/_deploy-payload.json
+workers/vidhyatex-catalog/dist-worker.js
+workers/vidhyatex-catalog/.secrets.local.json
 scripts/.cf-catalog-token.local.json
 scripts/tmp-parse-products-export.mjs
-scripts/setup-thry-r2-from-wrangler.mjs
+scripts/setup-vidhyatex-r2-from-wrangler.mjs
 scripts/extract-wrangler-token.mjs
 scripts/_d1-all-products.sql
 scripts/*.out
-workers/thry-catalog/_*
-workers/thry-catalog/.cf-token.tmp
+workers/vidhyatex-catalog/_*
+workers/vidhyatex-catalog/.cf-token.tmp
 workers/r2-media-proxy/workers/
 .wrangler-media-out/
 **/.wrangler-media-out/

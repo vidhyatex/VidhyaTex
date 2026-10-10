@@ -1,6 +1,6 @@
 # Production-Safe Image & LCP Performance Plan
 
-Goal: Fix the ~13 MB image waste and ~350 ms CSS blocking from PageSpeed (https://pagespeed.web.dev/analysis/https-thryco-com/qhavk0n8gs?form_factor=mobile) WITHOUT breaking checkout, admin uploads, cart, or existing product pages.
+Goal: Fix the ~13 MB image waste and ~350 ms CSS blocking from PageSpeed (https://pagespeed.web.dev/analysis/vidhyatex-vercel-app) WITHOUT breaking checkout, admin uploads, cart, or existing product pages.
 
 ---
 
@@ -50,7 +50,7 @@ Problem: StorefrontImage uses unoptimized: true for all CDN URLs -> no srcset, f
 Fix (pick one, behind env flag IMAGE_DELIVERY_MODE):
 
 ### Option A - CDN resize helper (recommended)
-- Add cdnImageUrl(key, { width, quality, format }) -> media.thryco.com with width/quality params (or Cloudflare Image Resizing if enabled)
+- Add cdnImageUrl(key, { width, quality, format }) -> vidhyatex-media.vidhyatex.workers.dev with width/quality params (or Cloudflare Image Resizing if enabled)
 - StorefrontImage uses resized URL for display; original key in DB unchanged
 - Card: w=400, hero: w=1200, PDP: w=800
 
@@ -137,7 +137,7 @@ Validate per batch:
 - [ ] Random 10 products: images load on shop + PDP
 - [ ] Admin media library shows correct thumbnails
 - [ ] Order emails / OG images still work
-- [ ] No 404s in Sentry/logs for media.thryco.com
+- [ ] No 404s in Sentry/logs for vidhyatex-media.vidhyatex.workers.dev
 
 Rollback: Point medias.key back to old keys from backup CSV
 
@@ -217,7 +217,7 @@ Core Web Vitals Assessment: FAILED (mobile, 28-day CrUX through Aug 28, 2026)
 | FCP | 2.5s | <= 1.8s | Needs improvement |
 | TTFB | 1.2s | <= 0.8s | Needs improvement |
 
-Render-blocking CSS: ~350 ms savings possible (2 CSS files from thryco.com)
+Render-blocking CSS: ~350 ms savings possible (2 CSS files from vidhyatex.vercel.app)
 
 Image delivery: ~13,145 KiB (~13 MB) estimated savings from R2 (pub-7298c413a12641b5ba5dd9bff2d9009f.r2.dev)
 - Wrong format: alt says .webp but URLs are .png (500-800 KB each)
@@ -276,7 +276,7 @@ Storefront delivery:
 - shouldBypassImageOptimization() forces unoptimized: true on all https:// CDN URLs
 - No /_next/image proxy, no srcset for CDN images
 - sizes prop exists in components but has no effect while unoptimized
-- media.thryco.com / R2 serves raw stored bytes
+- vidhyatex-media.vidhyatex.workers.dev / R2 serves raw stored bytes
 
 Key files:
 - src/lib/admin/client-image-upload.ts
@@ -293,5 +293,5 @@ Recent INP/cart work (deployed) may take 2-4+ weeks to appear in CrUX PageSpeed 
 ---
 
 Document created: August 31, 2026
-Project: THRY / thryco.com
+Project: Vidhya Tex / vidhyatex.vercel.app
 Source: PageSpeed Insights + codebase audit

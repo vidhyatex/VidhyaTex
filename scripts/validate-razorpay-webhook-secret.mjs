@@ -36,7 +36,7 @@ const goodSig = crypto.createHmac("sha256", secret).update(body).digest("hex");
 const badSig = "00".repeat(32);
 
 async function hit(label, signature) {
-  const res = await fetch("https://thryco.com/api/razorpay/webhook", {
+  const res = await fetch("https://vidhyatex.vercel.app/api/razorpay/webhook", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

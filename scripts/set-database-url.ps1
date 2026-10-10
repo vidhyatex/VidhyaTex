@@ -1,4 +1,4 @@
-# Sets DATABASE_URL in .env.local (official HiyoRi Way A)
+# Sets DATABASE_URL in .env.local (Vidhya Tex)
 $envPath = Join-Path $PSScriptRoot "..\.env.local"
 if (-not (Test-Path $envPath)) {
     Write-Host "Missing .env.local" -ForegroundColor Red
@@ -8,7 +8,7 @@ if (-not (Test-Path $envPath)) {
 Write-Host ""
 Write-Host "=== Supabase DATABASE_URL (Way A) ===" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "1. Open: https://supabase.com/dashboard/project/qhtwwyqlsnckorndmhmt/settings/database"
+Write-Host "1. Open: https://supabase.com/dashboard/project/zawfokxomwloatkzmzhq/settings/database"
 Write-Host "2. Connection string -> URI"
 Write-Host "3. Mode: Transaction (pooler) recommended"
 Write-Host "4. Copy the full URI and replace [YOUR-PASSWORD] with your DB password"
@@ -29,7 +29,7 @@ if ($choice -eq "1") {
         [Runtime.InteropServices.Marshal]::SecureStringToBSTR($password)
     )
     $encoded = [uri]::EscapeDataString($plain)
-    $url = "postgresql://postgres.qhtwwyqlsnckorndmhmt:${encoded}@aws-1-ap-south-1.pooler.supabase.com:6543/postgres"
+    $url = "postgresql://postgres.zawfokxomwloatkzmzhq:${encoded}@aws-1-ap-south-1.pooler.supabase.com:6543/postgres"
 }
 
 if (-not $url.StartsWith("postgresql://")) {
@@ -49,5 +49,5 @@ Write-Host ""
 Write-Host "Saved DATABASE_URL to .env.local" -ForegroundColor Green
 Write-Host ""
 Write-Host "Run now:" -ForegroundColor Cyan
-Write-Host '  cd "e:\Sakthi textiles\HiyoRi-Ecommerce-Nextjs-Supabase"'
+Write-Host '  cd "e:\Vidhya Tex"'
 Write-Host "  npm run db:setup"

@@ -72,7 +72,7 @@ async function loadLocalImages(dir: string) {
     const buffer = await processFile(raw);
     const media = await uploadSareeImage(
       buffer,
-      `Sakthi saree model — ${name}`,
+      `Vidhya Tex saree model — ${name}`,
     );
     uploaded.push(media);
     console.log(`Uploaded: ${name} → ${media.key}`);

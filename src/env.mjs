@@ -50,7 +50,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CDN_URL: z.string().url(),
     NEXT_PUBLIC_SUPABASE_URL: z.string(),
     NEXT_PUBLIC_SENTRY_DSN: optionalUrl,
-    /** cloudflare = resize via media.thryco.com; legacy = raw R2 URLs */
+    /** cloudflare = resize via vidhyatex-media.vidhyatex.workers.dev; legacy = raw R2 URLs */
     NEXT_PUBLIC_IMAGE_DELIVERY_MODE: z.preprocess(
       (value) => (value === "" || value == null ? "legacy" : value),
       z.enum(["cloudflare", "legacy"]),

@@ -1,11 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  // THRY — thrycoproduct@gmail.com account
-  "name": "thry",
-  "account_id": "77dfa9b757691b2321fe0630f01c8c6a",
+  // Vidhya Tex — vidhyatex7@gmail.com account (see project.identity.json)
+  "name": "vidhyatex",
+  "account_id": "eb44426b1fd72351f6b204ddb5d9b586",
   "main": ".open-next/worker.js",
-  // Parallel test host only; thryco.com stays on thry-shop-edge -> Vercel.
-  "routes": [{ "pattern": "cf.thryco.com", "custom_domain": true }],
+  // No custom domain yet: served on workers.dev. Add a custom_domain route when a domain is bought.
+  "workers_dev": true,
   "minify": true,
   "compatibility_date": "2025-05-05",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
@@ -17,17 +17,17 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "thry"
+      "service": "vidhyatex"
     }
   ],
   "r2_buckets": [
     {
       "binding": "MEDIA_BUCKET",
-      "bucket_name": "thry-cdn"
+      "bucket_name": "vidhyatex-cdn"
     },
     {
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "thry-next-cache"
+      "bucket_name": "vidhyatex-next-cache"
     }
   ],
   "durable_objects": {

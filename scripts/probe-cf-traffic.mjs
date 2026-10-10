@@ -77,7 +77,7 @@ console.log(
 );
 
 const zone =
-  (zones.result || []).find((z) => z.name === "thryco.com") ||
+  (zones.result || []).find((z) => z.name === "vidhyatex.vercel.app") ||
   zones.result?.[0];
 if (!zone?.id) process.exit(0);
 

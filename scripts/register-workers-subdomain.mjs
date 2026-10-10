@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const accountId = "77dfa9b757691b2321fe0630f01c8c6a";
+const accountId = "eb44426b1fd72351f6b204ddb5d9b586";
 const toml = readFileSync(
   join(process.env.APPDATA, "xdg.config/.wrangler/config/default.toml"),
   "utf8",
@@ -30,7 +30,7 @@ if (!getJson.success || !getJson.result?.subdomain) {
     {
       method: "PUT",
       headers,
-      body: JSON.stringify({ subdomain: "thrycoproduct" }),
+      body: JSON.stringify({ subdomain: "vidhyatex" }),
     },
   );
   const putJson = await putRes.json();
