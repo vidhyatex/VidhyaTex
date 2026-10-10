@@ -7,9 +7,9 @@ describe("buildAdminOrderSearchTerms", () => {
     expect(buildAdminOrderSearchTerms(undefined)).toBeNull();
   });
 
-  it("strips the THRY brand for internal ref matching", () => {
-    expect(buildAdminOrderSearchTerms("THRY26090153")).toEqual({
-      idPattern: "%THRY26090153%",
+  it("strips the VT brand for internal ref matching", () => {
+    expect(buildAdminOrderSearchTerms("VT26090153")).toEqual({
+      idPattern: "%VT26090153%",
       refPattern: "%26090153%",
       namePattern: null,
       mobilePattern: null,
@@ -17,7 +17,7 @@ describe("buildAdminOrderSearchTerms", () => {
   });
 
   it("accepts the packing slip display form", () => {
-    expect(buildAdminOrderSearchTerms("Ref #THRY26090153")?.refPattern).toBe(
+    expect(buildAdminOrderSearchTerms("Ref #VT26090153")?.refPattern).toBe(
       "%26090153%",
     );
   });
@@ -45,7 +45,7 @@ describe("buildAdminOrderSearchTerms", () => {
   });
 
   it("allows a dash after the brand", () => {
-    expect(buildAdminOrderSearchTerms("THRY-0153")?.refPattern).toBe("%0153%");
+    expect(buildAdminOrderSearchTerms("VT-0153")?.refPattern).toBe("%0153%");
   });
 
   it("escapes LIKE wildcards in order ids", () => {

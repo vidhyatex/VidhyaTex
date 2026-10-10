@@ -17,7 +17,7 @@ export function formatCheckoutErrorMessage(err: unknown): string {
   }
 
   if (/does not match registered website/i.test(message)) {
-    return "Payment could not start for this store domain. Please try again shortly, or contact THRY support if it continues.";
+    return "Payment could not start for this store domain. Please try again shortly, or contact Vidhya Tex support if it continues.";
   }
 
   if (/razorpay checkout script failed to load/i.test(message)) {

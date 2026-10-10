@@ -20,7 +20,7 @@ const A4_W = 210;
 const A4_H = 297;
 const MARGIN = 18;
 const THUMB_MM = 12;
-const FALLBACK_IMAGE = "/images/thry-hero-statues.svg";
+const FALLBACK_IMAGE = "/images/vidhyatex-logo.png";
 
 type Doc = {
   addPage: () => void;
@@ -358,7 +358,7 @@ export async function downloadOrderPdf(order: PackingSlipOrder) {
   const doc = new jsPDF({ unit: "mm", format: "a4" }) as unknown as Doc;
   await drawPackingSlip(doc, order, shopAddressLines);
   const blob = doc.output("blob");
-  forceDownloadPdf(blob, buildTimestampedFilename("THRY_Order"));
+  forceDownloadPdf(blob, buildTimestampedFilename("VidhyaTex_Order"));
 }
 
 export async function downloadOrdersPdf(orders: PackingSlipOrder[]) {
@@ -380,5 +380,5 @@ export async function downloadOrdersPdf(orders: PackingSlipOrder[]) {
     await drawPackingSlip(doc, orders[i], shopAddressLines);
   }
   const blob = doc.output("blob");
-  forceDownloadPdf(blob, buildTimestampedFilename("THRY_Orders"));
+  forceDownloadPdf(blob, buildTimestampedFilename("VidhyaTex_Orders"));
 }

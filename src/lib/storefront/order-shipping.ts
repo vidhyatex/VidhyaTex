@@ -50,7 +50,7 @@ export const ORDER_RETURNS = {
     "Please email us before sending any item back.",
     "For replacement of a damaged, defective, or wrong item, you must share a clear unboxing video showing the sealed package being opened through to the product.",
     "Claims without a complete unboxing video may not be eligible for replacement.",
-    "Customised, opened, or used craft kits cannot be returned.",
+    "Sarees that are used, washed, altered or have tags removed cannot be returned.",
     "Shipping charges for returns may apply unless the item is faulty and approved for replacement.",
   ] as const,
   fullDetailsHref: "/shipping-returns",

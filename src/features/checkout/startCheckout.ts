@@ -226,7 +226,7 @@ export async function startCheckout({
       if (verifyPayload?.isPaid !== true) {
         throw new Error(
           verifyPayload?.message ||
-            "Payment received by Razorpay but not confirmed on THRY yet. Please wait a moment or contact support with your order id.",
+            "Payment received by Razorpay but not confirmed on Vidhya Tex yet. Please wait a moment or contact support with your order id.",
         );
       }
       reportCheckoutEvent({

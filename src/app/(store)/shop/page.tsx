@@ -28,27 +28,27 @@ import { buildSocialImages } from "@/lib/seo/social-image";
 
 export const revalidate = 120;
 
-const shopSocial = buildSocialImages(null, "THRY");
+const shopSocial = buildSocialImages(null, "Vidhya Tex");
 
 export const metadata: Metadata = {
   title: "Shop All Products",
   description:
-    "Browse all silk, cotton, wedding and festive craft supplies at THRY. Shop online with secure checkout and delivery across India.",
+    "Browse all silk, cotton, wedding and festive sarees at Vidhya Tex. Shop online with secure checkout and delivery across India.",
   alternates: {
     canonical: "/shop",
   },
   openGraph: {
-    title: "Shop All Products | THRY",
+    title: "Shop All Products | Vidhya Tex",
     description:
-      "Browse all silk, cotton, wedding and festive craft supplies at THRY.",
+      "Browse all silk, cotton, wedding and festive sarees at Vidhya Tex.",
     url: "/shop",
     ...shopSocial.openGraph,
   },
   twitter: {
     ...shopSocial.twitter,
-    title: "Shop All Products | THRY",
+    title: "Shop All Products | Vidhya Tex",
     description:
-      "Browse all silk, cotton, wedding and festive craft supplies at THRY.",
+      "Browse all silk, cotton, wedding and festive sarees at Vidhya Tex.",
   },
 };
 

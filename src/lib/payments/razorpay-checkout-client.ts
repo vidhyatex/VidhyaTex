@@ -398,7 +398,7 @@ export async function openRazorpayCheckout(params: {
       amount: session.amount,
       currency: session.currency,
       name: session.name,
-      description: session.description ?? "THRY order",
+      description: session.description ?? "Vidhya Tex order",
       order_id: session.razorpayOrderId,
       prefill: session.prefill,
       theme: { color: session.themeColor || "#c03078" },

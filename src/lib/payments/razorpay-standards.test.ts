@@ -42,7 +42,7 @@ describe("razorpay-standards", () => {
       keyId: "rzp_test_abc123",
       amount: 50000,
       currency: "INR",
-      name: "THRY",
+      name: "Vidhya Tex",
     });
     expect(parsed.razorpayOrderId).toBe("order_IluGWxBm9U8zJ8");
   });

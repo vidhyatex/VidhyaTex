@@ -11,11 +11,11 @@ export function HomeExploreLinks() {
         id="explore-thry-heading"
         className="font-[family-name:var(--font-hero-serif)] text-xl font-semibold text-foreground md:text-2xl"
       >
-        Explore THRY
+        Explore Vidhya Tex
       </h2>
       <p className="mt-2 max-w-2xl text-sm text-muted-foreground md:text-base">
-        Shop creative 3D printed products — art &amp; craft tools, customised
-        gifts, statues, planters and more.
+        Shop Elampillai sarees — silk, cotton, fancy, designer and daily-wear
+        sarees, delivered across India.
       </p>
       <nav
         className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4"

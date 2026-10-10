@@ -196,7 +196,7 @@ export function buildOrderConfirmationHtml(
   `;
 
   return buildEmailLayoutHtml({
-    preheader: `Your THRY order ${formatEmailOrderNumber(input.orderId, input.internalRef)} is confirmed.`,
+    preheader: `Your Vidhya Tex order ${formatEmailOrderNumber(input.orderId, input.internalRef)} is confirmed.`,
     bodyHtml,
   });
 }

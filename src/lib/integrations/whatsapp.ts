@@ -145,7 +145,7 @@ export async function sendOrderSuccessWhatsApp(
         to,
         type: "text",
         text: {
-          body: `Hi ${params.customerName || "Customer"}, your order #${params.orderId} is confirmed. Amount paid: INR ${params.amount}. Thank you for shopping with THRY.`,
+          body: `Hi ${params.customerName || "Customer"}, your order #${params.orderId} is confirmed. Amount paid: INR ${params.amount}. Thank you for shopping with Vidhya Tex.`,
         },
       };
   return postWhatsAppMessage(config.phoneNumberId, config.accessToken, body);
@@ -238,7 +238,7 @@ export async function sendSellerOpsAlert(message: string) {
           messaging_product: "whatsapp",
           to,
           type: "text",
-          text: { body: `[Hub of Craftss ALERT]\n${message}` },
+          text: { body: `[Vidhya Tex ALERT]\n${message}` },
         },
       );
       if (res.sent) sentCount += 1;

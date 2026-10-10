@@ -42,7 +42,7 @@ export function cdnPresetForWidth(_width: number): CdnImageOptions {
 }
 
 const DEFAULT_MEDIA_ORIGIN = "https://media.thryco.com";
-const FALLBACK = "/images/thry-hero-statues.svg";
+const FALLBACK = "/images/vidhyatex-logo.png";
 
 export function getImageDeliveryMode(): ImageDeliveryMode {
   // Cloudflare /cdn is live on media.thryco.com (validated ~98% smaller WebP).

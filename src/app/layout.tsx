@@ -21,13 +21,13 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "THRY",
-    "THRY CO",
-    "3D printed gifts",
-    "art and craft tools",
-    "customised gifts",
-    "3D printed statues",
-    "clay cutters",
+    "Vidhya Tex",
+    "Vidhya Tex sarees",
+    "Elampillai sarees",
+    "Salem sarees",
+    "silk sarees",
+    "cotton sarees",
+    "saree online shopping",
   ],
   applicationName: siteConfig.name,
   authors: [{ name: siteConfig.name }],
@@ -75,9 +75,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   icons: {
-    icon: [{ url: "/images/thry-wordmark.svg", type: "image/svg+xml" }],
-    shortcut: ["/images/thry-wordmark.svg"],
-    apple: [{ url: "/images/thry-wordmark.svg", type: "image/svg+xml" }],
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "192x192" }],
+    shortcut: ["/favicon.ico"],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
 };
 

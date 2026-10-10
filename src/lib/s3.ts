@@ -3,9 +3,9 @@ import { env } from "@/env.mjs";
 import { AwsClient } from "aws4fetch";
 
 /**
- * THRY media storage on Cloudflare R2 (bucket thry-cdn).
+ * Vidhya Tex media storage on Cloudflare R2 (bucket vidhyatex-cdn).
  *
- * - Browser staging: short-lived PUT to thry-media worker (skips Vercel)
+ * - Browser staging: short-lived PUT to vidhyatex-media worker (skips Vercel)
  * - Fallback: aws4fetch presigned PUT (S3 API) when proxy is unset
  * - Worker put/get/delete: R2 binding (no S3 signature)
  *
@@ -45,7 +45,7 @@ async function getCloudflareEnv(): Promise<Record<string, unknown> | null> {
 
 function missingMediaBucketError() {
   return new Error(
-    "Media storage is not bound (MEDIA_BUCKET missing). Enable R2 on the THRY Cloudflare account, create bucket thry-cdn, add the R2 binding, and redeploy.",
+    "Media storage is not bound (MEDIA_BUCKET missing). Enable R2 on the Vidhya Tex Cloudflare account, create bucket vidhyatex-cdn, add the R2 binding, and redeploy.",
   );
 }
 

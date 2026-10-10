@@ -9,25 +9,25 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `FAQ | ${siteConfig.name}`,
-  description: `Frequently asked questions about ${siteConfig.name} craft supplies`,
+  description: `Frequently asked questions about ${siteConfig.name} sarees`,
 };
 
 const faqs = [
   {
     q: "Do you sell wholesale?",
-    a: "Yes. We offer wholesale and bulk pricing for retailers and makers. Message us on Instagram with your requirements.",
+    a: `Yes. We offer wholesale and bulk pricing for retailers. WhatsApp us on ${siteConfig.phone} with your requirements.`,
   },
   {
     q: "How do I track my order?",
     a: "After checkout you will receive confirmation. Log in and visit My Orders, or contact us with your order number for an update.",
   },
   {
-    q: "Can I visit your unit?",
-    a: "No. Our Hosur location is a manufacturing unit and is not open for customer visits. Please shop online or contact us by email.",
+    q: "Can I order on WhatsApp?",
+    a: `Yes. Send the product name or a screenshot to ${siteConfig.phone} on WhatsApp and we will help you place the order.`,
   },
   {
     q: "What do you sell?",
-    a: "Terracotta raw materials and art & craft supplies. Each product listing describes materials and usage. Ask us if you need help choosing.",
+    a: "Sarees — silk, cotton, fancy, designer and daily-wear sarees from Elampillai, Salem. Each listing describes the fabric and colour. Ask us if you need help choosing.",
   },
   {
     q: "How do returns work?",

@@ -39,19 +39,19 @@ describe("internal order ref (YYMM####)", () => {
 
   it("parses and validates refs", () => {
     expect(parseInternalOrderRef("26090001")).toEqual({ yymm: "2609", seq: 1 });
-    expect(parseInternalOrderRef("THRY26090001")).toEqual({
+    expect(parseInternalOrderRef("VT26090001")).toEqual({
       yymm: "2609",
       seq: 1,
     });
-    expect(isValidInternalOrderRef("thry-26090001")).toBe(true);
+    expect(isValidInternalOrderRef("vt-26090001")).toBe(true);
     expect(isValidInternalOrderRef("2609")).toBe(false);
     expect(isValidInternalOrderRef("abc")).toBe(false);
     expect(parseInternalOrderRef("26090000")).toBeNull();
   });
 
-  it("displays the THRY prefix", () => {
-    expect(displayInternalOrderRef("26090001")).toBe("THRY26090001");
-    expect(displayInternalOrderRef("THRY26090001")).toBe("THRY26090001");
+  it("displays the VT prefix", () => {
+    expect(displayInternalOrderRef("26090001")).toBe("VT26090001");
+    expect(displayInternalOrderRef("VT26090001")).toBe("VT26090001");
     expect(displayInternalOrderRef(null)).toBeNull();
   });
 

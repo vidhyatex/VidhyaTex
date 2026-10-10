@@ -130,7 +130,7 @@ export async function createRazorpayPayment(
     currency: "INR" as const,
     environment: config.environment,
     name: siteConfig.name,
-    description: "THRY order",
+    description: "Vidhya Tex order",
     prefill: {
       name: String(params.customerName ?? "").trim() || undefined,
       email: String(params.customerEmail ?? "").trim() || undefined,

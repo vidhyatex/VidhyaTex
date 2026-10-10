@@ -38,7 +38,7 @@ type SyncInput =
 /**
  * All post-payment side effects, each individually idempotent (guarded by
  * flags on the order row / payment_meta):
- * - Internal ref (THRY…)    -> orders.internal_ref
+ * - Internal ref (VT…)    -> orders.internal_ref
  * - WhatsApp confirmations  -> whatsapp_notified / whatsapp_seller_notified
  * - Cart clear              -> plain DELETE, naturally idempotent
  * - Inventory fulfillment   -> payment_meta.inventoryFulfilled

@@ -49,7 +49,7 @@ export async function generateMetadata({
     toTitleCase(unslugify(resolvedParams.collectionSlug));
   const description =
     collection?.description?.trim() ||
-    `Shop ${collectionName} craft supplies at THRY. Premium terracotta and craft supplies with secure online ordering.`;
+    `Shop ${collectionName} at Vidhya Tex. Elampillai sarees with secure online ordering.`;
   const social = buildSocialImages(
     collection?.featuredImage?.key,
     collectionName,
@@ -62,14 +62,14 @@ export async function generateMetadata({
       canonical: path,
     },
     openGraph: {
-      title: `${collectionName} | THRY`,
+      title: `${collectionName} | Vidhya Tex`,
       description,
       url: path,
       ...social.openGraph,
     },
     twitter: {
       ...social.twitter,
-      title: `${collectionName} | THRY`,
+      title: `${collectionName} | Vidhya Tex`,
       description,
     },
   };

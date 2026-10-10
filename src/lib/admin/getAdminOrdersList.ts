@@ -77,7 +77,7 @@ export type AdminOrdersListParams = {
   segment: AdminOrdersSegment;
   page?: number;
   pageSize?: number;
-  /** Order id, internal ref (THRY prefix optional), customer name or mobile; partial matches. */
+  /** Order id, internal ref (VT prefix optional), customer name or mobile; partial matches. */
   query?: string;
 };
 

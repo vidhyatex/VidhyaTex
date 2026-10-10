@@ -47,7 +47,7 @@ export function StoreFloatingActions() {
           mailHref={mailHref}
           isOpen={mailOpen}
           onOpenChange={handleMailOpenChange}
-          triggerLabel="Email THRY"
+          triggerLabel="Email Vidhya Tex"
           triggerClassName={`${floatingActionButtonClass} bg-primary text-white ring-2 ring-primary/40`}
           triggerIcon={<Mail className="h-5 w-5" strokeWidth={2} />}
         />

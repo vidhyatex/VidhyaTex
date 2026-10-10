@@ -10,14 +10,14 @@ import {
   resolvePackingSlipShopAddressLines,
 } from "./packing-slip-format";
 
-describe("packing slip format (THRY CO. reference)", () => {
+describe("packing slip format (VIDHYA TEX reference)", () => {
   it("prints quantity as 1 of 1", () => {
     expect(formatPackingSlipQuantity(1)).toBe("1 of 1");
     expect(formatPackingSlipQuantity(3)).toBe("3 of 3");
   });
 
-  it("prints the internal ref line with the THRY prefix", () => {
-    expect(formatPackingSlipInternalRef("26090001")).toBe("Ref #THRY26090001");
+  it("prints the internal ref line with the VT prefix", () => {
+    expect(formatPackingSlipInternalRef("26090001")).toBe("Ref #VT26090001");
     expect(formatPackingSlipInternalRef(null)).toBeNull();
   });
 
@@ -78,12 +78,12 @@ describe("packing slip format (THRY CO. reference)", () => {
   it("prints shop footer as street, pincode city ST, country without shop mobile", () => {
     const footer = buildPackingSlipShopFooter();
     expect(footer.brand).toBe(PACKING_SLIP_BRAND);
-    expect(footer.brand).toBe("THRY CO.");
+    expect(footer.brand).toBe("VIDHYA TEX");
     expect(PACKING_SLIP_THANKS).toBe("Thank you for shopping with us!");
     expect(footer.address).toBe(
-      "355/1, Balaji Nagar Bedrapalii, Sipcot-1, 635126 Hosur TN, India",
+      "KK Nagar, Elampillai, Salem TN, India",
     );
-    expect(footer.mobile).toBe("");
+    expect(footer.mobile).toBe("Mobile: +91 99420 87560");
   });
 
   it("prints the admin shop-contact address on the packing slip footer", () => {
@@ -108,7 +108,7 @@ describe("packing slip format (THRY CO. reference)", () => {
       value: { addressLines: ["Should not print"] },
     });
     expect(buildPackingSlipShopFooter(lines).address).toContain(
-      "Balaji Nagar Bedrapalii",
+      "KK Nagar, Elampillai",
     );
   });
 });

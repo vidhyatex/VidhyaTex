@@ -12,8 +12,8 @@ export function HomeHeroBanner() {
           className="relative block w-full max-w-full overflow-hidden rounded-2xl shadow-md aspect-[2/1] sm:aspect-[5/2] md:aspect-[21/9] md:max-h-[480px]"
         >
           <Image
-            src="/images/thry-hero-craft.svg"
-            alt="THRY — creative 3D printed products"
+            src="/images/vidhyatex-logo-1024.png"
+            alt="Vidhya Tex — boutique online saree shopping"
             fill
             priority
             unoptimized

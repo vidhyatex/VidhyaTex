@@ -106,7 +106,7 @@ export function resolveSocialImageUrl(
 
 export function buildSocialImages(
   keyOrUrl?: string | null,
-  alt = "THRY",
+  alt = "Vidhya Tex",
   deps?: SocialImageResolveDeps,
 ): Pick<Metadata, "openGraph" | "twitter"> {
   const url = resolveSocialImageUrl(keyOrUrl, deps);

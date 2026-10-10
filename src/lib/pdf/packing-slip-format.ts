@@ -4,7 +4,7 @@ import { INDIA_TIME_ZONE } from "@/lib/datetime/india";
 import { displayInternalOrderRef } from "@/lib/orders/internal-order-ref";
 import type { ShippingAddressFields } from "@/lib/orders/shipping-address-text";
 
-export const PACKING_SLIP_BRAND = "THRY CO.";
+export const PACKING_SLIP_BRAND = "VIDHYA TEX";
 export const PACKING_SLIP_THANKS = "Thank you for shopping with us!";
 
 const STATE_ABBR: Record<string, string> = {
@@ -70,7 +70,7 @@ function abbreviateState(state: string | null | undefined): string {
   return STATE_ABBR[raw.toLowerCase()] ?? raw;
 }
 
-/** Qty on the slip: "1 of 1" like the printed THRY CO. reference. */
+/** Qty on the slip: "1 of 1" like the printed VIDHYA TEX reference. */
 export function formatPackingSlipQuantity(quantity: number): string {
   const qty = Math.max(0, Math.round(Number(quantity) || 0));
   return `${qty} of ${qty}`;
@@ -97,7 +97,7 @@ export function formatPackingSlipOrderHeading(orderId: string): string {
   return `Order #${id}`;
 }
 
-/** Internal invoice-style line for packing slips, e.g. "Ref #THRY26090001". */
+/** Internal invoice-style line for packing slips, e.g. "Ref #VT26090001". */
 export function formatPackingSlipInternalRef(
   internalRef: string | null | undefined,
 ): string | null {

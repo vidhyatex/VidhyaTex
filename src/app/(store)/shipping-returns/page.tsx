@@ -8,9 +8,9 @@ import { Metadata } from "next";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Shipping & Returns | THRY",
+  title: "Shipping & Returns | Vidhya Tex",
   description:
-    "Simple order processing and delivery times for THRY — Tamil Nadu, India, and international.",
+    "Simple order processing and delivery times for Vidhya Tex — Tamil Nadu, India, and international.",
 };
 
 export default async function ShippingReturnsPage() {

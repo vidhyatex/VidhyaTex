@@ -125,7 +125,7 @@ function outcomeFromTelemetryEvent(
       return {
         kind: "checkout_error",
         label: "Checkout error",
-        detail: reason ?? "Payment could not be completed on THRY.",
+        detail: reason ?? "Payment could not be completed on Vidhya Tex.",
       };
     case "razorpay_modal_opened":
       return {

@@ -7,7 +7,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `Our Story | ${siteConfig.name}`,
-  description: `About ${siteConfig.name} — creative 3D printed products from Hosur, Tamil Nadu.`,
+  description: `About ${siteConfig.name} — boutique online saree shopping from Elampillai, Salem.`,
 };
 
 export default function AboutPage() {
@@ -17,14 +17,19 @@ export default function AboutPage() {
       description={`${siteConfig.name} — ${siteConfig.tagline}.`}
     >
       <p>
-        {siteConfig.name} makes creative 3D printed products, art &amp; craft
-        tools, customised gifts, and home essentials.
+        {siteConfig.name} is a saree boutique from Elampillai, Salem — a town
+        known for its weaving. We bring you handpicked silk, cotton, fancy and
+        designer sarees, delivered across India.
       </p>
       <p>
-        Based in Hosur, Tamil Nadu
+        Based in KK Nagar, Elampillai, Salem. For orders and enquiries, call or
+        WhatsApp{" "}
+        <a href={siteConfig.phoneHref} className="text-primary hover:underline">
+          {siteConfig.phone}
+        </a>
         {siteConfig.email ? (
           <>
-            . For orders and enquiries, email{" "}
+            {" "}or email{" "}
             <a
               href={`mailto:${siteConfig.email}`}
               className="text-primary hover:underline"
@@ -33,8 +38,7 @@ export default function AboutPage() {
             </a>
           </>
         ) : null}
-        . Our location is a manufacturing unit and is not open for customer
-        visits.
+        .
       </p>
       <p>
         Browse our{" "}

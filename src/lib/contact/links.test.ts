@@ -35,7 +35,7 @@ describe("contact links", () => {
 
   it("fixes WhatsApp when stored contact has local 10-digit number", () => {
     const contact = {
-      name: "THRY",
+      name: "Vidhya Tex",
       phone: "8870669160",
       phoneHref: "tel:+8870669160",
     };

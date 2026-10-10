@@ -1,5 +1,5 @@
-/** Neutral placeholders for empty/new THRY catalogs (no Hub/Sakthi assets). */
-export const SAKTHI_MEDIA_BASE = "https://placehold.co/600x800/png?text=THRY+";
+/** Neutral placeholders for empty/new Vidhya Tex catalogs (no Hub/Sakthi assets). */
+export const SAKTHI_MEDIA_BASE = "https://placehold.co/600x800/png?text=Vidhya+Tex+";
 
 export const SAREE_SHOP_MODEL_IMAGES = [
   `${SAKTHI_MEDIA_BASE}1`,
@@ -20,7 +20,7 @@ export function collectionPlaceholderImage(label: string): string {
   return COLLECTION_IMAGE_BY_LABEL[label] ?? DEFAULT_SAREE_PLACEHOLDER;
 }
 
-/** Used by legacy seed scripts — returns a neutral THRY placeholder. */
+/** Used by legacy seed scripts — returns a neutral Vidhya Tex placeholder. */
 export function collectionImageForLabel(label: string, index = 0): string {
   return (
     COLLECTION_IMAGE_BY_LABEL[label] ??

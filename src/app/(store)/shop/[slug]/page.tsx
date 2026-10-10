@@ -67,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (productName) {
     const productDescription =
       product?.description?.trim() ||
-      `Buy ${productName} online from THRY. Creative 3D printed products with secure checkout.`;
+      `Buy ${productName} online from Vidhya Tex. Elampillai sarees with secure checkout and delivery across India.`;
     const social = buildSocialImages(product?.featuredImage?.key, productName);
     return {
       title: productName,
@@ -76,23 +76,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         canonical: path,
       },
       openGraph: {
-        title: `${productName} | THRY`,
+        title: `${productName} | Vidhya Tex`,
         description: productDescription,
         url: path,
         ...social.openGraph,
       },
       twitter: {
         ...social.twitter,
-        title: `${productName} | THRY`,
+        title: `${productName} | Vidhya Tex`,
         description: productDescription,
       },
     };
   }
 
   return {
-    title: "THRY | Creative 3D printed products",
+    title: "Vidhya Tex | Boutique online saree shopping",
     description:
-      "THRY — creative 3D printed products, art and craft tools, and customised gifts.",
+      "Vidhya Tex — silk, cotton, fancy and designer sarees from Elampillai, Salem.",
   };
 }
 

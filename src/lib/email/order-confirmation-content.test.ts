@@ -49,22 +49,22 @@ describe("order confirmation email content", () => {
 
   it("builds a subject with order id", () => {
     expect(buildOrderConfirmationSubject("ord_test123")).toBe(
-      "Order confirmed — #ord_test123 · THRY",
+      "Order confirmed — #ord_test123 · Vidhya Tex",
     );
   });
 
-  it("uses the THRY internal ref as the order number when assigned", () => {
+  it("uses the Vidhya Tex internal ref as the order number when assigned", () => {
     expect(buildOrderConfirmationSubject("ord_test123", "26100041")).toBe(
-      "Order confirmed — THRY26100041 · THRY",
+      "Order confirmed — VT26100041 · Vidhya Tex",
     );
     const input = { ...baseInput, internalRef: "26100041" };
     const text = buildOrderConfirmationPlainText(input);
-    expect(text).toContain("Order No: THRY26100041");
+    expect(text).toContain("Order No: VT26100041");
     expect(text).toContain("Order ID: #ord_test123");
     const html = buildOrderConfirmationHtml(input);
-    expect(html).toContain("Order No: THRY26100041");
+    expect(html).toContain("Order No: VT26100041");
     expect(html).toContain("Order ID: #ord_test123");
-    expect(html).toContain("Your THRY order THRY26100041 is confirmed.");
+    expect(html).toContain("Your Vidhya Tex order VT26100041 is confirmed.");
   });
 
   it("falls back to the order id when no internal ref exists", () => {

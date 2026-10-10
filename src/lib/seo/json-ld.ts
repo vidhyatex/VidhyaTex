@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { BRAND_LOGO } from "@/lib/brand/logo";
 import { SEO_PRIMARY_NAV } from "@/lib/seo/constants";
 import { getURL } from "@/lib/utils";
 
@@ -19,14 +20,13 @@ export function buildOrganizationJsonLd() {
     "@type": "Organization",
     name: siteConfig.name.replace("®", "").trim(),
     url: absoluteUrl(),
-    logo: absoluteUrl("/images/thry-wordmark.svg"),
+    logo: absoluteUrl(BRAND_LOGO.src),
     email: siteConfig.email || undefined,
     telephone: siteConfig.phone || undefined,
     address: {
       "@type": "PostalAddress",
       streetAddress: siteConfig.addressLines[0],
-      addressLocality: "Hosur",
-      postalCode: "635126",
+      addressLocality: "Salem",
       addressRegion: "Tamil Nadu",
       addressCountry: "IN",
     },
@@ -59,14 +59,13 @@ export function buildStoreJsonLd() {
     "@type": "Store",
     name: siteConfig.name.replace("®", "").trim(),
     url: absoluteUrl(),
-    image: absoluteUrl("/images/thry-wordmark.svg"),
+    image: absoluteUrl(BRAND_LOGO.src),
     telephone: siteConfig.phone || undefined,
     email: siteConfig.email || undefined,
     address: {
       "@type": "PostalAddress",
-      streetAddress: siteConfig.address,
-      addressLocality: "Hosur",
-      postalCode: "635126",
+      streetAddress: siteConfig.addressLines[0],
+      addressLocality: "Salem",
       addressRegion: "Tamil Nadu",
       addressCountry: "IN",
     },
@@ -78,7 +77,7 @@ export function buildSiteNavigationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "THRY primary navigation",
+    name: "Vidhya Tex primary navigation",
     itemListElement: SEO_PRIMARY_NAV.map((item, index) => ({
       "@type": "SiteNavigationElement",
       position: index + 1,

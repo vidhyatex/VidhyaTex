@@ -6,8 +6,8 @@ import OAuthLoginButtons from "@/features/auth/components/OAuthLoginButtons";
 import { SignupForm } from "@/features/auth";
 
 export const metadata: Metadata = {
-  title: "Sign Up | THRY",
-  description: "Create your THRY account",
+  title: "Sign Up | Vidhya Tex",
+  description: "Create your Vidhya Tex account",
 };
 
 type SignUpPageProps = {

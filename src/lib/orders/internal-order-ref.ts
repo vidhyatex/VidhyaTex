@@ -1,11 +1,11 @@
 /**
  * Paid-order internal reference: YYMM + 4-digit monthly sequence.
- * Example: September 2026, 1st paid order → DB `26090001`, display `THRY26090001`
+ * Example: September 2026, 1st paid order → DB `26090001`, display `VT26090001`
  *
  * Assigned only when payment becomes paid (not at checkout create).
  */
 
-export const INTERNAL_ORDER_REF_BRAND = "THRY";
+export const INTERNAL_ORDER_REF_BRAND = "VT";
 export const INTERNAL_ORDER_REF_SEQ_DIGITS = 4;
 export const INTERNAL_ORDER_REF_MAX_SEQ =
   10 ** INTERNAL_ORDER_REF_SEQ_DIGITS - 1; // 9999
@@ -48,7 +48,7 @@ export function formatInternalOrderRef(yymm: string, seq: number): string {
   return `${prefix}${String(seq).padStart(INTERNAL_ORDER_REF_SEQ_DIGITS, "0")}`;
 }
 
-/** Strip optional THRY brand for parsing stored or pasted refs. */
+/** Strip optional VT brand for parsing stored or pasted refs. */
 function stripInternalOrderRefBrand(value: string): string {
   return value
     .trim()
@@ -56,8 +56,8 @@ function stripInternalOrderRefBrand(value: string): string {
 }
 
 /**
- * Human-facing internal ref with brand, e.g. `THRY26090001`.
- * DB keeps the numeric `26090001`; display always prefixes THRY.
+ * Human-facing internal ref with brand, e.g. `VT26090001`.
+ * DB keeps the numeric `26090001`; display always prefixes Vidhya Tex.
  */
 export function displayInternalOrderRef(
   value: string | null | undefined,

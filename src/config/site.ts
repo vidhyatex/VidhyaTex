@@ -2,43 +2,46 @@ import type { NavItemWithOptionalChildren } from "@/types";
 
 export type SiteConfig = typeof siteConfig;
 
-/** THRY storefront */
+/** Vidhya Tex storefront */
 const ADDRESS_LINES = [
-  "355/1, Balaji Nagar Bedrapalii, Sipcot-1",
-  "Hosur-635126",
+  "KK Nagar, Elampillai",
+  "Salem",
   "Tamil Nadu",
   "India",
 ] as const;
+
+const PHONE = "+91 99420 87560";
+const PHONE_HREF = "tel:+919942087560";
 
 const CONTACTS: readonly {
   name: string;
   phone: string;
   phoneHref: string;
-}[] = [];
-const EMAIL = "thrycoproduct@gmail.com";
+}[] = [{ name: "Vidhya Tex", phone: PHONE, phoneHref: PHONE_HREF }];
+const EMAIL = "vidhyatex7@gmail.com";
 const GSTIN = "";
 
 const SOCIAL = {
   instagram: "",
   youtube: "",
   facebook: "",
-  whatsapp: "",
+  whatsapp: "https://wa.me/919942087560",
 } as const;
 
 export const siteConfig = {
-  shopBoardName: "THRY",
-  name: "THRY",
-  shortName: "THRY",
-  tagline: "Creative 3D printed products",
-  location: "Hosur, Tamil Nadu",
+  shopBoardName: "Vidhya Tex",
+  name: "Vidhya Tex",
+  shortName: "Vidhya Tex",
+  tagline: "Boutique online shopping",
+  location: "Elampillai, Salem",
   description:
-    "THRY — creative 3D printed products, art & craft tools, customised gifts and home essentials.",
-  searchPlaceholder: "Search products…",
-  url: "https://thryco.com",
+    "Vidhya Tex — boutique online shopping for sarees from Elampillai, Salem. Silk, cotton and designer sarees delivered across India.",
+  searchPlaceholder: "Search sarees…",
+  url: "https://vidhyatex.vercel.app",
   addressLines: ADDRESS_LINES,
   address: ADDRESS_LINES.join(", "),
-  phone: "",
-  phoneHref: "",
+  phone: PHONE,
+  phoneHref: PHONE_HREF,
   contacts: CONTACTS,
   email: EMAIL,
   gstin: GSTIN,
@@ -47,27 +50,22 @@ export const siteConfig = {
   social: SOCIAL,
   announcements: [
     {
-      text: "Welcome to THRY — creative 3D printed products",
+      text: "Welcome to Vidhya Tex — boutique online shopping",
       href: "/shop",
       cta: "Shop now",
     },
     {
-      text: "Art & craft tools · clay cutters · stamps · mandala kits",
-      href: "/shop",
+      text: "Elampillai sarees · silk · cotton · designer",
+      href: "/collections",
       cta: "Explore",
     },
     {
-      text: "Customised gifts for every occasion",
-      href: "/collections",
-      cta: "Browse gifts",
+      text: "Order on WhatsApp: +91 99420 87560",
+      href: "https://wa.me/919942087560",
+      cta: "Chat now",
     },
     {
-      text: "3D printed statues · planters · toys & home essentials",
-      href: "/shop",
-      cta: "See more",
-    },
-    {
-      text: "New drops & festive favourites — shop the collection",
+      text: "New arrivals & festive favourites — shop the collection",
       href: "/featured",
       cta: "Featured",
     },
@@ -130,7 +128,7 @@ export const siteConfig = {
       ],
     },
     {
-      title: "About THRY",
+      title: "About Vidhya Tex",
       items: [
         { title: "Our Story", href: "/about", items: [] },
         { title: "Our Collections", href: "/collections", items: [] },

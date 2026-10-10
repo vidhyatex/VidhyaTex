@@ -8,6 +8,28 @@
     "branch": "main",
     "business": "Sarees / textiles"
   },
+  "brand": {
+    "displayName": "Vidhya Tex",
+    "tagline": "Boutique online shopping",
+    "address": "Vidhya Tex, KK Nagar, Elampillai, Salem, Tamil Nadu, India",
+    "postalCode": null,
+    "phone": "+91 99420 87560",
+    "whatsapp": "https://wa.me/919942087560",
+    "email": "vidhyatex7@gmail.com",
+    "gstin": null,
+    "social": { "instagram": null, "facebook": null, "youtube": null },
+    "colors": { "yellow": "#F5C518", "black": "#1C1814", "gold": "#C9A227", "text": "#2B2118" },
+    "logo": {
+      "badge": "public/images/vidhyatex-logo.png",
+      "badgeLarge": "public/images/vidhyatex-logo-1024.png",
+      "mark": "public/images/vidhyatex-mark.png",
+      "favicon": "src/app/favicon.ico",
+      "appIcon": "src/app/icon.png",
+      "appleIcon": "src/app/apple-icon.png",
+      "source": "Enhanced from the owner's yellow Ganesha badge photo (2026-10-10)"
+    },
+    "codeConfig": "src/config/site.ts"
+  },
   "site": {
     "canonicalOrigin": "https://vidhyatex.vercel.app",
     "wwwOrigin": "https://vidhyatex.vercel.app",
@@ -139,11 +161,17 @@
     "done": [
       "GitHub repo vidhyatex/VidhyaTex holds the code; THRY git remote removed",
       "Cloudflare, Vercel and GitHub CLI logins for Vidhya Tex set up (see cliAuth)",
-      "Supabase project zawfokxomwloatkzmzhq confirmed reachable"
+      "Supabase project zawfokxomwloatkzmzhq confirmed reachable",
+      "Shop name, address, phone/WhatsApp, email and enhanced logo applied (site.ts, header, icons, emails, SEO)",
+      "Storefront text rebranded from THRY / 3D-printed / craft copy to Vidhya Tex sarees (pages, policies, emails, checkout, packing slips)",
+      "Order number display prefix is VT (e.g. VT26100001); packing slip brand is VIDHYA TEX"
     ],
     "pending": [
-      "Brand details (address, phone, email, GSTIN, social links, logo) not provided yet",
-      "Code still contains THRY names/text/config (wrangler files, src/config/site.ts, .env.example, workers/*) - rebrand next",
+      "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
+      "Site colour theme is still THRY pink/lilac; should move to the logo's yellow/black/gold",
+      "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
+      "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL)",
+      "THRY names remain in wrangler*.jsonc, .env.example, workers/*, scripts/* and docs/*; update when Cloudflare resources are created (wrangler-production test fails until then - intended guard)",
       "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet",
       "Vercel project 'vidhyatex' not created yet; productionHost is the planned default",
       "No custom domain yet"

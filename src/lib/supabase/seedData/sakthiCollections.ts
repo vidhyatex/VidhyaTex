@@ -32,7 +32,7 @@ const DEMO_COLLECTION_SLUGS = [
 function collectionCopy(label: string) {
   return {
     title: label,
-    description: `Explore our ${label} at THRY.`,
+    description: `Explore our ${label} at Vidhya Tex.`,
   };
 }
 
@@ -67,7 +67,7 @@ export default async function seedSakthiCollections(
     const { title, description } = collectionCopy(label);
     const order = i + 1;
     const imageKey = collectionImageForLabel(label, i);
-    const imageAlt = `${label} — THRY`;
+    const imageAlt = `${label} — Vidhya Tex`;
 
     const existing = await db
       .select()

@@ -14,7 +14,7 @@ export default function PaymentMethodsPage() {
   return (
     <InfoPage
       heading="Payment Methods"
-      description="Secure online checkout for THRY orders."
+      description="Secure online checkout for Vidhya Tex orders."
     >
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">

@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { BRAND_LOGO } from "@/lib/brand/logo";
 import { toGstInclusiveAmount } from "@/lib/courier/calculate";
 import { formatOrderDateTimeIst } from "@/lib/datetime/india";
 import {
@@ -106,11 +107,11 @@ export function formatOrderPhoneLabel(
 
 export function buildEmailBrandHeaderHtml(): string {
   const logoUrl = escapeHtml(
-    `${siteConfig.url.replace(/\/$/, "")}/images/thry-wordmark.svg`,
+    `${siteConfig.url.replace(/\/$/, "")}${BRAND_LOGO.src}`,
   );
   const name = escapeHtml(siteConfig.name);
   return `<div style="margin-bottom:20px;">
-    <img src="${logoUrl}" alt="${name}" width="120" height="32" style="display:block;height:32px;width:auto;max-width:140px;margin-bottom:8px;" />
+    <img src="${logoUrl}" alt="${name}" width="72" height="72" style="display:block;height:72px;width:72px;margin-bottom:8px;" />
   </div>`;
 }
 
@@ -146,7 +147,7 @@ export function buildEmailLayoutHtml(params: {
 </html>`;
 }
 
-/** Customer-facing order number: THRY ref when assigned, else `#<orderId>`. */
+/** Customer-facing order number: VT ref when assigned, else `#<orderId>`. */
 export function formatEmailOrderNumber(
   orderId: string,
   internalRef?: string | null,
@@ -154,7 +155,7 @@ export function formatEmailOrderNumber(
   return displayInternalOrderRef(internalRef) ?? `#${orderId}`;
 }
 
-/** Plain-text order number lines (THRY ref first, long id second). */
+/** Plain-text order number lines (VT ref first, long id second). */
 export function buildOrderNumberPlainTextLines(
   orderId: string,
   internalRef?: string | null,

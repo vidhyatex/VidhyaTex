@@ -5,7 +5,7 @@
 @layer base {
   :root {
     /*
-      THRY — locked to wordmark gradient
+      Vidhya Tex — locked to wordmark gradient
       #f472b6 rose → #e879f9 magenta → #a78bfa lilac → #fbbf24 gold
     */
     --background: 330 55% 98%;
@@ -287,7 +287,7 @@ html {
   animation: phone-glow 2.2s ease-in-out infinite;
 }
 
-/* THRY wordmark lockup */
+/* Vidhya Tex wordmark lockup */
 .brand-board-lockup {
   isolation: isolate;
   color-scheme: light;
@@ -298,17 +298,11 @@ html {
 }
 
 .brand-wordmark-text {
-  background-image: linear-gradient(
-    90deg,
-    #f472b6 0%,
-    #e879f9 35%,
-    #a78bfa 70%,
-    #fbbf24 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 1px 1px hsl(var(--brand-rose) / 0.18));
+  color: #2b2118;
+}
+
+.dark .brand-wordmark-text {
+  color: #f5c518;
 }
 
 .brand-board-emblem {

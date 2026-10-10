@@ -6,8 +6,8 @@ import OAuthLoginButtons from "@/features/auth/components/OAuthLoginButtons";
 import { SigninForm } from "@/features/auth";
 
 export const metadata: Metadata = {
-  title: "Sign In | THRY",
-  description: "Sign in to your THRY account",
+  title: "Sign In | Vidhya Tex",
+  description: "Sign in to your Vidhya Tex account",
 };
 
 type SignInPageProps = {

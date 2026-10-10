@@ -9,7 +9,7 @@ export function getResendConfig(): ResendConfig | null {
   if (!apiKey) return null;
 
   const fromEmail =
-    process.env.RESEND_FROM_EMAIL?.trim() || "THRY <orders@thryco.com>";
+    process.env.RESEND_FROM_EMAIL?.trim() || "Vidhya Tex <onboarding@resend.dev>";
 
   return { apiKey, fromEmail };
 }

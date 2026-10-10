@@ -3,7 +3,7 @@ import { INTERNAL_ORDER_REF_BRAND } from "@/lib/orders/internal-order-ref";
 export type AdminOrderSearchTerms = {
   /** ILIKE pattern against `orders.id`. */
   idPattern: string;
-  /** ILIKE pattern against numeric `orders.internal_ref`, or null unless the query is a ref (digits, optional THRY). */
+  /** ILIKE pattern against numeric `orders.internal_ref`, or null unless the query is a ref (digits, optional Vidhya Tex). */
   refPattern: string | null;
   /** ILIKE pattern against `orders.name`, or null unless the query contains a letter. */
   namePattern: string | null;
@@ -28,7 +28,7 @@ function toMobileDigits(value: string): string | null {
 
 /**
  * Admin order search by order id, internal ref, customer name or mobile.
- * Accepts pasted display forms like `#abc123`, `Ref #THRY26090153`, `THRY-0153`,
+ * Accepts pasted display forms like `#abc123`, `Ref #VT26090153`, `VT-0153`,
  * `+91 98765 43210`.
  */
 export function buildAdminOrderSearchTerms(

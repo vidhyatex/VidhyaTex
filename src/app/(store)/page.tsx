@@ -38,27 +38,27 @@ const HomeTestimonialsCarousel = dynamic(() =>
 
 export const revalidate = 120;
 
-const homeSocial = buildSocialImages(null, "THRY");
+const homeSocial = buildSocialImages(null, "Vidhya Tex");
 
 export const metadata: Metadata = {
-  title: "Creative 3D printed products",
+  title: "Boutique online saree shopping",
   description:
-    "Shop creative 3D printed products at THRY — art & craft tools, customised gifts, statues, planters and more.",
+    "Shop sarees online at Vidhya Tex — silk, cotton, fancy and designer sarees from Elampillai, Salem, delivered across India.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "THRY | Creative 3D printed products",
+    title: "Vidhya Tex | Boutique online saree shopping",
     description:
-      "Shop creative 3D printed products at THRY — art & craft tools, gifts, statues and home essentials.",
+      "Shop sarees online at Vidhya Tex — silk, cotton, fancy and designer sarees from Elampillai, Salem.",
     url: "/",
     ...homeSocial.openGraph,
   },
   twitter: {
     ...homeSocial.twitter,
-    title: "THRY | Creative 3D printed products",
+    title: "Vidhya Tex | Boutique online saree shopping",
     description:
-      "Shop creative 3D printed products at THRY — art & craft tools, gifts, statues and home essentials.",
+      "Shop sarees online at Vidhya Tex — silk, cotton, fancy and designer sarees from Elampillai, Salem.",
   },
 };
 

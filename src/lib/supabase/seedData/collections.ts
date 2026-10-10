@@ -17,7 +17,7 @@ const seedCollections = async () => {
         .insert(schema.medias)
         .values({
           key: imageKey,
-          alt: `${label} — THRY`,
+          alt: `${label} — Vidhya Tex`,
         })
         .returning();
 
@@ -27,7 +27,7 @@ const seedCollections = async () => {
         label,
         slug,
         title: label,
-        description: `Explore our ${label} at THRY.`,
+        description: `Explore our ${label} at Vidhya Tex.`,
         order: i + 1,
         featuredImageId: media.id,
       });

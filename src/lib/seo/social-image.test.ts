@@ -110,13 +110,13 @@ describe("buildSocialImages", () => {
   });
 
   it("uses absolute site JPG fallback when no media key is provided", () => {
-    const meta = buildSocialImages(null, "THRY", deps);
+    const meta = buildSocialImages(null, "Vidhya Tex", deps);
     expect(meta.openGraph?.images).toEqual([
       {
         url: "https://thryco.com/images/og-default.jpg",
         width: 1200,
         height: 630,
-        alt: "THRY",
+        alt: "Vidhya Tex",
       },
     ]);
   });

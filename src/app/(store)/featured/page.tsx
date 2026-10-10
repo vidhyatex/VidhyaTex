@@ -15,27 +15,27 @@ import { buildSocialImages } from "@/lib/seo/social-image";
 
 export const revalidate = 120;
 
-const featuredSocial = buildSocialImages(null, "THRY");
+const featuredSocial = buildSocialImages(null, "Vidhya Tex");
 
 export const metadata: Metadata = {
   title: "Featured Products",
   description:
-    "Discover handpicked featured craft supplies at THRY — premium styles for weddings, festivals and special occasions.",
+    "Discover handpicked featured sarees at Vidhya Tex — premium styles for weddings, festivals and special occasions.",
   alternates: {
     canonical: "/featured",
   },
   openGraph: {
-    title: "Featured Products | THRY",
+    title: "Featured Products | Vidhya Tex",
     description:
-      "Discover handpicked featured craft supplies at THRY for weddings and festivals.",
+      "Discover handpicked featured sarees at Vidhya Tex for weddings and festivals.",
     url: "/featured",
     ...featuredSocial.openGraph,
   },
   twitter: {
     ...featuredSocial.twitter,
-    title: "Featured Products | THRY",
+    title: "Featured Products | Vidhya Tex",
     description:
-      "Discover handpicked featured craft supplies at THRY for weddings and festivals.",
+      "Discover handpicked featured sarees at Vidhya Tex for weddings and festivals.",
   },
 };
 
@@ -67,7 +67,7 @@ async function FeaturedProductsPage() {
     <Shell>
       <Header
         heading="Featured Products"
-        description="Our handpicked craft supplies — materials for make, craft, create"
+        description="Our handpicked sarees — silk, cotton and designer picks"
       />
 
       {featuredUnavailable ? (

@@ -5,7 +5,7 @@ describe("toJsonLdDocuments", () => {
     const input = {
       "@context": "https://schema.org",
       "@type": "Organization",
-      name: "THRY",
+      name: "Vidhya Tex",
     };
     expect(toJsonLdDocuments(input)).toEqual([input]);
   });
@@ -15,20 +15,20 @@ describe("toJsonLdDocuments", () => {
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "THRY",
+        name: "Vidhya Tex",
       },
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "THRY",
+        name: "Vidhya Tex",
       },
     ]);
 
     expect(docs).toHaveLength(1);
     expect(docs[0]?.["@context"]).toBe("https://schema.org");
     expect(docs[0]?.["@graph"]).toEqual([
-      { "@type": "Organization", name: "THRY" },
-      { "@type": "WebSite", name: "THRY" },
+      { "@type": "Organization", name: "Vidhya Tex" },
+      { "@type": "WebSite", name: "Vidhya Tex" },
     ]);
   });
 

@@ -7,25 +7,25 @@ import { Metadata } from "next";
 
 export const revalidate = 300;
 
-const collectionsSocial = buildSocialImages(null, "THRY");
+const collectionsSocial = buildSocialImages(null, "Vidhya Tex");
 
 export const metadata: Metadata = {
   title: "All Collections",
   description:
-    "Browse craft collections at THRY — terracotta materials, art supplies, and creative kits.",
+    "Browse saree collections at Vidhya Tex — silk, cotton, fancy and designer sarees.",
   alternates: {
     canonical: "/collections",
   },
   openGraph: {
-    title: "All Collections | THRY",
-    description: "Browse terracotta and art & craft collections at THRY.",
+    title: "All Collections | Vidhya Tex",
+    description: "Browse silk, cotton and designer saree collections at Vidhya Tex.",
     url: "/collections",
     ...collectionsSocial.openGraph,
   },
   twitter: {
     ...collectionsSocial.twitter,
-    title: "All Collections | THRY",
-    description: "Browse terracotta and art & craft collections at THRY.",
+    title: "All Collections | Vidhya Tex",
+    description: "Browse silk, cotton and designer saree collections at Vidhya Tex.",
   },
 };
 

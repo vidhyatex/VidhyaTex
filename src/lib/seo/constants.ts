@@ -72,17 +72,17 @@ export const SEO_PRIMARY_NAV = [
   {
     name: "Shop all products",
     href: "/shop",
-    description: "Browse terracotta and art & craft supplies online.",
+    description: "Browse silk, cotton and designer sarees online.",
   },
   {
     name: "Featured products",
     href: "/featured",
-    description: "Handpicked craft supplies and materials.",
+    description: "Handpicked sarees and new arrivals.",
   },
   {
     name: "All collections",
     href: "/collections",
-    description: "Explore craft collections and categories.",
+    description: "Explore saree collections and categories.",
   },
   {
     name: "Contact us",

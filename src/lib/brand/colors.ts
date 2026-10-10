@@ -1,4 +1,4 @@
-/** THRY palette — locked to wordmark gradient stops */
+/** Vidhya Tex palette — locked to wordmark gradient stops */
 export const brandColors = {
   rose: "#f472b6",
   roseDeep: "#e94a9a",

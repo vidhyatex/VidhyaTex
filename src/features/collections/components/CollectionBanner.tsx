@@ -28,7 +28,7 @@ function CollectionBanner({
   return (
     <header className="mb-6 w-full md:mb-8">
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-magenta/80 sm:text-sm">
-        THRY collection
+        Vidhya Tex collection
       </p>
       <h1 className="mt-1 font-[family-name:var(--font-hero-serif)] text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl md:text-5xl">
         {label}

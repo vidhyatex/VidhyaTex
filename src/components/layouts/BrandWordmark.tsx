@@ -1,5 +1,10 @@
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
-import { BRAND_WORDMARK, brandLogoMaxHeight } from "@/lib/brand/logo";
+import {
+  BRAND_MARK,
+  BRAND_WORDMARK,
+  brandLogoMaxHeight,
+} from "@/lib/brand/logo";
 import { cn } from "@/lib/utils";
 import type { ShopBoardBrandSize } from "@/lib/brand/shop-board";
 
@@ -12,12 +17,12 @@ type Props = {
 };
 
 const sizeClass: Record<BrandWordmarkSize, string> = {
-  nav: "text-[2rem] leading-none md:text-[2.15rem]",
-  md: "text-[2.5rem] leading-none",
-  footer: "text-[3rem] leading-none",
+  nav: "text-[1.5rem] leading-none md:text-[1.7rem]",
+  md: "text-[2rem] leading-none",
+  footer: "text-[2.4rem] leading-none",
 };
 
-/** THRY text wordmark — colorful girl-forward brand lockup. */
+/** Vidhya Tex lockup — Ganesha badge mark plus serif wordmark. */
 export function BrandWordmark({
   className,
   size = "md",
@@ -28,7 +33,7 @@ export function BrandWordmark({
   return (
     <span
       className={cn(
-        "brand-board-lockup brand-wordmark inline-flex shrink-0 items-center",
+        "brand-board-lockup brand-wordmark inline-flex shrink-0 items-center gap-2",
         size === "nav" && "brand-board-lockup--nav",
         align === "center" && "mx-auto justify-center",
         className,
@@ -36,9 +41,18 @@ export function BrandWordmark({
       style={{ minHeight: height }}
       aria-label={`${siteConfig.shopBoardName} — ${siteConfig.tagline}`}
     >
+      <Image
+        src={BRAND_MARK.src}
+        alt=""
+        width={height}
+        height={height}
+        priority={size === "nav"}
+        className="relative z-[2] shrink-0 select-none"
+        style={{ width: height, height }}
+      />
       <span
         className={cn(
-          "brand-wordmark-text relative z-[2] select-none font-[family-name:var(--font-brand-sans)] font-extrabold tracking-tight",
+          "brand-wordmark-text relative z-[2] select-none whitespace-nowrap font-serif font-semibold tracking-wide",
           sizeClass[size],
         )}
       >

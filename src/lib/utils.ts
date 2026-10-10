@@ -40,12 +40,12 @@ export function r2PublicUrl(key: string) {
 }
 
 /** Local SVG if CDN key is missing or the remote file fails to load. */
-export const STOREFRONT_IMAGE_FALLBACK = "/images/thry-hero-statues.svg";
+export const STOREFRONT_IMAGE_FALLBACK = "/images/vidhyatex-logo.png";
 
 /** OpenNext on Cloudflare serves `/_next/image` with attachment headers for remote URLs. */
 export function shouldBypassImageOptimization(src: string): boolean {
   if (!src) return false;
-  // Local SVGs (e.g. THRY hero placeholders) skip the image optimizer.
+  // Local SVGs (e.g. Vidhya Tex hero placeholders) skip the image optimizer.
   if (src.startsWith("/") && /\.svg(?:$|\?)/i.test(src)) return true;
   if (src.startsWith("/")) return false;
   if (src.startsWith("http://") || src.startsWith("https://")) return true;
@@ -70,7 +70,7 @@ export const keytoUrl = (key?: string) => {
     return key;
   }
 
-  // Local public assets (e.g. /images/thry-wordmark.svg)
+  // Local public assets (e.g. /images/vidhyatex-logo.png)
   if (key.startsWith("/")) {
     return key;
   }

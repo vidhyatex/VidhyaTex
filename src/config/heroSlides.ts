@@ -1,4 +1,5 @@
 import { siteConfig } from "@/config/site";
+import { BRAND_LOGO } from "@/lib/brand/logo";
 
 export type HeroSlide = {
   id: string;
@@ -10,33 +11,33 @@ export type HeroSlide = {
   imageAlt: string;
 };
 
-/** Homepage hero fallback until Admin → Home Banner uploads product photos. */
+/** Homepage hero fallback until Admin → Home Banner uploads saree photos. */
 export const heroSlides: HeroSlide[] = [
   {
-    id: "craft",
-    title: "Art & craft tools",
-    subtitle: "Clay cutters, stamps, mandala tools and more",
+    id: "sarees",
+    title: "Elampillai sarees",
+    subtitle: "Handpicked silk, cotton and fancy sarees from Salem",
     href: "/shop",
     cta: "Shop now",
-    image: "/images/thry-hero-craft.svg",
-    imageAlt: `${siteConfig.name} — art and craft tools`,
+    image: BRAND_LOGO.src,
+    imageAlt: `${siteConfig.name} — Elampillai sarees`,
   },
   {
-    id: "gifts",
-    title: "Customised gifts",
-    subtitle: "Thoughtful 3D-printed gifts for every occasion",
+    id: "festive",
+    title: "Festive & wedding collection",
+    subtitle: "Rich silks and designer sarees for every occasion",
     href: "/collections",
     cta: "Explore",
-    image: "/images/thry-hero-gifts.svg",
-    imageAlt: `${siteConfig.name} — customised gifts`,
+    image: BRAND_LOGO.src,
+    imageAlt: `${siteConfig.name} — festive and wedding sarees`,
   },
   {
-    id: "statues",
-    title: "3D printed creations",
-    subtitle: "Statues, planters, toys and home essentials",
+    id: "daily",
+    title: "Everyday comfort",
+    subtitle: "Soft cotton and daily-wear sarees at boutique prices",
     href: "/shop",
     cta: "Browse all",
-    image: "/images/thry-hero-statues.svg",
-    imageAlt: `${siteConfig.name} — 3D printed creations`,
+    image: BRAND_LOGO.src,
+    imageAlt: `${siteConfig.name} — daily wear sarees`,
   },
 ];
