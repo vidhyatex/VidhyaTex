@@ -124,13 +124,62 @@
     "supabase": {
       "account": "Vidhya Tex Supabase (project zawfokxomwloatkzmzhq)",
       "use": "Management API token in %USERPROFILE%\\.vidhyatex-cli\\supabase-token.txt (header Authorization: Bearer <token>, https://api.supabase.com/v1/projects/zawfokxomwloatkzmzhq/...). DB password in %USERPROFILE%\\.vidhyatex-cli\\supabase-db-password.txt. Never copy either into the repo.",
+      "tokenPath": "%USERPROFILE%\\.vidhyatex-cli\\supabase-token.txt",
+      "dbPasswordPath": "%USERPROFILE%\\.vidhyatex-cli\\supabase-db-password.txt",
       "poolerHost": "aws-0-ap-south-1.pooler.supabase.com",
       "poolerUser": "postgres.zawfokxomwloatkzmzhq",
       "poolerPorts": { "transaction": 6543, "session": 5432 },
       "databaseUrlTemplate": "postgresql://postgres.zawfokxomwloatkzmzhq:<url-encoded password>@aws-0-ap-south-1.pooler.supabase.com:6543/postgres",
       "check": "Invoke-RestMethod https://api.supabase.com/v1/projects -Headers @{Authorization=\"Bearer $((Get-Content $HOME\\.vidhyatex-cli\\supabase-token.txt).Trim())\"}"
     },
-    "cursorMcpWarning": "The Cursor MCP servers for Supabase, Vercel and Cloudflare are logged into THRY accounts. Never use them for Vidhya Tex; use the CLIs above instead."
+    "secretsVault": {
+      "description": "ALL shared secrets for this project live ONLY under %USERPROFILE%\\.vidhyatex-cli\\ (and are mirrored to Vercel / GitHub / Workers). Never put secret values in project.identity.json, chat replies to commit, or the git repo. Rebuild local .env.local with: node %USERPROFILE%\\.vidhyatex-cli\\build-env-local.mjs",
+      "root": "%USERPROFILE%\\.vidhyatex-cli",
+      "readme": "%USERPROFILE%\\.vidhyatex-cli\\README-SECRETS.txt",
+      "buildEnvLocal": "node %USERPROFILE%\\.vidhyatex-cli\\build-env-local.mjs",
+      "files": {
+        "supabaseManagementToken": "supabase-token.txt",
+        "supabaseDbPassword": "supabase-db-password.txt",
+        "cloudflareDnsToken": "cloudflare-dns-token.txt",
+        "r2S3Keys": "r2-s3.env",
+        "r2MediaProxySecret": "r2-media-proxy-secret.txt",
+        "resendApiKey": "resend-api-key.txt",
+        "upstashRedis": "upstash.env",
+        "cronSecret": "cron-secret.txt",
+        "orderAccessSecret": "order-access-secret.txt",
+        "catalogSyncSecret": "catalog-sync-secret.txt"
+      },
+      "vercelEnvKeysSet": [
+        "NEXT_PUBLIC_SUPABASE_PROJECT_REF",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "DATABASE_SERVICE_ROLE",
+        "DATABASE_URL",
+        "NEXT_PUBLIC_SITE_URL",
+        "NEXT_PUBLIC_S3_BUCKET",
+        "NEXT_PUBLIC_S3_REGION",
+        "NEXT_PUBLIC_CDN_URL",
+        "NEXT_PUBLIC_IMAGE_DELIVERY_MODE",
+        "NEXT_PUBLIC_MEDIA_CDN_ORIGIN",
+        "S3_ENDPOINT",
+        "S3_ACCESS_KEY_ID",
+        "S3_SECRET_ACCESS_KEY",
+        "CRON_SECRET",
+        "ORDER_ACCESS_SECRET",
+        "RESEND_API_KEY",
+        "RESEND_FROM_EMAIL",
+        "UPSTASH_REDIS_REST_URL",
+        "UPSTASH_REDIS_REST_TOKEN",
+        "R2_MEDIA_PROXY_URL",
+        "R2_MEDIA_PROXY_SECRET",
+        "CATALOG_WORKER_URL",
+        "CATALOG_SYNC_SECRET",
+        "CATALOG_READ"
+      ],
+      "githubRepoSecrets": ["CRON_SECRET"],
+      "missingKeys": ["RAZORPAY_* / payment provider keys"]
+    },
+    "cursorMcpWarning": "Cursor MCP for Upstash/Resend/Cloudflare/Supabase/Vercel may be logged into THRY or Velosoft. Prefer the CLIs and secretsVault paths above for Vidhya Tex. Never write Vidhya Tex secrets into a THRY project."
   },
   "authRedirectOrigins": [
     "http://localhost:3000",
@@ -204,13 +253,13 @@
       "R2 enabled: buckets vidhyatex-cdn + vidhyatex-next-cache; public URL pub-94a9b150ed4549f7b9d5060e843dd982.r2.dev; CORS set",
       "D1 vidhyatex-catalog created (210d4e06-9e4f-4e18-9c73-2b3bb4fbb416); workers.dev subdomain vidhyatex registered",
       "Workers deployed: vidhyatex-media + vidhyatex-catalog on *.vidhyatex.workers.dev",
-      "Resend: domain vidhyatex.com verified; API key + from noreply@vidhyatex.com on Vercel (DNS SPF/DKIM applied)"
+      "Resend: domain vidhyatex.com verified; API key + from noreply@vidhyatex.com on Vercel (DNS SPF/DKIM applied)",
+      "Upstash Redis set on Vercel (REST host heroic-fawn-66615.upstash.io); local copy %USERPROFILE%\\.vidhyatex-cli\\upstash.env",
+      "R2 S3 API keys on Vercel (list-bucket OK for vidhyatex-cdn); local copy %USERPROFILE%\\.vidhyatex-cli\\r2-s3.env"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
-      "Upstash Redis: Cursor Upstash connection is read-only / THRY account — create DB vidhyatex under vidhyatex7 and paste UPSTASH_REDIS_REST_URL + TOKEN",
-      "R2 S3 API token still missing (S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY) — create in Cloudflare R2 → API Tokens (Object Read & Write, bucket vidhyatex-cdn)",
       "Vercel still missing Razorpay keys",
       "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>",
       "Optional: attach media.vidhyatex.com custom domain to R2 / media worker instead of r2.dev URL"

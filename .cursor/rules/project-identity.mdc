@@ -1,21 +1,26 @@
 ---
-description: Always use project.identity.json as the Vidhya Tex source of truth for auth, GitHub, Cloudflare, Supabase, Vercel, and site hosts.
+description: Always use project.identity.json as the Vidhya Tex source of truth for auth, secrets paths, GitHub, Cloudflare, Supabase, Vercel, and site hosts.
 alwaysApply: true
 ---
 
 # Project identity (Vidhya Tex)
 
-This repo is **Vidhya Tex** (sarees / textiles shop, GitHub `vidhyatex/VidhyaTex`). It was copied from THRY but is a separate brand with separate secrets. **Never read from, push to, deploy to, or log into anything THRY.**
+This repo is **Vidhya Tex** (sarees / textiles, GitHub `vidhyatex/VidhyaTex`, live site `https://vidhyatex.com`). It was copied from THRY but is a **separate brand with separate secrets**. Never read from, push to, deploy to, or log into anything THRY / Velosoft / other shops.
 
-Before any git push, auth, Cloudflare, R2, Supabase, Vercel, wrangler, deploy, or env work:
+## Every session — before any env, deploy, DNS, or auth work
 
-1. Read **`project.identity.json`** at the repo root. It is the only source of truth for account IDs, hosts and logins.
-2. Use the saved logins in `cliAuth` directly. **Do not ask the user to log in or for IDs that are already in the file.** Run the `check` command first; only ask for a new login if it fails.
-   - GitHub: `gh auth switch -h github.com -u vidhyatex` before pushing.
-   - Cloudflare: set `$env:XDG_CONFIG_HOME = "$HOME\.vidhyatex-cli"` before every `wrangler` command, then `Remove-Item Env:XDG_CONFIG_HOME` right after (it also hides the GitHub CLI login).
-   - Vercel: pass `--global-config "$HOME\.vidhyatex-cli\vercel"` to every `vercel` command.
-3. Do **not** use the Cursor MCP servers for Supabase, Vercel or Cloudflare here; they are logged into THRY.
-4. Never use anything listed under `forbidden` (THRY and other shops' accounts, projects, hosts, buckets, repos).
-5. When a login, ID, host or resource is added or changes: **update `project.identity.json` first** (including `status`), then wrangler / env / scripts to match.
-6. Run **`npm run validate:identity`** (and `npm run validate:identity:login` when touching Cloudflare login) after identity or env changes.
-7. Never commit secrets (`.env.local`, API keys, tokens). The identity file holds public IDs only.
+1. Read **`project.identity.json`** at the repo root. It is the only source of truth for public IDs, hosts, and **where secrets live**.
+2. Use **`cliAuth`** and **`cliAuth.secretsVault`** directly. **Do not ask the user again for IDs or secrets that are already stored** unless the `check` command fails or a vault file is missing.
+3. Secret **values** live only under **`%USERPROFILE%\.vidhyatex-cli\`** (see `cliAuth.secretsVault.files`). Rebuild local env with:
+   `node %USERPROFILE%\.vidhyatex-cli\build-env-local.mjs`
+4. **Never** put secret values into `project.identity.json`, commits, or PR text. Identity stores **paths and public IDs only**.
+5. Prefer the Vidhya Tex CLIs below over Cursor MCP (MCP may be THRY/Velosoft):
+   - GitHub: `gh auth switch -h github.com -u vidhyatex` before push.
+   - Cloudflare: `$env:XDG_CONFIG_HOME = "$HOME\.vidhyatex-cli"` → `npx wrangler …` → `Remove-Item Env:XDG_CONFIG_HOME` (clear it so `gh` keeps working).
+   - Vercel: `npx vercel … --global-config "$HOME\.vidhyatex-cli\vercel"`.
+   - Cloudflare DNS: Bearer token from `cloudflare-dns-token.txt`.
+   - Supabase Management API: Bearer token from `supabase-token.txt`.
+6. Never use anything under **`forbidden`**.
+7. When a login, ID, host, or secret **path** changes: update **`project.identity.json` first** (and `status`), then wrangler / Vercel / scripts.
+8. Run **`npm run validate:identity`** after identity or env wiring changes.
+9. Never commit `.env.local` or vault files.
