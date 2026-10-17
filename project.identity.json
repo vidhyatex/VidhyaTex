@@ -54,7 +54,8 @@
       "name": "vidhyatex.com",
       "id": "6682ae3117110800253b4e77bda63d83",
       "nameservers": ["nero.ns.cloudflare.com", "kara.ns.cloudflare.com"],
-      "dnsNote": "Zone DNS edit needs a Cloudflare API token (Zone.DNS Edit) saved at %USERPROFILE%\\.vidhyatex-cli\\cloudflare-dns-token.txt — wrangler OAuth has zone:read only"
+      "dnsTokenPath": "%USERPROFILE%\\.vidhyatex-cli\\cloudflare-dns-token.txt",
+      "dnsNote": "DNS for Vercel set 2026-10-17: CNAME @ and www → cname.vercel-dns.com (proxied=false). Token is Zone.DNS Edit for vidhyatex.com only."
     },
     "workerName": "vidhyatex",
     "mediaWorkerName": "vidhyatex-media",
@@ -194,13 +195,13 @@
       "Supabase database set up 2026-10-10: drizzle push (17 tables) + supabase/01 sections 3-4, 02-enable-graphql, 03..17 SQL, block-disposable-auth-signup; 14 saree collections seeded",
       "Supabase auth site_url and redirect allow list set to https://vidhyatex.com (+ www, vercel.app, localhost)",
       "Vercel env set: Supabase (ref, URL, anon, service role, DATABASE_URL pooler 6543), NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_S3_BUCKET, NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy, RESEND_FROM_EMAIL, ORDER_ACCESS_SECRET, CRON_SECRET",
-      "Custom domain vidhyatex.com added to Vercel (www → apex 308); app canonical URL switched to https://vidhyatex.com"
+      "Custom domain vidhyatex.com added to Vercel (www → apex 308); app canonical URL switched to https://vidhyatex.com",
+      "Cloudflare DNS set: CNAME @ and www → cname.vercel-dns.com (DNS only); Vercel reports domains configured"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
       "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL); after DNS works, verify vidhyatex.com in Resend",
-      "DNS for vidhyatex.com still misconfigured: add Cloudflare CNAME @ and www → cname.vercel-dns.com (proxy OFF / DNS only), or save a Zone.DNS Edit API token to %USERPROFILE%\\.vidhyatex-cli\\cloudflare-dns-token.txt",
       "R2 is not enabled on the Cloudflare account (API error 10042): owner must enable R2 in the dashboard, then create bucket vidhyatex-cdn and an R2 API token; set S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY in Vercel",
       "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet; configs expect workers.dev subdomain 'vidhyatex' (media proxy https://vidhyatex-media.vidhyatex.workers.dev)",
       "D1 vidhyatex-catalog not created; set its id in workers/vidhyatex-catalog/wrangler.jsonc (currently SET_AFTER_D1_CREATE) and in cloudflare.d1",
