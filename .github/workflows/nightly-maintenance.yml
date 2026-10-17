@@ -21,7 +21,7 @@ jobs:
       - name: Run lifecycle cleanup cron
         shell: bash
         env:
-          SITE_ORIGIN: https://vidhyatex.vercel.app
+          SITE_ORIGIN: https://vidhyatex.com
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           set -euo pipefail

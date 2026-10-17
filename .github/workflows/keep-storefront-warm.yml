@@ -21,7 +21,7 @@ jobs:
       - name: Warm public routes
         shell: bash
         env:
-          SITE_ORIGIN: https://vidhyatex.vercel.app
+          SITE_ORIGIN: https://vidhyatex.com
         run: |
           set -euo pipefail
 
@@ -86,7 +86,7 @@ jobs:
       - name: Release expired stock reservations
         shell: bash
         env:
-          SITE_ORIGIN: https://vidhyatex.vercel.app
+          SITE_ORIGIN: https://vidhyatex.com
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           set -euo pipefail

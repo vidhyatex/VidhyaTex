@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  SITE_ORIGIN: https://vidhyatex.vercel.app
+  SITE_ORIGIN: https://vidhyatex.com
 
 jobs:
   payments-and-stock:

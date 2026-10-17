@@ -10,9 +10,9 @@
  *
  * X-VidhyaTex-Cache: HIT | MISS | BYPASS
  */
-const ORIGIN = "https://vidhyatex.vercel.app";
-const APEX = "vidhyatex.vercel.app";
-const WWW = "www.vidhyatex.vercel.app";
+const ORIGIN = "https://vidhyatex.com";
+const APEX = "vidhyatex.com";
+const WWW = "www.vidhyatex.com";
 
 /** Fallback TTL when origin omits s-maxage (seconds). */
 const DEFAULT_HTML_S_MAXAGE = 120;

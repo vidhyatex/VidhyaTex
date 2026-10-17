@@ -37,7 +37,7 @@ export const siteConfig = {
   description:
     "Vidhya Tex — boutique online shopping for sarees from Elampillai, Salem. Silk, cotton and designer sarees delivered across India.",
   searchPlaceholder: "Search sarees…",
-  url: "https://vidhyatex.vercel.app",
+  url: "https://vidhyatex.com",
   addressLines: ADDRESS_LINES,
   address: ADDRESS_LINES.join(", "),
   phone: PHONE,

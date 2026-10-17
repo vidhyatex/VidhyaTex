@@ -9,6 +9,8 @@ const EXACT_ORIGINS = new Set([
   "https://localhost",
   "http://localhost",
   "capacitor://localhost",
+  "https://vidhyatex.com",
+  "https://www.vidhyatex.com",
   "https://vidhyatex.vercel.app",
   "https://vidhyatex.vidhyatex.workers.dev",
 ]);

@@ -31,14 +31,16 @@
     "codeConfig": "src/config/site.ts"
   },
   "site": {
-    "canonicalOrigin": "https://vidhyatex.vercel.app",
-    "wwwOrigin": "https://vidhyatex.vercel.app",
+    "canonicalOrigin": "https://vidhyatex.com",
+    "wwwOrigin": "https://www.vidhyatex.com",
     "localOrigins": [
       "http://localhost:3000",
       "http://127.0.0.1:3000",
+      "https://vidhyatex.com",
+      "https://www.vidhyatex.com",
       "https://vidhyatex.vercel.app"
     ],
-    "customDomain": null
+    "customDomain": "vidhyatex.com"
   },
   "supabase": {
     "projectRef": "zawfokxomwloatkzmzhq",
@@ -48,6 +50,12 @@
   "cloudflare": {
     "accountEmail": "vidhyatex7@gmail.com",
     "accountId": "eb44426b1fd72351f6b204ddb5d9b586",
+    "zone": {
+      "name": "vidhyatex.com",
+      "id": "6682ae3117110800253b4e77bda63d83",
+      "nameservers": ["nero.ns.cloudflare.com", "kara.ns.cloudflare.com"],
+      "dnsNote": "Zone DNS edit needs a Cloudflare API token (Zone.DNS Edit) saved at %USERPROFILE%\\.vidhyatex-cli\\cloudflare-dns-token.txt — wrangler OAuth has zone:read only"
+    },
     "workerName": "vidhyatex",
     "mediaWorkerName": "vidhyatex-media",
     "catalogWorkerName": "vidhyatex-catalog",
@@ -71,8 +79,13 @@
     "accountEmail": "vidhyatex7@gmail.com",
     "projectSlug": "vidhyatex",
     "projectId": "prj_nESZkq4b6LY4CTKpy5Ya5EzOxUOS",
-    "productionHost": "vidhyatex.vercel.app",
-    "extraDomains": ["vidhya-tex.vercel.app"],
+    "productionHost": "vidhyatex.com",
+    "extraDomains": ["www.vidhyatex.com", "vidhyatex.vercel.app", "vidhya-tex.vercel.app"],
+    "domainDns": {
+      "apex": { "type": "CNAME", "name": "@", "content": "cname.vercel-dns.com", "proxied": false },
+      "www": { "type": "CNAME", "name": "www", "content": "cname.vercel-dns.com", "proxied": false },
+      "altApexA": ["216.198.79.1", "64.29.17.1"]
+    },
     "deploymentProtection": "Vercel Authentication on preview / *-vidhyatex7-8135.vercel.app URLs; production domains are public",
     "plan": "hobby",
     "crons": "Hobby allows daily crons only: vercel.json runs Razorpay recovery 02:00 IST and abandoned carts 10:00 IST; .github/workflows/store-crons.yml runs them every 10 / 30 min. CRON_SECRET is set in Vercel (production, preview) and as a GitHub repo secret; local copy %USERPROFILE%\\.vidhyatex-cli\\cron-secret.txt"
@@ -117,6 +130,8 @@
   "authRedirectOrigins": [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://vidhyatex.com",
+    "https://www.vidhyatex.com",
     "https://vidhyatex.vercel.app"
   ],
   "forbidden": {
@@ -166,7 +181,7 @@
     "githubAccounts": ["thrycoproduct-ux"]
   },
   "status": {
-    "updated": "2026-10-10",
+    "updated": "2026-10-17",
     "done": [
       "GitHub repo vidhyatex/VidhyaTex holds the code; THRY git remote removed",
       "Cloudflare, Vercel and GitHub CLI logins for Vidhya Tex set up (see cliAuth)",
@@ -177,20 +192,21 @@
       "Site theme matches the logo: yellow #F5C518, black #1C1814, gold #C9A227, ink text #2B2118 (globals.css, emails, payment popup)",
       "THRY and other-shop names, hosts, scripts, images and Supabase refs removed from the repo (wrangler configs, workers, scripts, docs, supabase/config.toml, GitHub workflows)",
       "Supabase database set up 2026-10-10: drizzle push (17 tables) + supabase/01 sections 3-4, 02-enable-graphql, 03..17 SQL, block-disposable-auth-signup; 14 saree collections seeded",
-      "Supabase auth site_url and redirect allow list set to https://vidhyatex.vercel.app (+ localhost)",
-      "Vercel env set: Supabase (ref, URL, anon, service role, DATABASE_URL pooler 6543), NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_S3_BUCKET, NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy, RESEND_FROM_EMAIL, ORDER_ACCESS_SECRET, CRON_SECRET"
+      "Supabase auth site_url and redirect allow list set to https://vidhyatex.com (+ www, vercel.app, localhost)",
+      "Vercel env set: Supabase (ref, URL, anon, service role, DATABASE_URL pooler 6543), NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_S3_BUCKET, NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy, RESEND_FROM_EMAIL, ORDER_ACCESS_SECRET, CRON_SECRET",
+      "Custom domain vidhyatex.com added to Vercel (www → apex 308); app canonical URL switched to https://vidhyatex.com"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
-      "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL)",
-      "R2 is not enabled on the Cloudflare account (API error 10042): owner must enable R2 in the dashboard, then create bucket vidhyatex-cdn and an R2 API token; set S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY in Vercel and change NEXT_PUBLIC_CDN_URL (temporarily https://vidhyatex.vercel.app) to the bucket's public URL",
+      "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL); after DNS works, verify vidhyatex.com in Resend",
+      "DNS for vidhyatex.com still misconfigured: add Cloudflare CNAME @ and www → cname.vercel-dns.com (proxy OFF / DNS only), or save a Zone.DNS Edit API token to %USERPROFILE%\\.vidhyatex-cli\\cloudflare-dns-token.txt",
+      "R2 is not enabled on the Cloudflare account (API error 10042): owner must enable R2 in the dashboard, then create bucket vidhyatex-cdn and an R2 API token; set S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY in Vercel",
       "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet; configs expect workers.dev subdomain 'vidhyatex' (media proxy https://vidhyatex-media.vidhyatex.workers.dev)",
       "D1 vidhyatex-catalog not created; set its id in workers/vidhyatex-catalog/wrangler.jsonc (currently SET_AFTER_D1_CREATE) and in cloudflare.d1",
-      "workers/vidhyatex-shop-edge has no routes until a custom domain exists",
+      "workers/vidhyatex-shop-edge routes can be enabled after DNS points at Vercel",
       "Vercel env still missing: Razorpay, Resend API key, Upstash Redis, R2 (S3_*), media proxy and catalog worker keys",
-      "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>",
-      "No custom domain yet"
+      "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>"
     ]
   },
   "notes": [
