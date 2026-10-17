@@ -147,7 +147,15 @@
         "upstashRedis": "upstash.env",
         "cronSecret": "cron-secret.txt",
         "orderAccessSecret": "order-access-secret.txt",
-        "catalogSyncSecret": "catalog-sync-secret.txt"
+        "catalogSyncSecret": "catalog-sync-secret.txt",
+        "adminCredentials": "admin-credentials.txt"
+      },
+      "admin": {
+        "email": "vidhyatex7@gmail.com",
+        "signInUrl": "https://vidhyatex.com/sign-in",
+        "adminUrl": "https://vidhyatex.com/admin",
+        "passwordPath": "%USERPROFILE%\\.vidhyatex-cli\\admin-credentials.txt",
+        "note": "Password only in vault file; app_metadata.isAdmin + profiles.is_admin set"
       },
       "vercelEnvKeysSet": [
         "NEXT_PUBLIC_SUPABASE_PROJECT_REF",
@@ -255,13 +263,13 @@
       "Workers deployed: vidhyatex-media + vidhyatex-catalog on *.vidhyatex.workers.dev",
       "Resend: domain vidhyatex.com verified; API key + from noreply@vidhyatex.com on Vercel (DNS SPF/DKIM applied)",
       "Upstash Redis set on Vercel (REST host heroic-fawn-66615.upstash.io); local copy %USERPROFILE%\\.vidhyatex-cli\\upstash.env",
-      "R2 S3 API keys on Vercel (list-bucket OK for vidhyatex-cdn); local copy %USERPROFILE%\\.vidhyatex-cli\\r2-s3.env"
+      "R2 S3 API keys on Vercel (list-bucket OK for vidhyatex-cdn); local copy %USERPROFILE%\\.vidhyatex-cli\\r2-s3.env",
+      "Admin user vidhyatex7@gmail.com created (isAdmin); password in %USERPROFILE%\\.vidhyatex-cli\\admin-credentials.txt"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
       "Vercel still missing Razorpay keys",
-      "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>",
       "Optional: attach media.vidhyatex.com custom domain to R2 / media worker instead of r2.dev URL"
     ]
   },
