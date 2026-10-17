@@ -65,13 +65,17 @@
     "mediaWranglerConfig": "workers/r2-media-proxy/wrangler.jsonc",
     "d1": {
       "catalogDatabaseName": "vidhyatex-catalog",
-      "catalogDatabaseId": "",
+      "catalogDatabaseId": "210d4e06-9e4f-4e18-9c73-2b3bb4fbb416",
       "primaryLocationHint": "APAC"
     },
     "r2": {
       "mediaBucket": "vidhyatex-cdn",
       "nextCacheBucket": "vidhyatex-next-cache",
-      "s3Endpoint": "https://eb44426b1fd72351f6b204ddb5d9b586.r2.cloudflarestorage.com"
+      "s3Endpoint": "https://eb44426b1fd72351f6b204ddb5d9b586.r2.cloudflarestorage.com",
+      "publicDevUrl": "https://pub-94a9b150ed4549f7b9d5060e843dd982.r2.dev",
+      "mediaWorkerUrl": "https://vidhyatex-media.vidhyatex.workers.dev",
+      "catalogWorkerUrl": "https://vidhyatex-catalog.vidhyatex.workers.dev",
+      "workersDevSubdomain": "vidhyatex"
     }
   },
   "vercel": {
@@ -196,18 +200,20 @@
       "Supabase auth site_url and redirect allow list set to https://vidhyatex.com (+ www, vercel.app, localhost)",
       "Vercel env set: Supabase (ref, URL, anon, service role, DATABASE_URL pooler 6543), NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_S3_BUCKET, NEXT_PUBLIC_IMAGE_DELIVERY_MODE=legacy, RESEND_FROM_EMAIL, ORDER_ACCESS_SECRET, CRON_SECRET",
       "Custom domain vidhyatex.com added to Vercel (www → apex 308); app canonical URL switched to https://vidhyatex.com",
-      "Cloudflare DNS set: CNAME @ and www → cname.vercel-dns.com (DNS only); Vercel reports domains configured"
+      "Cloudflare DNS set: CNAME @ and www → cname.vercel-dns.com (DNS only); Vercel reports domains configured",
+      "R2 enabled: buckets vidhyatex-cdn + vidhyatex-next-cache; public URL pub-94a9b150ed4549f7b9d5060e843dd982.r2.dev; CORS set",
+      "D1 vidhyatex-catalog created (210d4e06-9e4f-4e18-9c73-2b3bb4fbb416); workers.dev subdomain vidhyatex registered",
+      "Workers deployed: vidhyatex-media + vidhyatex-catalog on *.vidhyatex.workers.dev",
+      "Resend: domain vidhyatex.com verified; API key + from noreply@vidhyatex.com on Vercel (DNS SPF/DKIM applied)"
     ],
     "pending": [
       "Brand: PIN code, GSTIN and Instagram/Facebook/YouTube links not provided yet",
       "Homepage hero slides show the logo as a placeholder; upload saree banners in Admin > Home Banner",
-      "Order emails send from onboarding@resend.dev until a domain is verified in Resend (set RESEND_FROM_EMAIL); after DNS works, verify vidhyatex.com in Resend",
-      "R2 is not enabled on the Cloudflare account (API error 10042): owner must enable R2 in the dashboard, then create bucket vidhyatex-cdn and an R2 API token; set S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY in Vercel",
-      "Cloudflare account is empty: no R2 buckets, D1 database, workers or workers.dev subdomain yet; configs expect workers.dev subdomain 'vidhyatex' (media proxy https://vidhyatex-media.vidhyatex.workers.dev)",
-      "D1 vidhyatex-catalog not created; set its id in workers/vidhyatex-catalog/wrangler.jsonc (currently SET_AFTER_D1_CREATE) and in cloudflare.d1",
-      "workers/vidhyatex-shop-edge routes can be enabled after DNS points at Vercel",
-      "Vercel env still missing: Razorpay, Resend API key, Upstash Redis, R2 (S3_*), media proxy and catalog worker keys",
-      "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>"
+      "Upstash Redis: Cursor Upstash connection is read-only / THRY account — create DB vidhyatex under vidhyatex7 and paste UPSTASH_REDIS_REST_URL + TOKEN",
+      "R2 S3 API token still missing (S3_ACCESS_KEY_ID / S3_SECRET_ACCESS_KEY) — create in Cloudflare R2 → API Tokens (Object Read & Write, bucket vidhyatex-cdn)",
+      "Vercel still missing Razorpay keys",
+      "No admin user yet: sign up on the site, then run node scripts/make-admin.mjs <email>",
+      "Optional: attach media.vidhyatex.com custom domain to R2 / media worker instead of r2.dev URL"
     ]
   },
   "notes": [
