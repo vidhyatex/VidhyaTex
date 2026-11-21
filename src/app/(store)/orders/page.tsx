@@ -38,14 +38,16 @@ async function OrderPage() {
     <Shell layout="narrow">
       <h1 className="border-b pb-8 text-3xl font-semibold">Orders</h1>
 
-      <div className="grid grid-cols-12 gap-x-5">
-        <section className="col-span-9">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-x-5">
+        <section className="min-w-0 lg:col-span-9">
           <OrdersList orders={orders} />
         </section>
 
-        <section className="col-span-3">
-          <BuyAgainCard products={buyAgainProducts} />
-        </section>
+        <aside className="min-w-0 lg:col-span-3">
+          <div className="lg:sticky lg:top-[calc(var(--store-header-offset-desktop)+1rem)]">
+            <BuyAgainCard products={buyAgainProducts} />
+          </div>
+        </aside>
       </div>
     </Shell>
   );

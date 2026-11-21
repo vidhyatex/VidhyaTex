@@ -28,30 +28,34 @@ function OrdersList({ orders }: OrdersListProps) {
     <div className="grid gap-y-5">
       {orders.map((order) => (
         <Card key={order.id}>
-          <CardHeader className="flex flex-row items-center justify-between bg-zinc-100 px-6 py-3">
-            <div>
+          <CardHeader className="flex flex-col gap-3 bg-zinc-100 px-4 py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4 sm:px-6">
+            <div className="min-w-0">
               <p className="text-xs font-medium">Order placed</p>
               <p className="text-sm">
                 {formatOrderDateTimeIst(order.createdAt)}
               </p>
             </div>
 
-            <div>
+            <div className="min-w-0 sm:text-right">
               <p className="text-xs font-medium">Total</p>
-              <p className="text-sm">{formatPrice(order.amount)}</p>
+              <p className="text-sm tabular-nums">
+                {formatPrice(order.amount)}
+              </p>
             </div>
 
-            <div>
+            <div className="min-w-0 sm:max-w-[40%] sm:text-right">
               <p className="text-xs font-medium">Order</p>
               {order.internalRef ? (
                 <>
                   <p className="text-sm font-semibold tabular-nums">
                     {displayInternalOrderRef(order.internalRef)}
                   </p>
-                  <p className="text-xs text-muted-foreground">#{order.id}</p>
+                  <p className="truncate text-xs text-muted-foreground">
+                    #{order.id}
+                  </p>
                 </>
               ) : (
-                <p className="text-sm">#{order.id}</p>
+                <p className="truncate text-sm">#{order.id}</p>
               )}
             </div>
           </CardHeader>
@@ -68,23 +72,26 @@ function OrdersList({ orders }: OrdersListProps) {
               ) : null}
             </div>
 
-            <div className="grid grid-cols-12 gap-8 py-3">
-              <div className="col-span-12 flex flex-col gap-5 md:col-span-8">
+            <div className="grid grid-cols-1 gap-5 py-3 md:grid-cols-12 md:gap-8">
+              <div className="min-w-0 flex flex-col gap-5 md:col-span-8">
                 {order.lines.map((line) => {
                   const imageSrc = keytoUrl(line.imageKey ?? undefined);
                   return (
-                    <div className="flex items-center gap-5" key={line.id}>
-                      <div className="relative h-[120px] min-w-[80px] w-[120px] grow">
+                    <div
+                      className="flex min-w-0 items-start gap-3 sm:items-center sm:gap-5"
+                      key={line.id}
+                    >
+                      <div className="relative h-20 w-20 shrink-0 sm:h-[120px] sm:w-[120px]">
                         <StorefrontImage
                           width={120}
                           height={120}
                           src={imageSrc}
                           alt={line.imageAlt || line.productName}
-                          className="h-[120px] w-[120px] object-cover"
+                          className="h-full w-full object-cover"
                         />
                       </div>
 
-                      <div className="flex flex-col gap-2">
+                      <div className="flex min-w-0 flex-col gap-2">
                         {line.productSlug ? (
                           <Link
                             href={`/shop/${line.productSlug}`}
@@ -96,7 +103,7 @@ function OrdersList({ orders }: OrdersListProps) {
                           <p className="font-medium">{line.productName}</p>
                         )}
                         {line.productDescription ? (
-                          <p className="line-clamp-2 leading-tight tracking-tighter">
+                          <p className="line-clamp-2 leading-tight tracking-tighter text-muted-foreground">
                             {line.productDescription}
                           </p>
                         ) : null}
@@ -106,17 +113,17 @@ function OrdersList({ orders }: OrdersListProps) {
                 })}
               </div>
 
-              <section className="col-span-12 flex w-full flex-col gap-3 md:col-span-4">
+              <section className="flex w-full min-w-0 flex-col gap-3 md:col-span-4">
                 <Link
                   href={`/orders/${order.id}`}
-                  className={cn(buttonVariants(), "mb-3")}
+                  className={cn(buttonVariants(), "mb-0 w-full sm:mb-3")}
                 >
                   View order details
                 </Link>
-                <Button variant="outline" disabled>
+                <Button variant="outline" disabled className="w-full">
                   Leave seller feedback
                 </Button>
-                <Button variant="outline" disabled>
+                <Button variant="outline" disabled className="w-full">
                   Write a product review
                 </Button>
               </section>

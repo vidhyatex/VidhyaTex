@@ -31,34 +31,36 @@ export const BuyAgainCardFragment = gql(/* GraphQL */ `
 
 function BuyAgainCard({ products }: BuyAgainCardProps) {
   const courierConfig = useCourierChargesConfig();
+  if (products.length === 0) return null;
+
   return (
-    <Card>
-      <CardHeader className="px-6 py-3 flex flex-row justify-between items-center bg-zinc-100">
-        <h2 className="text-lg">Buy again</h2>
+    <Card className="overflow-hidden">
+      <CardHeader className="flex flex-row items-center justify-between bg-zinc-100 px-4 py-3 sm:px-6">
+        <h2 className="text-lg font-semibold">Buy again</h2>
       </CardHeader>
-      <CardContent className="flex flex-col gap-y-5 py-5">
+      <CardContent className="flex flex-col gap-y-4 py-4 sm:gap-y-5 sm:py-5">
         {products.map(({ node }) => {
           const imageSrc = keytoUrl(node.featuredImage?.key);
           return (
-            <div key={node.id} className="grid grid-cols-5">
+            <div key={node.id} className="grid grid-cols-5 gap-2">
               <div className="relative col-span-2">
                 <StorefrontImage
                   src={imageSrc}
                   alt={node.featuredImage?.alt || node.name}
-                  className="w-[80px] h-[80px] object-cover"
+                  className="h-20 w-20 object-cover"
                   width={80}
                   height={80}
                 />
               </div>
 
-              <div className="col-span-3 ">
+              <div className="col-span-3 min-w-0">
                 <Link
                   href={"/shop/" + node.slug}
-                  className="text-blue-500 line-clamp-3"
+                  className="line-clamp-3 text-blue-500"
                 >
                   {node.name}
                 </Link>
-                <Link href={node.slug} className="text-red-700">
+                <Link href={`/shop/${node.slug}`} className="text-red-700">
                   <p>
                     {formatPrice(
                       toGstInclusiveAmount(Number(node.price), courierConfig),
