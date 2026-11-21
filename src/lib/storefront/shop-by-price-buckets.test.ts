@@ -96,7 +96,7 @@ describe("buildShopByPriceBuckets", () => {
     expect(buckets[1]).toMatchObject({ min: 800, max: 999, productCount: 1 });
   });
 
-  it("skips buckets when visible products have no featured image", () => {
+  it("keeps buckets when products have no featured image (fixed marketing art on home)", () => {
     const buckets = buildShopByPriceBuckets([
       {
         id: "1",
@@ -105,7 +105,13 @@ describe("buildShopByPriceBuckets", () => {
       },
     ]);
 
-    expect(buckets).toHaveLength(0);
+    expect(buckets).toHaveLength(1);
+    expect(buckets[0]).toMatchObject({
+      min: 500,
+      max: 799,
+      productCount: 1,
+      imageKey: null,
+    });
   });
 });
 

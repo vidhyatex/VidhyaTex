@@ -5,16 +5,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { CourierChargeBreakdown } from "@/lib/courier/calculate";
 import { shouldShowCartDiscountRows } from "@/features/carts/lib/cart-order-summary-display";
+import {
+  OTHER_COUNTRY_OPTION,
+  SHIPPING_COUNTRIES,
+} from "@/features/addresses/constants/shippingCountries";
 
 export type CartOrderSummaryFieldsProps = {
   productCount: number;
   courierEnabled: boolean;
   offerCodesEnabled: boolean;
+  deliveryCountry: string;
+  onCountryChange: (countryCode: string) => void;
   deliveryPincode: string;
   onPincodeChange: (pincode: string) => void;
   pincodeStatus: "idle" | "loading" | "ready" | "error";
   pincodeLocalityLabel: string | null;
   pincodeError: string | null;
+  indiaDelivery: boolean;
+  internationalEnabled: boolean;
+  internationalBlocked: boolean;
   pricingReady: boolean;
   promoInput: string;
   onPromoInputChange: (value: string) => void;
@@ -32,15 +41,20 @@ export type CartOrderSummaryFieldsProps = {
   totalAmount: number;
 };
 
-/** PIN-first delivery + price breakdown (hidden until PIN resolves). */
+/** Country-aware delivery + price breakdown. */
 export function CartOrderSummaryFields({
   courierEnabled,
   offerCodesEnabled,
+  deliveryCountry,
+  onCountryChange,
   deliveryPincode,
   onPincodeChange,
   pincodeStatus,
   pincodeLocalityLabel,
   pincodeError,
+  indiaDelivery,
+  internationalEnabled,
+  internationalBlocked,
   pricingReady,
   promoInput,
   onPromoInputChange,
@@ -58,53 +72,124 @@ export function CartOrderSummaryFields({
     discountAmount,
     promoPercentage,
   });
+  const knownCountry = SHIPPING_COUNTRIES.some(
+    (item) => item.code === deliveryCountry,
+  );
+  const countrySelectValue = knownCountry
+    ? deliveryCountry
+    : deliveryCountry
+      ? OTHER_COUNTRY_OPTION
+      : "IN";
 
   return (
     <>
       {courierEnabled ? (
-        <div className="mb-4">
-          <label className="mb-2 block text-xs font-medium text-muted-foreground">
-            Delivery PIN code
-          </label>
-          <Input
-            id="cart-delivery-pincode"
-            value={deliveryPincode}
-            inputMode="numeric"
-            autoComplete="postal-code"
-            maxLength={6}
-            placeholder="Enter 6-digit PIN"
-            aria-invalid={
-              pincodeStatus === "error" ||
-              (deliveryPincode.length === 6 && pincodeStatus !== "ready")
-            }
-            className={cn(
-              "h-10",
-              (pincodeStatus === "error" ||
-                (deliveryPincode.length > 0 &&
-                  deliveryPincode.length < 6 &&
-                  pincodeStatus !== "loading")) &&
-                "border-destructive ring-1 ring-destructive/30",
-            )}
-            onChange={(event) =>
-              onPincodeChange(event.target.value.replace(/\D/g, "").slice(0, 6))
-            }
-          />
-          {pincodeStatus === "loading" ? (
-            <p className="mt-1.5 text-xs text-muted-foreground">
-              Finding area and state…
+        <div className="mb-4 space-y-3">
+          {internationalEnabled ? (
+            <div>
+              <label
+                className="mb-2 block text-xs font-medium text-muted-foreground"
+                htmlFor="cart-delivery-country"
+              >
+                Delivery country
+              </label>
+              <select
+                id="cart-delivery-country"
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={countrySelectValue}
+                onChange={(event) => {
+                  const next = event.target.value;
+                  if (next === OTHER_COUNTRY_OPTION) {
+                    onCountryChange("");
+                    return;
+                  }
+                  onCountryChange(next);
+                }}
+              >
+                {SHIPPING_COUNTRIES.map((item) => (
+                  <option key={item.code} value={item.code}>
+                    {item.name}
+                  </option>
+                ))}
+                <option value={OTHER_COUNTRY_OPTION}>Other country…</option>
+              </select>
+              {countrySelectValue === OTHER_COUNTRY_OPTION ? (
+                <Input
+                  className="mt-2 max-w-[8rem]"
+                  placeholder="ISO e.g. BR"
+                  maxLength={2}
+                  value={deliveryCountry}
+                  onChange={(event) =>
+                    onCountryChange(
+                      event.target.value
+                        .replace(/[^A-Za-z]/g, "")
+                        .toUpperCase()
+                        .slice(0, 2),
+                    )
+                  }
+                />
+              ) : null}
+            </div>
+          ) : null}
+
+          {indiaDelivery ? (
+            <div>
+              <label className="mb-2 block text-xs font-medium text-muted-foreground">
+                Delivery PIN code
+              </label>
+              <Input
+                id="cart-delivery-pincode"
+                value={deliveryPincode}
+                inputMode="numeric"
+                autoComplete="postal-code"
+                maxLength={6}
+                placeholder="Enter 6-digit PIN"
+                aria-invalid={
+                  pincodeStatus === "error" ||
+                  (deliveryPincode.length === 6 && pincodeStatus !== "ready")
+                }
+                className={cn(
+                  "h-10",
+                  (pincodeStatus === "error" ||
+                    (deliveryPincode.length > 0 &&
+                      deliveryPincode.length < 6 &&
+                      pincodeStatus !== "loading")) &&
+                    "border-destructive ring-1 ring-destructive/30",
+                )}
+                onChange={(event) =>
+                  onPincodeChange(
+                    event.target.value.replace(/\D/g, "").slice(0, 6),
+                  )
+                }
+              />
+              {pincodeStatus === "loading" ? (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  Finding area and state…
+                </p>
+              ) : null}
+              {pincodeStatus === "ready" && pincodeLocalityLabel ? (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  {pincodeLocalityLabel}
+                </p>
+              ) : null}
+              {pincodeStatus === "error" && pincodeError ? (
+                <p className="mt-1.5 text-xs text-destructive">{pincodeError}</p>
+              ) : null}
+              {!pricingReady && pincodeStatus !== "error" ? (
+                <p className="mt-1.5 text-xs text-muted-foreground">
+                  Enter your PIN to see delivery charges and total.
+                </p>
+              ) : null}
+            </div>
+          ) : internationalBlocked ? (
+            <p className="text-xs text-destructive">
+              {internationalEnabled
+                ? "Enter a valid country code to see delivery charges."
+                : "We currently deliver within India only."}
             </p>
-          ) : null}
-          {pincodeStatus === "ready" && pincodeLocalityLabel ? (
-            <p className="mt-1.5 text-xs text-muted-foreground">
-              {pincodeLocalityLabel}
-            </p>
-          ) : null}
-          {pincodeStatus === "error" && pincodeError ? (
-            <p className="mt-1.5 text-xs text-destructive">{pincodeError}</p>
-          ) : null}
-          {!pricingReady && pincodeStatus !== "error" ? (
-            <p className="mt-1.5 text-xs text-muted-foreground">
-              Enter your PIN to see delivery charges and total.
+          ) : !pricingReady ? (
+            <p className="text-xs text-muted-foreground">
+              Select a country to see international delivery charges.
             </p>
           ) : null}
         </div>

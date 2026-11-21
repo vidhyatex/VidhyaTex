@@ -37,7 +37,15 @@ function toSavedShippingAddress(
     city: record.city,
     state: record.state,
     postal_code: record.postal_code,
+    country: record.country || "IN",
   };
+}
+
+function resolveAddressCountry(data: AddressFormValues) {
+  const code = String(data.country ?? "IN")
+    .trim()
+    .toUpperCase();
+  return /^[A-Z]{2}$/.test(code) ? code : "IN";
 }
 
 async function requireUserId(expectedUserId?: string | null) {
@@ -107,7 +115,7 @@ export async function createShippingAddress(
       city: data.city.trim(),
       state: data.state,
       postal_code: data.postal_code.trim(),
-      country: "IN",
+      country: resolveAddressCountry(data),
       full_name: data.fullName.trim(),
       email: data.email.trim(),
       mobile: data.mobile.trim(),
@@ -123,6 +131,7 @@ export async function createShippingAddress(
   return {
     addressId: inserted.id,
     ...data,
+    country: resolveAddressCountry(data),
   };
 }
 
@@ -139,7 +148,7 @@ export async function updateUserAddress(
       city: data.city.trim(),
       state: data.state,
       postal_code: data.postal_code.trim(),
-      country: "IN",
+      country: resolveAddressCountry(data),
       full_name: data.fullName.trim(),
       email: data.email.trim(),
       mobile: data.mobile.trim(),
@@ -154,6 +163,7 @@ export async function updateUserAddress(
   return {
     addressId: updated.id,
     ...data,
+    country: resolveAddressCountry(data),
   };
 }
 

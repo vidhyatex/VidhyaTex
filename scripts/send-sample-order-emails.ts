@@ -16,7 +16,7 @@ import {
 
 const to = process.env.SAMPLE_EMAIL_TO?.trim() || "vidhyatex7@gmail.com";
 const from =
-  process.env.RESEND_FROM_EMAIL?.trim() || "Vidhya Tex <onboarding@resend.dev>";
+  process.env.RESEND_FROM_EMAIL?.trim() || "Vidhya Tex <orders@vidhyatex.com>";
 const apiKey = process.env.RESEND_API_KEY?.trim();
 if (!apiKey) {
   console.error("RESEND_API_KEY missing");

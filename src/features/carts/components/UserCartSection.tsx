@@ -7,6 +7,7 @@ import {
 } from "../queries/cart-page-queries";
 import {
   calculateCourierCharge,
+  isIndiaCountry,
   physicalWeightForShipping,
   buildCheckoutMoneyTotals,
   toGstInclusiveAmount,
@@ -135,6 +136,7 @@ function UserCartSection({
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [bulkGuardOpen, setBulkGuardOpen] = useState(false);
+  const [deliveryCountry, setDeliveryCountry] = useState("IN");
   const [deliveryPincode, setDeliveryPincode] = useState("");
   const [deliveryState, setDeliveryState] = useState("");
   const [promoInput, setPromoInput] = useState("");
@@ -430,7 +432,8 @@ function UserCartSection({
       })),
     );
   }, [cart, dbCartLoaded, dbCartRows, livePricing]);
-  const pincodeLookup = usePincodeLookup(deliveryPincode);
+  const indiaDelivery = isIndiaCountry(deliveryCountry);
+  const pincodeLookup = usePincodeLookup(indiaDelivery ? deliveryPincode : "");
   const activeOfferCodes = useMemo(() => {
     const map = new Map<string, number>();
     if (offerCodesConfig.enabled) {
@@ -449,9 +452,24 @@ function UserCartSection({
   const discountAmount = Math.round(subtotal * promoPercentage * 100) / 10000;
   const discountedSubtotal = Math.max(0, subtotal - discountAmount);
   const courierBreakdown = useMemo(() => {
-    if (!courierConfig.enabled || !deliveryState) return null;
+    if (!courierConfig.enabled) return null;
+    if (indiaDelivery) {
+      if (!deliveryState) return null;
+      return calculateCourierCharge({
+        state: deliveryState,
+        countryCode: "IN",
+        quantity: physicalCount,
+        weightKg: physicalWeightKg,
+        orderAmount: discountedSubtotal,
+        config: courierConfig,
+      });
+    }
+    if (!/^[A-Z]{2}$/.test(deliveryCountry) || deliveryCountry === "IN") {
+      return null;
+    }
     return calculateCourierCharge({
-      state: deliveryState,
+      state: "",
+      countryCode: deliveryCountry,
       quantity: physicalCount,
       weightKg: physicalWeightKg,
       orderAmount: discountedSubtotal,
@@ -459,17 +477,29 @@ function UserCartSection({
     });
   }, [
     courierConfig,
+    deliveryCountry,
     deliveryState,
     discountedSubtotal,
+    indiaDelivery,
     physicalCount,
     physicalWeightKg,
   ]);
-  const courierCharge = courierBreakdown?.charge ?? 0;
+  const courierCharge =
+    courierBreakdown?.available === false ? 0 : (courierBreakdown?.charge ?? 0);
   const courierEnabled = courierConfig.enabled;
   const offerCodesEnabled = activeOfferCodes.size > 0;
+  const internationalBlocked =
+    !indiaDelivery &&
+    Boolean(
+      courierBreakdown?.ruleApplied === "international_disabled" ||
+        (deliveryCountry.length === 2 &&
+          !courierConfig.internationalEnabled),
+    );
   const pricingReady =
     !courierEnabled ||
-    (pincodeLookup.status === "ready" && Boolean(courierBreakdown));
+    (indiaDelivery
+      ? pincodeLookup.status === "ready" && Boolean(courierBreakdown)
+      : Boolean(courierBreakdown?.available));
   const hasDeliveryStateSelected = pricingReady;
   const money = buildCheckoutMoneyTotals({
     exclusiveMerchandise: discountedSubtotal,
@@ -489,11 +519,21 @@ function UserCartSection({
 
   useEffect(() => {
     const draft = loadCheckoutAddressDraft();
+    if (draft?.country) setDeliveryCountry(draft.country);
     if (draft?.postal_code) setDeliveryPincode(draft.postal_code);
     else if (draft?.state) setDeliveryState(draft.state);
   }, []);
 
   useEffect(() => {
+    if (!courierConfig.internationalEnabled && deliveryCountry !== "IN") {
+      setDeliveryCountry("IN");
+      setDeliveryState("");
+      setDeliveryPincode("");
+    }
+  }, [courierConfig.internationalEnabled, deliveryCountry]);
+
+  useEffect(() => {
+    if (!indiaDelivery) return;
     if (pincodeLookup.status !== "ready" || !pincodeLookup.result) {
       if (pincodeLookup.status === "idle" || pincodeLookup.status === "error") {
         setDeliveryState("");
@@ -502,19 +542,37 @@ function UserCartSection({
     }
     setDeliveryState(pincodeLookup.result.state);
     saveCheckoutAddressDraft({
+      country: "IN",
       postal_code: pincodeLookup.result.pin,
       state: pincodeLookup.result.state,
       city: pincodeLookup.result.city,
     });
-  }, [pincodeLookup.result, pincodeLookup.status]);
+  }, [indiaDelivery, pincodeLookup.result, pincodeLookup.status]);
+
+  const onCountryChange = (countryCode: string) => {
+    setDeliveryCountry(countryCode || "");
+    setDeliveryState("");
+    setDeliveryPincode("");
+    saveCheckoutAddressDraft({
+      country: countryCode || "",
+      postal_code: "",
+      state: "",
+      city: "",
+    });
+  };
 
   const onPincodeChange = (pincode: string) => {
     setDeliveryPincode(pincode);
     if (pincode.length < 6) {
       setDeliveryState("");
-      saveCheckoutAddressDraft({ postal_code: pincode, state: "", city: "" });
+      saveCheckoutAddressDraft({
+        country: "IN",
+        postal_code: pincode,
+        state: "",
+        city: "",
+      });
     } else {
-      saveCheckoutAddressDraft({ postal_code: pincode });
+      saveCheckoutAddressDraft({ country: "IN", postal_code: pincode });
     }
   };
 
@@ -531,20 +589,33 @@ function UserCartSection({
   const cartAddressDefaults = useMemo(
     () =>
       buildCartPincodeDefaults({
+        country: deliveryCountry || "IN",
         postal_code:
-          pincodeLookup.status === "ready" && pincodeLookup.result
+          indiaDelivery &&
+          pincodeLookup.status === "ready" &&
+          pincodeLookup.result
             ? pincodeLookup.result.pin
             : deliveryPincode,
         city:
-          pincodeLookup.status === "ready" && pincodeLookup.result
+          indiaDelivery &&
+          pincodeLookup.status === "ready" &&
+          pincodeLookup.result
             ? pincodeLookup.result.city
             : undefined,
         state:
-          pincodeLookup.status === "ready" && pincodeLookup.result
+          indiaDelivery &&
+          pincodeLookup.status === "ready" &&
+          pincodeLookup.result
             ? pincodeLookup.result.state
             : undefined,
       }),
-    [deliveryPincode, pincodeLookup.result, pincodeLookup.status],
+    [
+      deliveryCountry,
+      deliveryPincode,
+      indiaDelivery,
+      pincodeLookup.result,
+      pincodeLookup.status,
+    ],
   );
 
   const onApplyPromo = () => {
@@ -1100,11 +1171,16 @@ function UserCartSection({
     productCount,
     courierEnabled,
     offerCodesEnabled,
+    deliveryCountry,
+    onCountryChange,
     deliveryPincode,
     onPincodeChange,
     pincodeStatus: pincodeLookup.status,
     pincodeLocalityLabel,
     pincodeError: pincodeLookup.message,
+    indiaDelivery,
+    internationalEnabled: courierConfig.internationalEnabled,
+    internationalBlocked,
     pricingReady,
     promoInput,
     onPromoInputChange: setPromoInput,
@@ -1146,10 +1222,12 @@ function UserCartSection({
             cartPageBottomSpacerClass(),
           )}
         >
-          <FreeShippingProgress
-            discountedSubtotal={discountedSubtotal}
-            config={courierConfig}
-          />
+          {indiaDelivery ? (
+            <FreeShippingProgress
+              discountedSubtotal={discountedSubtotal}
+              config={courierConfig}
+            />
+          ) : null}
 
           <CartItemsList>
             {renderableCartRows.map((row) => {

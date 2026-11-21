@@ -104,6 +104,7 @@ export async function startCheckout({
           email: shipping.email,
           mobile: shipping.mobile,
           state: shipping.state,
+          country: shipping.country || "IN",
         },
         promoCode: promoCode ?? null,
       }),

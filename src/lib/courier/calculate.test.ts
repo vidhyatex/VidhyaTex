@@ -6,8 +6,11 @@ import {
   buildCheckoutMoneyTotals,
   normalizeWeightSlabs,
   parseCourierWeightSettings,
+  parseInternationalCourierSettings,
   physicalWeightForShipping,
+  resolveInternationalZone,
   type CourierChargesConfig,
+  type InternationalCourierZone,
 } from "@/lib/courier/calculate";
 
 const baseConfig: CourierChargesConfig = {
@@ -21,6 +24,8 @@ const baseConfig: CourierChargesConfig = {
   freeShippingMin: 999,
   gstEnabled: false,
   gstPercentage: 0,
+  internationalEnabled: false,
+  internationalZones: parseInternationalCourierSettings({}).internationalZones,
 };
 
 describe("calculateCourierCharge free shipping", () => {
@@ -214,5 +219,86 @@ describe("weight-wise courier", () => {
     expect(
       normalizeWeightSlabs([{ upToKg: 0 }, { upToKg: "abc" }]).length,
     ).toBeGreaterThan(0);
+  });
+});
+
+describe("international kg courier", () => {
+  const gulfZone: InternationalCourierZone = {
+    id: "gulf",
+    label: "Gulf",
+    countryCodes: ["AE", "SA"],
+    slabs: [
+      { upToKg: 1, rate: 500 },
+      { upToKg: 2, rate: 800 },
+    ],
+    extraPerKg: 200,
+  };
+  const intlConfig: CourierChargesConfig = {
+    ...baseConfig,
+    internationalEnabled: true,
+    internationalZones: parseInternationalCourierSettings({
+      internationalZones: [gulfZone],
+    }).internationalZones,
+  };
+
+  it("maps country codes into zones and falls back to rest of world", () => {
+    expect(resolveInternationalZone("AE", intlConfig).id).toBe("gulf");
+    expect(resolveInternationalZone("US", intlConfig).id).toBe("north_america");
+    expect(resolveInternationalZone("BR", intlConfig).id).toBe("rest_of_world");
+  });
+
+  it("prices by kg slab and overage when international is enabled", () => {
+    const slab = calculateCourierCharge({
+      state: "",
+      countryCode: "AE",
+      quantity: 1,
+      weightKg: 0.8,
+      config: intlConfig,
+    });
+    expect(slab.market).toBe("international");
+    expect(slab.region).toBe("gulf");
+    expect(slab.charge).toBe(500);
+    expect(slab.ruleApplied).toBe("weight_slab");
+    expect(slab.available).toBe(true);
+
+    const over = calculateCourierCharge({
+      state: "",
+      countryCode: "ae",
+      quantity: 1,
+      weightKg: 3.1,
+      config: intlConfig,
+    });
+    expect(over.ruleApplied).toBe("weight_over_max");
+    expect(over.charge).toBe(800 + 2 * 200);
+  });
+
+  it("blocks non-India when international is disabled", () => {
+    const result = calculateCourierCharge({
+      state: "",
+      countryCode: "AE",
+      quantity: 1,
+      weightKg: 1,
+      config: { ...intlConfig, internationalEnabled: false },
+    });
+    expect(result.available).toBe(false);
+    expect(result.charge).toBe(0);
+    expect(result.ruleApplied).toBe("international_disabled");
+  });
+
+  it("keeps India free-shipping rules off the international path", () => {
+    const result = calculateCourierCharge({
+      state: "",
+      countryCode: "AE",
+      quantity: 1,
+      weightKg: 1,
+      orderAmount: 5000,
+      config: {
+        ...intlConfig,
+        freeShippingEnabled: true,
+        freeShippingMin: 999,
+      },
+    });
+    expect(result.charge).toBe(500);
+    expect(result.ruleApplied).toBe("weight_slab");
   });
 });

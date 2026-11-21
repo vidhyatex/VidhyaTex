@@ -1,6 +1,7 @@
 "use client";
 
 import type { CourierChargesConfig } from "@/lib/integrations/settings";
+import { parseInternationalCourierSettings } from "@/lib/courier/calculate";
 import { createContext, useContext, type ReactNode } from "react";
 
 const defaultConfig: CourierChargesConfig = {
@@ -14,6 +15,7 @@ const defaultConfig: CourierChargesConfig = {
   freeShippingMin: 999,
   gstEnabled: true,
   gstPercentage: 5,
+  ...parseInternationalCourierSettings({}),
 };
 
 const CourierChargesContext =

@@ -14,10 +14,16 @@ import { fetchWithTimeout } from "@/lib/network/fetchWithTimeout";
 import {
   DEFAULT_COURIER_WEIGHT_EXTRA_PER_KG,
   DEFAULT_COURIER_WEIGHT_SLABS,
+  DEFAULT_INTERNATIONAL_WEIGHT_SLABS,
+  normalizeInternationalWeightSlabs,
+  normalizeInternationalZones,
   normalizeWeightSlabs,
   parseCourierWeightSettings,
+  parseInternationalCourierSettings,
   type CourierCalculationMode,
   type CourierWeightSlab,
+  type InternationalCourierZone,
+  type InternationalWeightSlab,
 } from "@/lib/courier/calculate";
 
 type ApiSettingRecord = {
@@ -44,6 +50,8 @@ type CourierFormState = {
   calculationMode: CourierCalculationMode;
   weightSlabs: CourierWeightSlab[];
   weightExtraPerKg: number;
+  internationalEnabled: boolean;
+  internationalZones: InternationalCourierZone[];
 };
 
 const SLAB_PRICE_FIELDS = [
@@ -66,6 +74,7 @@ const DEFAULT_VALUES: CourierFormState = {
   calculationMode: "quantity",
   weightSlabs: DEFAULT_COURIER_WEIGHT_SLABS,
   weightExtraPerKg: DEFAULT_COURIER_WEIGHT_EXTRA_PER_KG,
+  ...parseInternationalCourierSettings({}),
 };
 
 function toAmount(value: unknown, fallback: number) {
@@ -135,6 +144,7 @@ export function CourierChargesForm() {
             DEFAULT_VALUES.gstPercentage,
           ),
           ...parseCourierWeightSettings(value),
+          ...parseInternationalCourierSettings(value),
         });
       } catch (error) {
         toast({
@@ -206,6 +216,107 @@ export function CourierChargesForm() {
     }));
   };
 
+  const updateIntlZone = (
+    zoneIndex: number,
+    patch: Partial<InternationalCourierZone>,
+  ) => {
+    setForm((prev) => ({
+      ...prev,
+      internationalZones: prev.internationalZones.map((zone, i) =>
+        i === zoneIndex ? { ...zone, ...patch } : zone,
+      ),
+    }));
+  };
+
+  const updateIntlSlab = (
+    zoneIndex: number,
+    slabIndex: number,
+    key: keyof InternationalWeightSlab,
+    raw: string,
+  ) => {
+    const value = Number(raw);
+    if (raw !== "" && !Number.isFinite(value)) return;
+    setForm((prev) => ({
+      ...prev,
+      internationalZones: prev.internationalZones.map((zone, i) => {
+        if (i !== zoneIndex) return zone;
+        return {
+          ...zone,
+          slabs: zone.slabs.map((slab, j) =>
+            j === slabIndex
+              ? {
+                  ...slab,
+                  [key]:
+                    key === "upToKg"
+                      ? Math.max(0, value)
+                      : Math.max(0, Math.round(value)),
+                }
+              : slab,
+          ),
+        };
+      }),
+    }));
+  };
+
+  const addIntlSlab = (zoneIndex: number) => {
+    setForm((prev) => ({
+      ...prev,
+      internationalZones: prev.internationalZones.map((zone, i) => {
+        if (i !== zoneIndex) return zone;
+        const last = zone.slabs[zone.slabs.length - 1];
+        return {
+          ...zone,
+          slabs: [
+            ...zone.slabs,
+            last
+              ? { ...last, upToKg: Math.floor(last.upToKg) + 1 }
+              : DEFAULT_INTERNATIONAL_WEIGHT_SLABS[0],
+          ],
+        };
+      }),
+    }));
+  };
+
+  const removeIntlSlab = (zoneIndex: number, slabIndex: number) => {
+    setForm((prev) => ({
+      ...prev,
+      internationalZones: prev.internationalZones.map((zone, i) => {
+        if (i !== zoneIndex) return zone;
+        if (zone.slabs.length <= 1) return zone;
+        return {
+          ...zone,
+          slabs: zone.slabs.filter((_, j) => j !== slabIndex),
+        };
+      }),
+    }));
+  };
+
+  const addIntlCountryCode = (zoneIndex: number, raw: string) => {
+    const code = raw.trim().toUpperCase();
+    if (!/^[A-Z]{2}$/.test(code) || code === "IN") return;
+    setForm((prev) => ({
+      ...prev,
+      internationalZones: prev.internationalZones.map((zone, i) => {
+        if (i !== zoneIndex || zone.id === "rest_of_world") return zone;
+        if (zone.countryCodes.includes(code)) return zone;
+        return { ...zone, countryCodes: [...zone.countryCodes, code] };
+      }),
+    }));
+  };
+
+  const removeIntlCountryCode = (zoneIndex: number, code: string) => {
+    setForm((prev) => ({
+      ...prev,
+      internationalZones: prev.internationalZones.map((zone, i) => {
+        if (i !== zoneIndex) return zone;
+        return {
+          ...zone,
+          countryCodes: zone.countryCodes.filter((item) => item !== code),
+        };
+      }),
+    }));
+  };
+
   const onSave = async () => {
     const weightMode = form.calculationMode === "weight";
     if (weightMode) {
@@ -224,8 +335,30 @@ export function CourierChargesForm() {
         return;
       }
     }
+    for (const zone of form.internationalZones) {
+      const upTos = zone.slabs.map((slab) => slab.upToKg);
+      if (
+        upTos.length === 0 ||
+        upTos.some((kg) => !(kg > 0)) ||
+        new Set(upTos).size !== upTos.length
+      ) {
+        toast({
+          title: `Check ${zone.label} weight slabs`,
+          description:
+            "Each international zone needs at least one slab with unique kg values above 0.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
     const weightSlabs = normalizeWeightSlabs(form.weightSlabs);
-    setForm((prev) => ({ ...prev, weightSlabs }));
+    const internationalZones = normalizeInternationalZones(
+      form.internationalZones.map((zone) => ({
+        ...zone,
+        slabs: normalizeInternationalWeightSlabs(zone.slabs),
+      })),
+    );
+    setForm((prev) => ({ ...prev, weightSlabs, internationalZones }));
     setIsSaving(true);
     try {
       const response = await fetchWithTimeout("/api/admin/integrations", {
@@ -247,6 +380,8 @@ export function CourierChargesForm() {
             calculationMode: form.calculationMode,
             weightSlabs,
             weightExtraPerKg: form.weightExtraPerKg,
+            internationalEnabled: form.internationalEnabled,
+            internationalZones,
           },
         }),
       });
@@ -552,6 +687,155 @@ export function CourierChargesForm() {
               }
             />
           </div>
+        </div>
+
+        <div className="space-y-3 rounded-md border border-border p-3">
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={form.internationalEnabled}
+              onChange={(event) =>
+                setForm((prev) => ({
+                  ...prev,
+                  internationalEnabled: event.target.checked,
+                }))
+              }
+            />
+            Enable international shipping
+          </label>
+          <p className="text-xs text-muted-foreground">
+            India rates stay unchanged. International orders use zone × kg
+            slabs (INR). Free shipping applies to India only. Set accurate
+            product weights — missing weight defaults to 0.5 kg. Duties/customs
+            are paid by the customer.
+          </p>
+          {form.internationalZones.map((zone, zoneIndex) => (
+            <div
+              key={zone.id}
+              className="space-y-3 rounded-md border border-border/70 p-3"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <p className="text-sm font-medium">{zone.label}</p>
+                <span className="text-xs text-muted-foreground">{zone.id}</span>
+              </div>
+              {zone.id === "rest_of_world" ? (
+                <p className="text-xs text-muted-foreground">
+                  Catch-all for any enabled destination not listed in another
+                  zone.
+                </p>
+              ) : (
+                <div className="space-y-2">
+                  <Label>Country codes (ISO)</Label>
+                  <div className="flex flex-wrap gap-1.5">
+                    {zone.countryCodes.map((code) => (
+                      <button
+                        key={code}
+                        type="button"
+                        className="rounded border border-border px-2 py-0.5 text-xs"
+                        onClick={() => removeIntlCountryCode(zoneIndex, code)}
+                        title={`Remove ${code}`}
+                      >
+                        {code} ×
+                      </button>
+                    ))}
+                  </div>
+                  <Input
+                    placeholder="Add code e.g. AE"
+                    maxLength={2}
+                    className="max-w-[10rem]"
+                    onKeyDown={(event) => {
+                      if (event.key !== "Enter") return;
+                      event.preventDefault();
+                      addIntlCountryCode(zoneIndex, event.currentTarget.value);
+                      event.currentTarget.value = "";
+                    }}
+                  />
+                </div>
+              )}
+              <div className="space-y-2">
+                {zone.slabs.map((slab, slabIndex) => {
+                  const from =
+                    slabIndex === 0 ? 0 : zone.slabs[slabIndex - 1].upToKg;
+                  return (
+                    <div
+                      key={`${zone.id}-slab-${slabIndex}`}
+                      className="grid grid-cols-2 items-end gap-2 md:grid-cols-[1.2fr_1fr_auto]"
+                    >
+                      <div className="space-y-1">
+                        <Label>
+                          {slabIndex === 0
+                            ? "Up to (kg)"
+                            : `Above ${from} kg, up to`}
+                        </Label>
+                        <Input
+                          type="number"
+                          min={0}
+                          step={0.1}
+                          value={slab.upToKg}
+                          onChange={(event) =>
+                            updateIntlSlab(
+                              zoneIndex,
+                              slabIndex,
+                              "upToKg",
+                              event.target.value,
+                            )
+                          }
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label>Rate ₹</Label>
+                        <Input
+                          type="number"
+                          min={0}
+                          value={slab.rate}
+                          onChange={(event) =>
+                            updateIntlSlab(
+                              zoneIndex,
+                              slabIndex,
+                              "rate",
+                              event.target.value,
+                            )
+                          }
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={zone.slabs.length <= 1}
+                        onClick={() => removeIntlSlab(zoneIndex, slabIndex)}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  );
+                })}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => addIntlSlab(zoneIndex)}
+                >
+                  Add slab
+                </Button>
+                <div className="space-y-1">
+                  <Label>Extra ₹ per kg above last slab</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    value={zone.extraPerKg}
+                    onChange={(event) => {
+                      const value = Number(event.target.value);
+                      if (!Number.isFinite(value)) return;
+                      updateIntlZone(zoneIndex, {
+                        extraPerKg: Math.max(0, Math.round(value)),
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         <Button onClick={onSave} disabled={disabled}>

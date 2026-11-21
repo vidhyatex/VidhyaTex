@@ -51,7 +51,11 @@ import {
   resolveOfferCodesConfig,
 } from "@/lib/integrations/settings";
 import { physicalQuantityForShipping } from "@/lib/products/digital-product";
-import { physicalWeightForShipping } from "@/lib/courier/calculate";
+import {
+  isIndiaCountry,
+  normalizeCountryCode,
+  physicalWeightForShipping,
+} from "@/lib/courier/calculate";
 import { eq, inArray } from "drizzle-orm";
 
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
@@ -68,8 +72,9 @@ const shippingSchema = z.object({
     .trim()
     .min(1, "Enter your email")
     .email("Enter a valid email address"),
-  mobile: z.string().min(10),
-  state: z.string().min(1),
+  mobile: z.string().min(8),
+  state: z.string().optional().default(""),
+  country: z.string().trim().optional(),
 });
 
 const orderProductsSchema = z.object({
@@ -125,7 +130,12 @@ export async function POST(request: Request) {
   // anyone could bind another customer's saved address to an order and read
   // their PII from the order page.
   const [shippingAddress] = await db
-    .select({ id: address.id, ownerId: address.userProfileId })
+    .select({
+      id: address.id,
+      ownerId: address.userProfileId,
+      country: address.country,
+      state: address.state,
+    })
     .from(address)
     .where(eq(address.id, checkout.shipping.addressId))
     .limit(1);
@@ -136,6 +146,14 @@ export async function POST(request: Request) {
       { status: 400 },
     );
   }
+
+  const courierCountry =
+    normalizeCountryCode(shippingAddress.country) ||
+    normalizeCountryCode(checkout.shipping.country) ||
+    "IN";
+  const courierState = String(
+    shippingAddress.state || checkout.shipping.state || "",
+  ).trim();
 
   if (!checkout.guest) {
     if (!user) {
@@ -347,13 +365,41 @@ export async function POST(request: Request) {
     );
     const physicalQuantity = physicalQuantityForShipping(productsQuantity);
     const physicalWeightKg = physicalWeightForShipping(productsQuantity);
+    if (
+      !isIndiaCountry(courierCountry) &&
+      !courierConfig.internationalEnabled
+    ) {
+      return NextResponse.json(
+        {
+          message:
+            "We currently deliver within India only. Please choose an Indian address.",
+        },
+        { status: 400 },
+      );
+    }
+    if (isIndiaCountry(courierCountry) && !courierState) {
+      return NextResponse.json(
+        { message: "Shipping state is required for Indian delivery." },
+        { status: 400 },
+      );
+    }
     const courierBreakdown = calculateCourierCharge({
-      state: checkout.shipping.state,
+      state: courierState,
+      countryCode: courierCountry,
       quantity: physicalQuantity,
       weightKg: physicalWeightKg,
       orderAmount: discountedSubtotal,
       config: courierConfig,
     });
+    if (!courierBreakdown.available) {
+      return NextResponse.json(
+        {
+          message:
+            "We currently deliver within India only. Please choose an Indian address.",
+        },
+        { status: 400 },
+      );
+    }
     const courierCharge = courierConfig.enabled ? courierBreakdown.charge : 0;
     const money = buildCheckoutMoneyTotals({
       exclusiveMerchandise: discountedSubtotal,
@@ -414,7 +460,10 @@ export async function POST(request: Request) {
       gstAmount,
       gstEnabled: courierConfig.gstEnabled,
       gstPercentage: courierConfig.gstPercentage,
-      courierState: checkout.shipping.state,
+      courierState: courierState,
+      courierCountry,
+      courierMarket: courierBreakdown.market,
+      courierZoneId: courierBreakdown.region,
       courierRule: courierBreakdown.ruleApplied,
       ...(courierBreakdown.weightKg !== undefined
         ? { courierWeightKg: courierBreakdown.weightKg }

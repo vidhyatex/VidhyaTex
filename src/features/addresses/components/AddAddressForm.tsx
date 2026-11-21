@@ -6,6 +6,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
   type FocusEvent,
   type KeyboardEvent,
 } from "react";
@@ -28,9 +29,15 @@ import { Spinner } from "@/components/ui/spinner";
 import CheckoutTermsNotice from "@/components/layouts/CheckoutTermsNotice";
 import { usePincodeLookup } from "../hooks/usePincodeLookup";
 import {
+  OTHER_COUNTRY_OPTION,
+  SHIPPING_COUNTRIES,
+} from "../constants/shippingCountries";
+import {
   addressFormSchema,
   type AddressFormValues,
 } from "../validations/addressFormSchema";
+import { isIndiaCountry } from "@/lib/courier/calculate";
+import { useCourierChargesConfig } from "@/providers/CourierChargesProvider";
 
 type Props = {
   onSubmit: (values: AddressFormValues) => Promise<void>;
@@ -102,6 +109,7 @@ export function AddAddressForm({
             city: "",
             state: "",
             postal_code: "",
+            country: "IN",
             ...defaultValues,
           },
     [persistDraft, defaultValues],
@@ -112,9 +120,24 @@ export function AddAddressForm({
     defaultValues: initialValues,
   });
 
+  const courierConfig = useCourierChargesConfig();
+  const internationalEnabled = courierConfig.internationalEnabled;
   const isSubmitting = form.formState.isSubmitting || disabled;
   const postalCode = form.watch("postal_code");
-  const pincodeLookup = usePincodeLookup(postalCode);
+  const country = form.watch("country") || "IN";
+  const indiaDelivery = !internationalEnabled || isIndiaCountry(country);
+  const knownCountry = SHIPPING_COUNTRIES.some((item) => item.code === country);
+  const [countrySelect, setCountrySelect] = useState(
+    knownCountry ? country : OTHER_COUNTRY_OPTION,
+  );
+  const pincodeLookup = usePincodeLookup(indiaDelivery ? postalCode : "");
+
+  useEffect(() => {
+    if (!internationalEnabled && country !== "IN") {
+      form.setValue("country", "IN");
+      setCountrySelect("IN");
+    }
+  }, [country, form, internationalEnabled]);
 
   const wasDialogOpen = useRef(false);
   useEffect(() => {
@@ -136,6 +159,7 @@ export function AddAddressForm({
   }, [form, persistDraft]);
 
   useEffect(() => {
+    if (!indiaDelivery) return;
     if (pincodeLookup.status !== "ready" || !pincodeLookup.result) return;
     const result = pincodeLookup.result;
     form.setValue("state", result.state, { shouldValidate: true });
@@ -143,7 +167,7 @@ export function AddAddressForm({
     if (!currentCity) {
       form.setValue("city", result.city, { shouldValidate: true });
     }
-  }, [form, pincodeLookup.result, pincodeLookup.status]);
+  }, [form, indiaDelivery, pincodeLookup.result, pincodeLookup.status]);
 
   /**
    * In-app browsers (Instagram / Facebook WebView) keep the layout viewport
@@ -250,6 +274,69 @@ export function AddAddressForm({
           )}
         />
 
+        {internationalEnabled ? (
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  <RequiredLabel>Country</RequiredLabel>
+                </FormLabel>
+                <FormControl>
+                  <select
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    value={countrySelect}
+                    onChange={(event) => {
+                      const next = event.target.value;
+                      setCountrySelect(next);
+                      if (next === OTHER_COUNTRY_OPTION) {
+                        field.onChange("");
+                        form.setValue("state", "");
+                        form.setValue("postal_code", "");
+                        return;
+                      }
+                      field.onChange(next);
+                      if (next === "IN") {
+                        form.setValue("state", "");
+                        form.setValue("postal_code", "");
+                      } else {
+                        form.setValue("state", form.getValues("state") || "");
+                      }
+                    }}
+                  >
+                    {SHIPPING_COUNTRIES.map((item) => (
+                      <option key={item.code} value={item.code}>
+                        {item.name}
+                      </option>
+                    ))}
+                    <option value={OTHER_COUNTRY_OPTION}>Other country…</option>
+                  </select>
+                </FormControl>
+                {countrySelect === OTHER_COUNTRY_OPTION ? (
+                  <Input
+                    className="mt-2 max-w-[8rem]"
+                    placeholder="ISO e.g. BR"
+                    maxLength={2}
+                    autoComplete="country"
+                    value={
+                      field.value && field.value !== "IN" ? field.value : ""
+                    }
+                    onChange={(event) => {
+                      const code = event.target.value
+                        .replace(/[^A-Za-z]/g, "")
+                        .toUpperCase()
+                        .slice(0, 2);
+                      field.onChange(code);
+                    }}
+                  />
+                ) : null}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        ) : null}
+
         <FormField
           control={form.control}
           name="mobile"
@@ -261,17 +348,28 @@ export function AddAddressForm({
               <FormControl>
                 <Input
                   type="tel"
-                  inputMode="numeric"
-                  placeholder="Enter mobile number"
+                  inputMode={indiaDelivery ? "numeric" : "tel"}
+                  placeholder={
+                    indiaDelivery
+                      ? "Enter 10-digit mobile"
+                      : "Mobile with country code digits"
+                  }
                   autoComplete="tel"
                   enterKeyHint="next"
-                  maxLength={10}
+                  maxLength={indiaDelivery ? 10 : 16}
                   {...field}
                   onChange={(e) => {
-                    const digits = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 10);
-                    field.onChange(digits);
+                    if (indiaDelivery) {
+                      const digits = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+                      field.onChange(digits);
+                      return;
+                    }
+                    const cleaned = e.target.value
+                      .replace(/[^\d+]/g, "")
+                      .slice(0, 16);
+                    field.onChange(cleaned);
                   }}
                 />
               </FormControl>
@@ -286,36 +384,46 @@ export function AddAddressForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                <RequiredLabel>PIN Code</RequiredLabel>
+                <RequiredLabel>
+                  {indiaDelivery ? "PIN Code" : "Postal code"}
+                </RequiredLabel>
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="6-digit PIN code"
-                  inputMode="numeric"
+                  placeholder={
+                    indiaDelivery ? "6-digit PIN code" : "Postal / ZIP code"
+                  }
+                  inputMode={indiaDelivery ? "numeric" : "text"}
                   autoComplete="postal-code"
                   enterKeyHint="next"
-                  maxLength={6}
+                  maxLength={indiaDelivery ? 6 : 12}
                   {...field}
                   onChange={(e) => {
-                    const digits = e.target.value
-                      .replace(/\D/g, "")
-                      .slice(0, 6);
-                    field.onChange(digits);
-                    if (digits.length < 6) {
-                      form.setValue("state", "");
+                    if (indiaDelivery) {
+                      const digits = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 6);
+                      field.onChange(digits);
+                      if (digits.length < 6) {
+                        form.setValue("state", "");
+                      }
+                      return;
                     }
+                    field.onChange(e.target.value.slice(0, 12));
                   }}
                 />
               </FormControl>
-              {pincodeLookup.status === "loading" ? (
+              {indiaDelivery && pincodeLookup.status === "loading" ? (
                 <p className="text-xs text-muted-foreground">
                   Finding area and state…
                 </p>
               ) : null}
-              {localityLabel ? (
+              {indiaDelivery && localityLabel ? (
                 <p className="text-xs text-muted-foreground">{localityLabel}</p>
               ) : null}
-              {pincodeLookup.status === "error" && pincodeLookup.message ? (
+              {indiaDelivery &&
+              pincodeLookup.status === "error" &&
+              pincodeLookup.message ? (
                 <p className="text-xs text-destructive">
                   {pincodeLookup.message}
                 </p>
@@ -336,7 +444,9 @@ export function AddAddressForm({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Filled from PIN"
+                    placeholder={
+                      indiaDelivery ? "Filled from PIN" : "City / town"
+                    }
                     autoComplete="address-level2"
                     enterKeyHint="next"
                     {...field}
@@ -353,20 +463,34 @@ export function AddAddressForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  <RequiredLabel>State</RequiredLabel>
+                  {indiaDelivery ? (
+                    <RequiredLabel>State</RequiredLabel>
+                  ) : (
+                    "State / region"
+                  )}
                 </FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    readOnly
-                    tabIndex={-1}
-                    aria-readonly="true"
-                    placeholder="Filled from PIN"
+                    readOnly={indiaDelivery}
+                    tabIndex={indiaDelivery ? -1 : undefined}
+                    aria-readonly={indiaDelivery ? "true" : undefined}
+                    placeholder={
+                      indiaDelivery ? "Filled from PIN" : "Optional"
+                    }
                     autoComplete="address-level1"
-                    className="cursor-default bg-muted/50 text-muted-foreground pointer-events-none"
+                    className={
+                      indiaDelivery
+                        ? "cursor-default bg-muted/50 text-muted-foreground pointer-events-none"
+                        : undefined
+                    }
                   />
                 </FormControl>
-                <p className="text-xs text-muted-foreground">Filled from PIN</p>
+                {indiaDelivery ? (
+                  <p className="text-xs text-muted-foreground">
+                    Filled from PIN
+                  </p>
+                ) : null}
                 <FormMessage />
               </FormItem>
             )}
@@ -410,7 +534,8 @@ export function AddAddressForm({
             className="w-full bg-[#E8A317] text-[#1a1a1a] hover:bg-[#d49210] sm:w-auto"
             disabled={
               isSubmitting ||
-              (Boolean(postalCode) &&
+              (indiaDelivery &&
+                Boolean(postalCode) &&
                 postalCode.length === 6 &&
                 pincodeLookup.status !== "ready")
             }

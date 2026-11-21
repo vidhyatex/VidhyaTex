@@ -27,6 +27,7 @@ export function userAddressToFormValues(
     city: record.city,
     state: record.state,
     postal_code: record.postal_code,
+    country: record.country || "IN",
   };
 }
 
@@ -43,12 +44,13 @@ export function isAddressCompleteForCheckout(record: UserAddressRecord) {
 }
 
 export function formatAddressLines(record: UserAddressRecord) {
-  const parts = [
-    record.line1,
-    record.line2,
-    `${record.city}, ${record.state} ${record.postal_code}`,
-  ].filter(Boolean);
-  return parts;
+  const country = (record.country || "IN").toUpperCase();
+  const locality = [record.city, record.state, record.postal_code]
+    .filter(Boolean)
+    .join(", ");
+  const parts = [record.line1, record.line2, locality];
+  if (country && country !== "IN") parts.push(country);
+  return parts.filter(Boolean);
 }
 
 export function pickDefaultAddressId(addresses: UserAddressRecord[]) {

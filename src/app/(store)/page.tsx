@@ -162,9 +162,9 @@ export default async function Home() {
           />
         ) : null}
 
-        {homeTestimonials?.edges?.length ? (
-          <HomeTestimonialsCarousel testimonials={homeTestimonials.edges} />
-        ) : null}
+        <HomeTestimonialsCarousel
+          testimonials={homeTestimonials?.edges ?? []}
+        />
 
         <HomeExploreLinks />
         <TrustFeatures />

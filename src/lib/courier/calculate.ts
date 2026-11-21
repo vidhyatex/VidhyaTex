@@ -16,6 +16,9 @@ export type CourierChargesConfig = {
   weightSlabs?: CourierWeightSlab[];
   /** Added per started kg above the last slab's upToKg. */
   weightExtraPerKg?: number;
+  /** When false (default), non-IN destinations are blocked. */
+  internationalEnabled: boolean;
+  internationalZones: InternationalCourierZone[];
 };
 
 export type CourierCalculationMode = "quantity" | "weight";
@@ -28,6 +31,26 @@ export type CourierWeightSlab = {
   restOfIndia: number;
 };
 
+export type InternationalWeightSlab = {
+  upToKg: number;
+  rate: number;
+};
+
+export type InternationalZoneId =
+  | "gulf"
+  | "north_america"
+  | "uk_eu"
+  | "asia_pacific"
+  | "rest_of_world";
+
+export type InternationalCourierZone = {
+  id: InternationalZoneId;
+  label: string;
+  countryCodes: string[];
+  slabs: InternationalWeightSlab[];
+  extraPerKg: number;
+};
+
 export const DEFAULT_PRODUCT_WEIGHT_KG = 0.5;
 
 export const DEFAULT_COURIER_WEIGHT_SLABS: CourierWeightSlab[] = [
@@ -38,6 +61,54 @@ export const DEFAULT_COURIER_WEIGHT_SLABS: CourierWeightSlab[] = [
 ];
 
 export const DEFAULT_COURIER_WEIGHT_EXTRA_PER_KG = 40;
+
+export const DEFAULT_INTERNATIONAL_WEIGHT_SLABS: InternationalWeightSlab[] = [
+  { upToKg: 1, rate: 0 },
+  { upToKg: 2, rate: 0 },
+  { upToKg: 5, rate: 0 },
+];
+
+export const DEFAULT_INTERNATIONAL_ZONES: InternationalCourierZone[] = [
+  {
+    id: "gulf",
+    label: "Gulf",
+    countryCodes: ["AE", "SA", "QA", "KW", "OM", "BH"],
+    slabs: DEFAULT_INTERNATIONAL_WEIGHT_SLABS,
+    extraPerKg: 0,
+  },
+  {
+    id: "north_america",
+    label: "North America",
+    countryCodes: ["US", "CA"],
+    slabs: DEFAULT_INTERNATIONAL_WEIGHT_SLABS,
+    extraPerKg: 0,
+  },
+  {
+    id: "uk_eu",
+    label: "UK / EU",
+    countryCodes: ["GB", "IE", "DE", "FR", "IT", "NL", "ES"],
+    slabs: DEFAULT_INTERNATIONAL_WEIGHT_SLABS,
+    extraPerKg: 0,
+  },
+  {
+    id: "asia_pacific",
+    label: "Asia-Pacific",
+    countryCodes: ["SG", "MY", "JP", "KR", "AU", "NZ"],
+    slabs: DEFAULT_INTERNATIONAL_WEIGHT_SLABS,
+    extraPerKg: 0,
+  },
+  {
+    id: "rest_of_world",
+    label: "Rest of World",
+    countryCodes: [],
+    slabs: DEFAULT_INTERNATIONAL_WEIGHT_SLABS,
+    extraPerKg: 0,
+  },
+];
+
+const INTERNATIONAL_ZONE_IDS = new Set<string>(
+  DEFAULT_INTERNATIONAL_ZONES.map((zone) => zone.id),
+);
 
 function toNonNegativeRupees(value: unknown, fallback: number): number {
   const parsed = Number(value);
@@ -88,6 +159,99 @@ export function parseCourierWeightSettings(
   };
 }
 
+/** ISO-3166 alpha-2 uppercased; empty/invalid → "". */
+export function normalizeCountryCode(value: unknown): string {
+  const code = String(value ?? "")
+    .trim()
+    .toUpperCase();
+  if (!/^[A-Z]{2}$/.test(code)) return "";
+  return code;
+}
+
+export function isIndiaCountry(countryCode: unknown): boolean {
+  const code = normalizeCountryCode(countryCode);
+  return !code || code === "IN";
+}
+
+/** Sanitize intl slabs: positive unique upToKg, sorted ascending. */
+export function normalizeInternationalWeightSlabs(
+  raw: unknown,
+): InternationalWeightSlab[] {
+  if (!Array.isArray(raw)) return DEFAULT_INTERNATIONAL_WEIGHT_SLABS;
+  const byUpTo = new Map<number, InternationalWeightSlab>();
+  for (const item of raw) {
+    const row = (item ?? {}) as Record<string, unknown>;
+    const upToKg = toWeightKg(row.upToKg);
+    if (upToKg === null) continue;
+    byUpTo.set(upToKg, {
+      upToKg,
+      rate: toNonNegativeRupees(row.rate, 0),
+    });
+  }
+  const slabs = [...byUpTo.values()].sort((a, b) => a.upToKg - b.upToKg);
+  return slabs.length > 0 ? slabs : DEFAULT_INTERNATIONAL_WEIGHT_SLABS;
+}
+
+function normalizeCountryCodes(raw: unknown, fallback: string[]): string[] {
+  const source = Array.isArray(raw) ? raw : fallback;
+  const codes = new Set<string>();
+  for (const item of source) {
+    const code = normalizeCountryCode(item);
+    if (code && code !== "IN") codes.add(code);
+  }
+  return [...codes];
+}
+
+export function normalizeInternationalZones(
+  raw: unknown,
+): InternationalCourierZone[] {
+  const byId = new Map(
+    DEFAULT_INTERNATIONAL_ZONES.map((zone) => [zone.id, zone] as const),
+  );
+  if (Array.isArray(raw)) {
+    for (const item of raw) {
+      const row = (item ?? {}) as Record<string, unknown>;
+      const id = String(row.id ?? "").trim() as InternationalZoneId;
+      if (!INTERNATIONAL_ZONE_IDS.has(id)) continue;
+      const fallback = byId.get(id)!;
+      byId.set(id, {
+        id,
+        label:
+          String(row.label ?? fallback.label).trim() || fallback.label,
+        countryCodes:
+          id === "rest_of_world"
+            ? []
+            : normalizeCountryCodes(row.countryCodes, fallback.countryCodes),
+        slabs: normalizeInternationalWeightSlabs(row.slabs),
+        extraPerKg: toNonNegativeRupees(row.extraPerKg, fallback.extraPerKg),
+      });
+    }
+  }
+  return DEFAULT_INTERNATIONAL_ZONES.map((zone) => byId.get(zone.id)!);
+}
+
+export function parseInternationalCourierSettings(
+  value: Record<string, unknown>,
+): Pick<CourierChargesConfig, "internationalEnabled" | "internationalZones"> {
+  return {
+    internationalEnabled: Boolean(value.internationalEnabled),
+    internationalZones: normalizeInternationalZones(value.internationalZones),
+  };
+}
+
+export function resolveInternationalZone(
+  countryCode: string,
+  config: Pick<CourierChargesConfig, "internationalZones">,
+): InternationalCourierZone {
+  const code = normalizeCountryCode(countryCode);
+  const zones = normalizeInternationalZones(config.internationalZones);
+  const matched = zones.find(
+    (zone) =>
+      zone.id !== "rest_of_world" && zone.countryCodes.includes(code),
+  );
+  return matched ?? zones.find((zone) => zone.id === "rest_of_world")!;
+}
+
 /** Total shipping weight of physical lines; missing weights use the default. */
 export function physicalWeightForShipping(
   lines: Array<{
@@ -106,6 +270,13 @@ export function physicalWeightForShipping(
   return Math.round(total * 1000) / 1000;
 }
 
+export type CourierIndiaRegion =
+  | "tamil_nadu"
+  | "south_states"
+  | "rest_of_india";
+
+export type CourierRegion = CourierIndiaRegion | InternationalZoneId;
+
 export type CourierChargeBreakdown = {
   state: string;
   normalizedState: string;
@@ -118,9 +289,14 @@ export type CourierChargeBreakdown = {
     | "qty2_4_add_on"
     | "qty5_plus_flat"
     | "weight_slab"
-    | "weight_over_max";
-  region: "tamil_nadu" | "south_states" | "rest_of_india";
-  /** Set when weight mode priced the order. */
+    | "weight_over_max"
+    | "international_disabled";
+  region: CourierRegion;
+  market: "india" | "international";
+  countryCode: string;
+  /** False when international shipping is requested but admin has it disabled. */
+  available: boolean;
+  /** Set when weight mode / international priced the order. */
   weightKg?: number;
 };
 
@@ -137,20 +313,117 @@ export function normalizeStateForCourier(state: string): string {
   return state.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
+function indiaRegionForState(normalizedState: string): CourierIndiaRegion {
+  if (
+    normalizedState === "tamil nadu" ||
+    normalizedState === "tamilnadu"
+  ) {
+    return "tamil_nadu";
+  }
+  if (SOUTH_STATES.has(normalizedState)) return "south_states";
+  return "rest_of_india";
+}
+
+export function calculateInternationalCourierCharge(params: {
+  countryCode: string;
+  quantity: number;
+  weightKg?: number;
+  config: CourierChargesConfig;
+}): CourierChargeBreakdown {
+  const countryCode = normalizeCountryCode(params.countryCode) || "XX";
+  const normalizedState = "";
+  const rawQuantity = Math.round(Number(params.quantity));
+  const zone = resolveInternationalZone(countryCode, params.config);
+
+  if (!params.config.internationalEnabled) {
+    return {
+      state: params.countryCode,
+      normalizedState,
+      quantity: Number.isFinite(rawQuantity) ? Math.max(0, rawQuantity) : 0,
+      charge: 0,
+      ruleApplied: "international_disabled",
+      region: zone.id,
+      market: "international",
+      countryCode,
+      available: false,
+    };
+  }
+
+  if (!Number.isFinite(rawQuantity) || rawQuantity <= 0) {
+    return {
+      state: params.countryCode,
+      normalizedState,
+      quantity: 0,
+      charge: 0,
+      ruleApplied: "no_physical_items",
+      region: zone.id,
+      market: "international",
+      countryCode,
+      available: true,
+    };
+  }
+
+  const quantity = rawQuantity;
+  const slabs = normalizeInternationalWeightSlabs(zone.slabs);
+  const weightKg =
+    toWeightKg(params.weightKg) ?? quantity * DEFAULT_PRODUCT_WEIGHT_KG;
+  const slab = slabs.find((item) => weightKg <= item.upToKg + 1e-9);
+  if (slab) {
+    return {
+      state: params.countryCode,
+      normalizedState,
+      quantity,
+      charge: slab.rate,
+      ruleApplied: "weight_slab",
+      region: zone.id,
+      market: "international",
+      countryCode,
+      available: true,
+      weightKg,
+    };
+  }
+  const last = slabs[slabs.length - 1];
+  const extraKg = Math.ceil(weightKg - last.upToKg - 1e-9);
+  const extraPerKg = toNonNegativeRupees(zone.extraPerKg, 0);
+  return {
+    state: params.countryCode,
+    normalizedState,
+    quantity,
+    charge: last.rate + extraKg * extraPerKg,
+    ruleApplied: "weight_over_max",
+    region: zone.id,
+    market: "international",
+    countryCode,
+    available: true,
+    weightKg,
+  };
+}
+
 export function calculateCourierCharge(params: {
   state: string;
   quantity: number;
-  /** Total physical weight (kg); required for weight mode. */
+  /** ISO country; defaults to India. Non-IN uses international kg zones. */
+  countryCode?: string;
+  /** Total physical weight (kg); required for weight mode / international. */
   weightKg?: number;
-  /** Discounted merchandise subtotal (after promo, before courier/GST). */
+  /** Discounted merchandise subtotal (after promo, before courier/GST). India only. */
   orderAmount?: number;
   config: CourierChargesConfig;
 }): CourierChargeBreakdown {
+  const countryCode = normalizeCountryCode(params.countryCode) || "IN";
+  if (!isIndiaCountry(countryCode)) {
+    return calculateInternationalCourierCharge({
+      countryCode,
+      quantity: params.quantity,
+      weightKg: params.weightKg,
+      config: params.config,
+    });
+  }
+
   const normalizedState = normalizeStateForCourier(params.state);
   const rawQuantity = Math.round(Number(params.quantity));
   const config = params.config;
-  const isTamilNadu =
-    normalizedState === "tamil nadu" || normalizedState === "tamilnadu";
+  const region = indiaRegionForState(normalizedState);
 
   if (!Number.isFinite(rawQuantity) || rawQuantity <= 0) {
     return {
@@ -159,21 +432,14 @@ export function calculateCourierCharge(params: {
       quantity: 0,
       charge: 0,
       ruleApplied: "no_physical_items",
-      region: isTamilNadu
-        ? "tamil_nadu"
-        : SOUTH_STATES.has(normalizedState)
-          ? "south_states"
-          : "rest_of_india",
+      region,
+      market: "india",
+      countryCode: "IN",
+      available: true,
     };
   }
 
   const quantity = rawQuantity;
-
-  const region: CourierChargeBreakdown["region"] = isTamilNadu
-    ? "tamil_nadu"
-    : SOUTH_STATES.has(normalizedState)
-      ? "south_states"
-      : "rest_of_india";
 
   const orderAmount = Number(params.orderAmount);
   const freeMin = Math.max(0, Math.round(Number(config.freeShippingMin) || 0));
@@ -189,6 +455,9 @@ export function calculateCourierCharge(params: {
       charge: 0,
       ruleApplied: "free_shipping",
       region,
+      market: "india",
+      countryCode: "IN",
+      available: true,
     };
   }
 
@@ -211,6 +480,9 @@ export function calculateCourierCharge(params: {
         charge: priceFor(slab),
         ruleApplied: "weight_slab",
         region,
+        market: "india",
+        countryCode: "IN",
+        available: true,
         weightKg,
       };
     }
@@ -227,6 +499,9 @@ export function calculateCourierCharge(params: {
       charge: priceFor(last) + extraKg * extraPerKg,
       ruleApplied: "weight_over_max",
       region,
+      market: "india",
+      countryCode: "IN",
+      available: true,
       weightKg,
     };
   }
@@ -246,6 +521,9 @@ export function calculateCourierCharge(params: {
       charge: config.qty5PlusFlat,
       ruleApplied: "qty5_plus_flat",
       region,
+      market: "india",
+      countryCode: "IN",
+      available: true,
     };
   }
 
@@ -257,6 +535,9 @@ export function calculateCourierCharge(params: {
       charge: base + config.qty2To4AddOn,
       ruleApplied: "qty2_4_add_on",
       region,
+      market: "india",
+      countryCode: "IN",
+      available: true,
     };
   }
 
@@ -267,6 +548,9 @@ export function calculateCourierCharge(params: {
     charge: base,
     ruleApplied: "qty1_base",
     region,
+    market: "india",
+    countryCode: "IN",
+    available: true,
   };
 }
 

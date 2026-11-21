@@ -21,7 +21,11 @@ import {
   upsertIntegrationSetting,
   getIntegrationSetting,
 } from "@/lib/integrations/settings";
-import { parseCourierWeightSettings } from "@/lib/courier/calculate";
+import { normalizeFloatingActionsPayload } from "@/lib/admin/floating-actions";
+import {
+  parseCourierWeightSettings,
+  parseInternationalCourierSettings,
+} from "@/lib/courier/calculate";
 import { invalidateStorefrontCache } from "@/lib/cache/invalidate-storefront";
 import { revalidatePath } from "next/cache";
 import { resolveHomeBannerSlideHref } from "@/lib/admin/home-banner-links";
@@ -37,6 +41,7 @@ const keySchema = z.enum([
   INTEGRATION_KEYS.whatsapp,
   INTEGRATION_KEYS.storefrontSocial,
   INTEGRATION_KEYS.storefrontContact,
+  INTEGRATION_KEYS.floatingActions,
   INTEGRATION_KEYS.homeBannerSlides,
   INTEGRATION_KEYS.announcementBar,
   INTEGRATION_KEYS.bulkOrderGuard,
@@ -44,6 +49,13 @@ const keySchema = z.enum([
   INTEGRATION_KEYS.courierCharges,
   INTEGRATION_KEYS.offerCodes,
 ]);
+
+const floatingActionsPayloadSchema = z.object({
+  mail: z.boolean(),
+  phone: z.boolean(),
+  whatsapp: z.boolean(),
+  cart: z.boolean(),
+});
 
 const saveSchema = z.object({
   key: keySchema,
@@ -57,6 +69,22 @@ const secretFieldsByKey: Record<string, string[]> = {
   [INTEGRATION_KEYS.razorpay]: ["keySecret", "webhookSecret"],
   [INTEGRATION_KEYS.whatsapp]: ["accessToken"],
 };
+
+function redactIntegrationSetting<T extends { value: unknown }>(
+  key: string,
+  setting: T | null,
+): (T & { secretConfigured: Record<string, boolean> }) | null {
+  if (!setting) return null;
+  const value = {
+    ...((setting.value ?? {}) as Record<string, unknown>),
+  };
+  const secretConfigured: Record<string, boolean> = {};
+  for (const field of secretFieldsByKey[key] ?? []) {
+    secretConfigured[field] = String(value[field] ?? "").trim().length > 0;
+    delete value[field];
+  }
+  return { ...setting, value, secretConfigured };
+}
 
 const homeBannerSlideSchema = z
   .object({
@@ -104,6 +132,30 @@ const stockControlPayloadSchema = z.object({
   lowStockThreshold: z.number().int().min(1).max(99),
 });
 
+const internationalZoneSchema = z.object({
+  id: z.enum([
+    "gulf",
+    "north_america",
+    "uk_eu",
+    "asia_pacific",
+    "rest_of_world",
+  ]),
+  label: z.string().trim().min(1).max(80),
+  countryCodes: z
+    .array(z.string().trim().regex(/^[A-Za-z]{2}$/))
+    .max(80),
+  slabs: z
+    .array(
+      z.object({
+        upToKg: z.number().positive().max(1000),
+        rate: z.number().int().min(0).max(999999),
+      }),
+    )
+    .min(1)
+    .max(20),
+  extraPerKg: z.number().int().min(0).max(99999),
+});
+
 const courierChargesPayloadSchema = z.object({
   tamilNaduBase: z.number().int().min(0).max(9999),
   southStatesBase: z.number().int().min(0).max(9999),
@@ -127,6 +179,12 @@ const courierChargesPayloadSchema = z.object({
     .min(1)
     .max(20),
   weightExtraPerKg: z.number().int().min(0).max(9999),
+  internationalEnabled: z.boolean().default(false),
+  internationalZones: z
+    .array(internationalZoneSchema)
+    .min(1)
+    .max(10)
+    .optional(),
 });
 
 const offerCodeItemSchema = z.object({
@@ -198,6 +256,7 @@ export async function GET() {
       whatsapp,
       storefrontSocial,
       storefrontContact,
+      floatingActions,
       homeBannerSlides,
       announcementBar,
       bulkOrderGuard,
@@ -212,6 +271,7 @@ export async function GET() {
         getIntegrationSetting(INTEGRATION_KEYS.whatsapp),
         getIntegrationSetting(INTEGRATION_KEYS.storefrontSocial),
         getIntegrationSetting(INTEGRATION_KEYS.storefrontContact),
+        getIntegrationSetting(INTEGRATION_KEYS.floatingActions),
         getIntegrationSetting(INTEGRATION_KEYS.homeBannerSlides),
         getIntegrationSetting(INTEGRATION_KEYS.announcementBar),
         getIntegrationSetting(INTEGRATION_KEYS.bulkOrderGuard),
@@ -222,12 +282,13 @@ export async function GET() {
     );
 
     return NextResponse.json({
-      cashfree: cashfree ?? null,
-      phonepe: phonepe ?? null,
-      razorpay: razorpay ?? null,
-      whatsapp: whatsapp ?? null,
+      cashfree: redactIntegrationSetting(INTEGRATION_KEYS.cashfree, cashfree),
+      phonepe: redactIntegrationSetting(INTEGRATION_KEYS.phonepe, phonepe),
+      razorpay: redactIntegrationSetting(INTEGRATION_KEYS.razorpay, razorpay),
+      whatsapp: redactIntegrationSetting(INTEGRATION_KEYS.whatsapp, whatsapp),
       storefrontSocial: storefrontSocial ?? null,
       storefrontContact: storefrontContact ?? null,
+      floatingActions: floatingActions ?? null,
       homeBannerSlides: homeBannerSlides ?? null,
       announcementBar: announcementBar ?? null,
       bulkOrderGuard: bulkOrderGuard ?? null,
@@ -470,6 +531,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (key === INTEGRATION_KEYS.courierCharges) {
+      const intlParsed = parseInternationalCourierSettings(incomingValue);
       const courierChargesParsed = courierChargesPayloadSchema.safeParse({
         tamilNaduBase: Number(incomingValue.tamilNaduBase ?? 40),
         southStatesBase: Number(incomingValue.southStatesBase ?? 60),
@@ -483,6 +545,8 @@ export async function POST(request: NextRequest) {
         gstEnabled: Boolean(incomingValue.gstEnabled ?? true),
         gstPercentage: Number(incomingValue.gstPercentage ?? 5),
         ...parseCourierWeightSettings(incomingValue),
+        internationalEnabled: intlParsed.internationalEnabled,
+        internationalZones: intlParsed.internationalZones,
       });
       if (!courierChargesParsed.success) {
         const courierError = courierChargesParsed as z.SafeParseError<
@@ -496,7 +560,10 @@ export async function POST(request: NextRequest) {
           { status: 400 },
         );
       }
-      Object.assign(normalizedValue, courierChargesParsed.data);
+      Object.assign(normalizedValue, {
+        ...courierChargesParsed.data,
+        internationalZones: intlParsed.internationalZones,
+      });
     }
 
     if (key === INTEGRATION_KEYS.offerCodes) {
@@ -583,6 +650,25 @@ export async function POST(request: NextRequest) {
       }
 
       Object.assign(normalizedValue, shopContactParsed.data);
+    }
+
+    if (key === INTEGRATION_KEYS.floatingActions) {
+      const floatingParsed = floatingActionsPayloadSchema.safeParse(
+        normalizeFloatingActionsPayload(incomingValue),
+      );
+      if (!floatingParsed.success) {
+        const floatingError = floatingParsed as z.SafeParseError<
+          z.infer<typeof floatingActionsPayloadSchema>
+        >;
+        return NextResponse.json(
+          publicValidationPayload(
+            "Invalid floating actions payload",
+            floatingError.error,
+          ),
+          { status: 400 },
+        );
+      }
+      Object.assign(normalizedValue, floatingParsed.data);
     }
 
     const current = await getIntegrationSetting(key);
@@ -705,8 +791,15 @@ export async function POST(request: NextRequest) {
       revalidatePath("/", "layout");
       revalidatePath("/contact");
       revalidatePath("/faq");
+      revalidatePath("/shipping-delivery");
+      revalidatePath("/return-policy");
+      revalidatePath("/refund-cancellation");
       revalidatePath("/shipping-returns");
       revalidatePath("/store-policy");
+    }
+
+    if (key === INTEGRATION_KEYS.floatingActions) {
+      revalidatePath("/", "layout");
     }
 
     if (key === INTEGRATION_KEYS.homeBannerSlides) {

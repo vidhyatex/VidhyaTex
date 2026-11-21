@@ -29,8 +29,11 @@ export function buildShippingAddressLines(
   if (cityState) lines.push(cityState);
 
   const country = shippingAddress.country?.trim();
-  if (country && country.toLowerCase() !== "india") {
-    lines.push(country);
+  if (country) {
+    const normalized = country.toUpperCase();
+    if (normalized !== "IN" && country.toLowerCase() !== "india") {
+      lines.push(normalized.length === 2 ? normalized : country);
+    }
   }
 
   return lines.length > 0 ? lines : ["Address not available"];

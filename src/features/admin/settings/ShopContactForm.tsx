@@ -18,6 +18,11 @@ import {
   LoadingButtonLabel,
 } from "@/components/admin/AdminLoadingState";
 import { siteConfig } from "@/config/site";
+import {
+  DEFAULT_FLOATING_ACTIONS,
+  parseFloatingActionsValue,
+  type FloatingActionsFlags,
+} from "@/lib/admin/floating-actions";
 import { fetchWithTimeout } from "@/lib/network/fetchWithTimeout";
 import { Plus, Trash2 } from "lucide-react";
 
@@ -29,6 +34,7 @@ type ApiSettingRecord = {
 
 type IntegrationsPayload = {
   storefrontContact: ApiSettingRecord;
+  floatingActions: ApiSettingRecord;
 };
 
 type ContactRow = {
@@ -90,7 +96,12 @@ export function ShopContactForm() {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSavingFloating, setIsSavingFloating] = useState(false);
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [floating, setFloating] = useState<FloatingActionsFlags>({
+    ...DEFAULT_FLOATING_ACTIONS,
+  });
+  const [floatingMasterEnabled, setFloatingMasterEnabled] = useState(true);
 
   const loadSettings = async () => {
     setIsLoading(true);
@@ -102,6 +113,13 @@ export function ShopContactForm() {
 
       const payload = (await res.json()) as IntegrationsPayload;
       setForm(applyPayload(payload));
+      setFloatingMasterEnabled(payload.floatingActions?.isEnabled ?? true);
+      setFloating(
+        parseFloatingActionsValue(
+          payload.floatingActions?.value,
+          payload.floatingActions?.isEnabled ?? true,
+        ),
+      );
     } catch (error) {
       toast({
         title: "Could not load settings",
@@ -119,8 +137,8 @@ export function ShopContactForm() {
   }, []);
 
   const saveDisabled = useMemo(
-    () => isSaving || isLoading,
-    [isSaving, isLoading],
+    () => isSaving || isSavingFloating || isLoading,
+    [isSaving, isSavingFloating, isLoading],
   );
 
   const updateContact = (index: number, patch: Partial<ContactRow>) => {
@@ -206,7 +224,7 @@ export function ShopContactForm() {
       toast({
         title: "Shop contact saved",
         description:
-          "Footer, contact page, and the mail floating button now use these details.",
+          "Footer, contact page, and floating actions use these contact details.",
       });
     } catch (error) {
       toast({
@@ -219,15 +237,51 @@ export function ShopContactForm() {
     }
   };
 
+  const onSaveFloating = async () => {
+    setIsSavingFloating(true);
+    try {
+      const res = await fetchWithTimeout("/api/admin/integrations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: "floating_actions",
+          isEnabled: floatingMasterEnabled,
+          value: floating,
+        }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "Save failed");
+        throw new Error(text || "Save failed");
+      }
+
+      await loadSettings();
+
+      toast({
+        title: "Floating actions saved",
+        description:
+          "Only enabled buttons appear on the storefront, stacked with no empty gaps.",
+      });
+    } catch (error) {
+      toast({
+        title: "Save failed",
+        description: error instanceof Error ? error.message : "Please retry",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSavingFloating(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Shop contact</CardTitle>
           <CardDescription>
-            Address, GSTIN, and email shown on the storefront footer, contact
-            page, and mail floating button. Shop phone numbers are not shown to
-            customers.
+            Address, GSTIN, email, and contact persons for the storefront.
+            Phone numbers are used by floating Call / WhatsApp when those
+            buttons are enabled.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -347,6 +401,60 @@ export function ShopContactForm() {
           isLoading={isSaving}
           loadingText="Saving..."
           idleText="Save shop contact"
+        />
+      </Button>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Floating actions</CardTitle>
+          <CardDescription>
+            Enable each floating button separately. Disabled buttons are hidden
+            completely — two on shows two, three on shows three, with no empty
+            space between.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={floatingMasterEnabled}
+              onChange={(e) => setFloatingMasterEnabled(e.target.checked)}
+            />
+            Show floating actions on the storefront
+          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {(
+              [
+                ["mail", "Show floating Mail"],
+                ["phone", "Show floating Phone (call)"],
+                ["whatsapp", "Show floating WhatsApp"],
+                ["cart", "Show floating Cart"],
+              ] as const
+            ).map(([key, label]) => (
+              <label key={key} className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={floating[key]}
+                  disabled={!floatingMasterEnabled}
+                  onChange={(e) =>
+                    setFloating((prev) => ({
+                      ...prev,
+                      [key]: e.target.checked,
+                    }))
+                  }
+                />
+                {label}
+              </label>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Button onClick={onSaveFloating} disabled={saveDisabled}>
+        <LoadingButtonLabel
+          isLoading={isSavingFloating}
+          loadingText="Saving..."
+          idleText="Save floating actions"
         />
       </Button>
     </div>

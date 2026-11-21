@@ -147,12 +147,23 @@ export default async function PrivacyPolicyPage() {
           >
             Terms of Use
           </Link>
-          , and{" "}
+          ,{" "}
           <Link
-            href="/shipping-returns"
+            href="/shipping-delivery"
             className="text-primary hover:underline"
           >
-            Shipping &amp; Returns
+            Shipping and Delivery Policy
+          </Link>
+          ,{" "}
+          <Link href="/return-policy" className="text-primary hover:underline">
+            Return Policy
+          </Link>
+          , and{" "}
+          <Link
+            href="/refund-cancellation"
+            className="text-primary hover:underline"
+          >
+            Refund and Cancellation Policy
           </Link>
           .
         </p>

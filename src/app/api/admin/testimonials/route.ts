@@ -3,11 +3,19 @@ import {
   publicValidationPayload,
 } from "@/lib/api/public-error";
 import { getSessionUser, isAdminUser } from "@/lib/auth/admin";
+import { invalidateStorefrontCache } from "@/lib/cache/invalidate-storefront";
 import db from "@/lib/supabase/db";
 import { testimonials } from "@/lib/supabase/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+
+async function refreshTestimonialSurfaces() {
+  revalidatePath("/");
+  revalidatePath("/testimonials");
+  await invalidateStorefrontCache().catch(() => undefined);
+}
 
 const baseSchema = z.object({
   kind: z.enum(["text", "video"]),
@@ -66,6 +74,7 @@ export async function POST(request: NextRequest) {
       order: parsed.data.order ?? null,
     };
     await db.insert(testimonials).values(insertValues);
+    await refreshTestimonialSurfaces();
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[admin/testimonials] POST failed:", error);
@@ -121,6 +130,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    await refreshTestimonialSurfaces();
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[admin/testimonials] PUT failed:", error);
@@ -162,6 +172,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    await refreshTestimonialSurfaces();
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[admin/testimonials] DELETE failed:", error);

@@ -7,9 +7,11 @@ import {
 } from "./checkoutAddressDraft";
 
 describe("buildCartPincodeDefaults", () => {
-  it("returns empty when PIN is missing or incomplete", () => {
-    expect(buildCartPincodeDefaults({})).toEqual({});
-    expect(buildCartPincodeDefaults({ postal_code: "5600" })).toEqual({});
+  it("defaults to India when PIN is missing or incomplete", () => {
+    expect(buildCartPincodeDefaults({})).toEqual({ country: "IN" });
+    expect(buildCartPincodeDefaults({ postal_code: "5600" })).toEqual({
+      country: "IN",
+    });
   });
 
   it("normalizes PIN and includes city/state when provided", () => {
@@ -23,6 +25,7 @@ describe("buildCartPincodeDefaults", () => {
       postal_code: "560001",
       city: "Bengaluru",
       state: "Karnataka",
+      country: "IN",
     });
   });
 });

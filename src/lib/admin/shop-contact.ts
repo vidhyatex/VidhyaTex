@@ -102,7 +102,10 @@ export function resolveShopContact(
   });
 }
 
-/** Shop phone/WhatsApp stay off the public site even if admin still has numbers saved. */
+/**
+ * Keep contact persons for floating call/WhatsApp, but blank the primary
+ * phone fields so footer / address blocks do not list a shop phone line.
+ */
 export function hideShopPhoneOnStorefront(
   contact: ResolvedShopContact,
 ): ResolvedShopContact {
@@ -110,6 +113,5 @@ export function hideShopPhoneOnStorefront(
     ...contact,
     phone: "",
     phoneHref: "",
-    contacts: [],
   };
 }

@@ -22,6 +22,7 @@ import { AnnouncementsProvider } from "@/providers/AnnouncementsProvider";
 import { BulkOrderGuardProvider } from "@/providers/BulkOrderGuardProvider";
 import { CourierChargesProvider } from "@/providers/CourierChargesProvider";
 import { OfferCodesProvider } from "@/providers/OfferCodesProvider";
+import { FloatingActionsProvider } from "@/providers/FloatingActionsProvider";
 import { ShopContactProvider } from "@/providers/ShopContactProvider";
 import { SocialLinksProvider } from "@/providers/SocialLinksProvider";
 import { StockControlProvider } from "@/providers/StockControlProvider";
@@ -57,6 +58,7 @@ async function StoreLayout({ children }: Props) {
   const {
     contact,
     social,
+    floatingActions,
     announcements,
     bulkOrderGuard,
     stockControl,
@@ -74,40 +76,42 @@ async function StoreLayout({ children }: Props) {
   return (
     <SocialLinksProvider social={social}>
       <ShopContactProvider contact={contact}>
-        <JsonLd
-          data={[
-            buildOrganizationJsonLd(),
-            buildWebsiteJsonLd(),
-            buildStoreJsonLd(),
-            buildSiteNavigationJsonLd(),
-          ]}
-        />
-        <AnnouncementsProvider announcements={announcements}>
-          <BulkOrderGuardProvider config={bulkOrderGuard}>
-            <StockControlProvider config={stockControl}>
-              <CourierChargesProvider config={courierCharges}>
-                <OfferCodesProvider config={offerCodes}>
-                  <MobileMenuProvider>
-                    <MobileSearchProvider>
-                      <StoreHeaderMetrics />
-                      <Navbar />
-                      <MobileSearchOverlay />
-                      <main className="storefront-atmosphere w-full max-w-[100vw] overflow-x-hidden pt-[var(--store-header-offset-mobile)] md:pt-[var(--store-header-offset-desktop)] pb-[var(--mobile-nav-height)] md:pb-0">
-                        {children}
-                      </main>
-                      <InAppBrowserBannerGate />
-                      <StoreDeferredChrome />
-                      <MobileBottomNav />
-                      <div className="md:contents pb-[var(--mobile-nav-height)] md:pb-0">
-                        <MainFooter />
-                      </div>
-                    </MobileSearchProvider>
-                  </MobileMenuProvider>
-                </OfferCodesProvider>
-              </CourierChargesProvider>
-            </StockControlProvider>
-          </BulkOrderGuardProvider>
-        </AnnouncementsProvider>
+        <FloatingActionsProvider floatingActions={floatingActions}>
+          <JsonLd
+            data={[
+              buildOrganizationJsonLd(),
+              buildWebsiteJsonLd(),
+              buildStoreJsonLd(),
+              buildSiteNavigationJsonLd(),
+            ]}
+          />
+          <AnnouncementsProvider announcements={announcements}>
+            <BulkOrderGuardProvider config={bulkOrderGuard}>
+              <StockControlProvider config={stockControl}>
+                <CourierChargesProvider config={courierCharges}>
+                  <OfferCodesProvider config={offerCodes}>
+                    <MobileMenuProvider>
+                      <MobileSearchProvider>
+                        <StoreHeaderMetrics />
+                        <Navbar />
+                        <MobileSearchOverlay />
+                        <main className="storefront-atmosphere w-full max-w-[100vw] overflow-x-hidden pt-[var(--store-header-offset-mobile)] md:pt-[var(--store-header-offset-desktop)] pb-[var(--mobile-nav-height)] md:pb-0">
+                          {children}
+                        </main>
+                        <InAppBrowserBannerGate />
+                        <StoreDeferredChrome />
+                        <MobileBottomNav />
+                        <div className="md:contents pb-[var(--mobile-nav-height)] md:pb-0">
+                          <MainFooter />
+                        </div>
+                      </MobileSearchProvider>
+                    </MobileMenuProvider>
+                  </OfferCodesProvider>
+                </CourierChargesProvider>
+              </StockControlProvider>
+            </BulkOrderGuardProvider>
+          </AnnouncementsProvider>
+        </FloatingActionsProvider>
       </ShopContactProvider>
     </SocialLinksProvider>
   );

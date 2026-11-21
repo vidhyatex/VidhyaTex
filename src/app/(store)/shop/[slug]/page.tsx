@@ -319,7 +319,8 @@ async function ProductDetailPage({ params }: Props) {
                 <AccordionContent>
                   Shipping across Tamil Nadu and India. Free delivery on
                   selected orders — email us for details. {ORDER_RETURNS.short}{" "}
-                  Email us before returning.
+                  Email us before returning. Full policies: Shipping and
+                  Delivery, Return Policy, and Refund and Cancellation.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>

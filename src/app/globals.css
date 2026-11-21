@@ -499,82 +499,87 @@ html {
   border-bottom: 1px dashed hsl(var(--brand-gold) / 0.55);
 }
 
-/* Shop by Price — textile badge frame (arch / soft scallop, not a circle) */
-.shop-by-frame-wrap {
-  width: 100%;
-  filter: drop-shadow(0 14px 18px rgba(201, 162, 39, 0.28));
-  transition: filter 300ms ease;
-}
-
-.group:hover .shop-by-frame-wrap {
-  filter: drop-shadow(0 18px 22px rgba(28, 24, 20, 0.32));
-}
-
-.shop-by-frame {
+/*
+ * Scalloped arch tiles (Shop by Price + Customer Testimonials):
+ * photo/video clipped to multi-lobed arch, soft drop shadow, dark pill.
+ */
+.shop-by-card {
   position: relative;
-  aspect-ratio: 1 / 1;
   width: 100%;
-  overflow: hidden;
-  background: hsl(var(--muted));
-  clip-path: polygon(
-    50% 0%,
-    64% 3.5%,
-    78% 12%,
-    90% 26%,
-    98% 44%,
-    100% 58%,
-    94% 74%,
-    82% 88%,
-    66% 97%,
-    50% 100%,
-    34% 97%,
-    18% 88%,
-    6% 74%,
-    0% 58%,
-    2% 44%,
-    10% 26%,
-    22% 12%,
-    36% 3.5%
-  );
-  -webkit-clip-path: polygon(
-    50% 0%,
-    64% 3.5%,
-    78% 12%,
-    90% 26%,
-    98% 44%,
-    100% 58%,
-    94% 74%,
-    82% 88%,
-    66% 97%,
-    50% 100%,
-    34% 97%,
-    18% 88%,
-    6% 74%,
-    0% 58%,
-    2% 44%,
-    10% 26%,
-    22% 12%,
-    36% 3.5%
-  );
+  aspect-ratio: 2 / 3.15;
+  overflow: visible;
   transition: transform 300ms ease;
 }
 
-.shop-by-frame::after {
-  content: "";
+.group:active .shop-by-card {
+  transform: scale(0.98);
+}
+
+.shop-by-photo {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
+  overflow: hidden;
+  clip-path: url(#storefront-scallop-arch);
+  -webkit-clip-path: url(#storefront-scallop-arch);
+  filter: drop-shadow(0 10px 16px rgba(40, 28, 18, 0.28));
+  transition: filter 300ms ease;
   pointer-events: none;
-  box-shadow: inset 0 0 0 2px hsl(var(--brand-teal) / 0.35);
-  transition: box-shadow 300ms ease;
 }
 
-.group:hover .shop-by-frame::after {
-  box-shadow: inset 0 0 0 2px hsl(var(--brand-magenta) / 0.5);
+.group:hover .shop-by-photo {
+  filter: drop-shadow(0 14px 20px rgba(40, 28, 18, 0.36));
 }
 
-.group:active .shop-by-frame {
-  transform: scale(0.98);
+.shop-by-photo-fade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(45, 28, 16, 0.55) 0%,
+    rgba(45, 28, 16, 0.12) 38%,
+    transparent 62%
+  );
+}
+
+.shop-by-pill {
+  position: absolute;
+  inset-inline: 14%;
+  bottom: 6.5%;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.shop-by-pill-label {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.55rem;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fff;
+  background: #3a2416;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (min-width: 640px) {
+  .shop-by-pill-label {
+    font-size: 0.75rem;
+    padding: 0.42rem 1rem;
+  }
 }
 
 /* Price / size meta — soft pastel pills (CSS only, no images) */

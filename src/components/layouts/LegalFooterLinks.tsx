@@ -4,7 +4,9 @@ const LEGAL_LINKS = [
   { label: "Terms & Conditions", href: "/terms-and-conditions" },
   { label: "Terms of Use", href: "/terms-and-conditions#terms-of-use" },
   { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Shipping & Returns", href: "/shipping-returns" },
+  { label: "Shipping & Delivery", href: "/shipping-delivery" },
+  { label: "Return Policy", href: "/return-policy" },
+  { label: "Refund & Cancellation", href: "/refund-cancellation" },
   { label: "Payment Methods", href: "/payment-methods" },
 ] as const;
 

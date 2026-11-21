@@ -14,6 +14,7 @@ const emptyDraft = (): AddressFormValues => ({
   city: "",
   state: "",
   postal_code: "",
+  country: "IN",
 });
 
 export function loadCheckoutAddressDraft(): Partial<AddressFormValues> | null {
@@ -69,20 +70,38 @@ export function mergeCheckoutAddressDefaults(
   };
 }
 
-/** Prefill checkout address from the cart PIN the shopper already entered. */
+/** Prefill checkout address from the cart delivery fields the shopper already entered. */
 export function buildCartPincodeDefaults(input: {
   postal_code?: string;
   city?: string;
   state?: string;
+  country?: string;
 }): Partial<AddressFormValues> {
-  const postal_code = String(input.postal_code ?? "")
-    .replace(/\D/g, "")
-    .slice(0, 6);
-  if (postal_code.length !== 6) return {};
+  const country = String(input.country ?? "IN")
+    .trim()
+    .toUpperCase();
+  const isIndia = !country || country === "IN";
 
-  const out: Partial<AddressFormValues> = { postal_code };
+  if (isIndia) {
+    const postal_code = String(input.postal_code ?? "")
+      .replace(/\D/g, "")
+      .slice(0, 6);
+    if (postal_code.length !== 6) {
+      return country === "IN" ? { country: "IN" } : { country };
+    }
+    const out: Partial<AddressFormValues> = { postal_code, country: "IN" };
+    const city = String(input.city ?? "").trim();
+    const state = String(input.state ?? "").trim();
+    if (city) out.city = city;
+    if (state) out.state = state;
+    return out;
+  }
+
+  const out: Partial<AddressFormValues> = { country };
+  const postal_code = String(input.postal_code ?? "").trim();
   const city = String(input.city ?? "").trim();
   const state = String(input.state ?? "").trim();
+  if (postal_code) out.postal_code = postal_code;
   if (city) out.city = city;
   if (state) out.state = state;
   return out;

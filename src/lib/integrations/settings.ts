@@ -8,6 +8,7 @@ import {
   buildCheckoutMoneyTotals,
   normalizeStateForCourier,
   parseCourierWeightSettings,
+  parseInternationalCourierSettings,
   type CourierChargeBreakdown,
   type CourierChargesConfig,
 } from "@/lib/courier/calculate";
@@ -27,6 +28,11 @@ import {
   type ResolvedShopContact,
   type ShopContactPayload,
 } from "@/lib/admin/shop-contact";
+import {
+  DEFAULT_FLOATING_ACTIONS,
+  parseFloatingActionsValue,
+  type FloatingActionsFlags,
+} from "@/lib/admin/floating-actions";
 import { getCanonicalSiteOrigin } from "@/lib/auth/site-urls";
 import { DEFAULT_VELO_ORDER_PUSH_URL } from "@/lib/integrations/velo-order-push-payload";
 import { resolveCashfreeBaseUrl } from "@/lib/integrations/payment-settings";
@@ -48,6 +54,7 @@ export const INTEGRATION_KEYS = {
   whatsapp: "whatsapp",
   storefrontSocial: "storefront_social",
   storefrontContact: "storefront_contact",
+  floatingActions: "floating_actions",
   homeBannerSlides: "home_banner_slides",
   announcementBar: "announcement_bar",
   bulkOrderGuard: "bulk_order_guard",
@@ -212,6 +219,8 @@ const DEFAULT_COURIER_CONFIG: Omit<CourierChargesConfig, "enabled"> = {
   freeShippingMin: 999,
   gstEnabled: true,
   gstPercentage: 5,
+  internationalEnabled: false,
+  internationalZones: parseInternationalCourierSettings({}).internationalZones,
 };
 const DEFAULT_OFFER_CODES_CONFIG: OfferCodesConfig = {
   enabled: true,
@@ -342,6 +351,7 @@ export async function resolveCourierChargesConfig(): Promise<CourierChargesConfi
         DEFAULT_COURIER_CONFIG.gstPercentage,
       ),
       ...parseCourierWeightSettings(value),
+      ...parseInternationalCourierSettings(value),
     };
   } catch (error) {
     console.error("[settings] resolveCourierChargesConfig failed:", error);
@@ -515,6 +525,7 @@ type ApiSettingRow = NonNullable<
 const STOREFRONT_RUNTIME_KEYS: IntegrationKey[] = [
   INTEGRATION_KEYS.storefrontSocial,
   INTEGRATION_KEYS.storefrontContact,
+  INTEGRATION_KEYS.floatingActions,
   INTEGRATION_KEYS.announcementBar,
   INTEGRATION_KEYS.bulkOrderGuard,
   INTEGRATION_KEYS.stockControl,
@@ -642,6 +653,7 @@ function parseCourierFromRow(
       DEFAULT_COURIER_CONFIG.gstPercentage,
     ),
     ...parseCourierWeightSettings(value),
+    ...parseInternationalCourierSettings(value),
   };
 }
 
@@ -653,9 +665,17 @@ function parseOfferCodesFromRow(
   return parseOfferCodesValue(value, setting.isEnabled);
 }
 
+function parseFloatingActionsFromRow(
+  setting: ApiSettingRow | undefined,
+): FloatingActionsFlags {
+  if (!setting) return { ...DEFAULT_FLOATING_ACTIONS };
+  return parseFloatingActionsValue(setting.value, setting.isEnabled);
+}
+
 export type StorefrontRuntimeBundle = {
   contact: ResolvedShopContact;
   social: ResolvedStorefrontSocial;
+  floatingActions: FloatingActionsFlags;
   announcements: ResolvedStorefrontAnnouncements;
   bulkOrderGuard: BulkOrderGuardConfig;
   stockControl: StockControlConfig;
@@ -668,6 +688,7 @@ export function getDefaultStorefrontRuntimeBundle(): StorefrontRuntimeBundle {
   return {
     contact: defaultShopContact(),
     social: defaultSocial(),
+    floatingActions: { ...DEFAULT_FLOATING_ACTIONS },
     announcements: {
       enabled: true,
       items: getDefaultAnnouncementLines(),
@@ -694,6 +715,9 @@ async function loadStorefrontRuntimeBundle(): Promise<StorefrontRuntimeBundle> {
     return {
       contact: parseContactFromRow(map.get(INTEGRATION_KEYS.storefrontContact)),
       social: parseSocialFromRow(map.get(INTEGRATION_KEYS.storefrontSocial)),
+      floatingActions: parseFloatingActionsFromRow(
+        map.get(INTEGRATION_KEYS.floatingActions),
+      ),
       announcements: parseAnnouncementsFromRow(
         map.get(INTEGRATION_KEYS.announcementBar),
       ),

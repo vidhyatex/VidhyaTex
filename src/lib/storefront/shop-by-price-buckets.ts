@@ -85,8 +85,8 @@ export function buildShopByPriceBuckets(
 
     if (!inBucket.length) continue;
 
+    // Featured image is optional — home tiles use fixed marketing art.
     const representative = pickRepresentativeProduct(inBucket);
-    if (!representative?.mediaKey) continue;
 
     buckets.push({
       id: `${min}-${displayMax}`,
@@ -94,9 +94,9 @@ export function buildShopByPriceBuckets(
       min,
       max: displayMax,
       productCount: inBucket.length,
-      imageKey: representative.mediaKey ?? null,
+      imageKey: representative?.mediaKey ?? null,
       imageAlt:
-        representative.mediaAlt?.trim() ||
+        representative?.mediaAlt?.trim() ||
         `Sarees priced ${formatPriceRangeLabel(min, displayMax)}`,
       href: `/shop?price_range=${min}-${displayMax}&sort=PRICE_LOW_TO_HIGH`,
     });

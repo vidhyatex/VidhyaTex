@@ -121,7 +121,17 @@ export const siteConfig = {
         },
         { title: "Terms of Use", href: "/terms-of-use", items: [] },
         { title: "Privacy Policy", href: "/privacy-policy", items: [] },
-        { title: "Shipping & Returns", href: "/shipping-returns", items: [] },
+        {
+          title: "Shipping & Delivery",
+          href: "/shipping-delivery",
+          items: [],
+        },
+        { title: "Return Policy", href: "/return-policy", items: [] },
+        {
+          title: "Refund & Cancellation",
+          href: "/refund-cancellation",
+          items: [],
+        },
         { title: "Payment Methods", href: "/payment-methods", items: [] },
         { title: "FAQ", href: "/faq", items: [] },
         { title: "My orders", href: "/orders", items: [] },

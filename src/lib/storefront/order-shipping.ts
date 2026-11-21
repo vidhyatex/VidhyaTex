@@ -23,7 +23,7 @@ export const ORDER_SHIPPING = {
   tracking: "When we ship, you get an email with tracking.",
   contactPrompt: "No email in 10–15 working days? Contact us:",
   wholesale: "Wholesale: timing depends on order size.",
-  fullDetailsHref: "/shipping-returns",
+  fullDetailsHref: "/shipping-delivery",
   fullDetailsLabel: "Full details",
   contactWhatsApp: "WhatsApp",
   contactEmail: "Email",
@@ -33,7 +33,7 @@ export const ORDER_SHIPPING_FALLBACK = {
   email: "",
 } as const;
 
-/** Shared returns / replacement copy — keep every storefront surface in sync. */
+/** Shared returns / refund / cancellation copy — keep every storefront surface in sync. */
 export const ORDER_RETURNS = {
   windowDays: 7,
   summary:
@@ -42,7 +42,7 @@ export const ORDER_RETURNS = {
   short:
     "Eligible unused items within 7 days. For replacement of damaged or wrong items, share a full unboxing video.",
   faqAnswer:
-    "Unused items in original condition may be returned within 7 days. For a replacement (damage or wrong item), you must share a full unboxing video. Read Shipping & Returns and email us before sending anything back.",
+    "Unused items in original condition may be returned within 7 days. For a replacement (damage or wrong item), you must share a full unboxing video. Read our Return Policy and email us before sending anything back.",
   trustTitle: "Easy Replacement",
   trustDescription:
     "Share an unboxing video for damage or wrong-item replacements.",
@@ -53,5 +53,19 @@ export const ORDER_RETURNS = {
     "Sarees that are used, washed, altered or have tags removed cannot be returned.",
     "Shipping charges for returns may apply unless the item is faulty and approved for replacement.",
   ] as const,
-  fullDetailsHref: "/shipping-returns",
+  cancellation: [
+    "You may request cancellation before the order is shipped by emailing us with your order ID.",
+    "Once the order is shipped, cancellation is not available; you may request a return under our Return Policy (if eligible).",
+    "If we cancel an order due to stock issues, pricing errors, or suspected fraud, any amount collected is refunded to the original payment method.",
+  ] as const,
+  refunds: [
+    "Approved refunds are processed to the original payment method (UPI, card, net banking, or wallet used at checkout).",
+    "After we approve a return or cancellation, refunds are typically initiated within 5–7 working days.",
+    "Your bank or payment provider may take additional time to credit the amount.",
+    "Courier charges are refunded only when the return is due to our error (wrong, damaged, or defective item) and approved by us.",
+  ] as const,
+  /** Primary page for return / replacement rules */
+  fullDetailsHref: "/return-policy",
+  refundPolicyHref: "/refund-cancellation",
+  shippingPolicyHref: "/shipping-delivery",
 } as const;

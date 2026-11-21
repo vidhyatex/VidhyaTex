@@ -38,6 +38,7 @@ type ApiSettingRecord = {
   key: string;
   isEnabled: boolean;
   value: Record<string, unknown>;
+  secretConfigured?: Record<string, boolean>;
 } | null;
 
 type IntegrationsPayload = {
@@ -126,6 +127,13 @@ export function ApiIntegrationsForm() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
+  const [secretsSaved, setSecretsSaved] = useState({
+    cashfree: false,
+    razorpayKey: false,
+    razorpayWebhook: false,
+    phonepe: false,
+    whatsapp: false,
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -153,11 +161,21 @@ export function ApiIntegrationsForm() {
         const cashfreeOn = !razorpayOn && cashfreeEnabled;
         const phonepeOn = !razorpayOn && !cashfreeOn && phonepeEnabled;
 
+        setSecretsSaved({
+          cashfree: Boolean(payload.cashfree?.secretConfigured?.clientSecret),
+          razorpayKey: Boolean(payload.razorpay?.secretConfigured?.keySecret),
+          razorpayWebhook: Boolean(
+            payload.razorpay?.secretConfigured?.webhookSecret,
+          ),
+          phonepe: Boolean(payload.phonepe?.secretConfigured?.saltKey),
+          whatsapp: Boolean(payload.whatsapp?.secretConfigured?.accessToken),
+        });
+
         setForm({
           cashfree: {
             enabled: cashfreeOn,
             clientId: String(cashfreeValue.clientId ?? ""),
-            clientSecret: String(cashfreeValue.clientSecret ?? ""),
+            clientSecret: "",
             baseUrl: resolveCashfreeBaseUrl({
               environment:
                 String(cashfreeValue.environment ?? "sandbox").toLowerCase() ===
@@ -178,8 +196,8 @@ export function ApiIntegrationsForm() {
           razorpay: {
             enabled: razorpayOn,
             keyId: String(razorpayValue.keyId ?? ""),
-            keySecret: String(razorpayValue.keySecret ?? ""),
-            webhookSecret: String(razorpayValue.webhookSecret ?? ""),
+            keySecret: "",
+            webhookSecret: "",
             environment:
               String(razorpayValue.environment ?? "sandbox").toLowerCase() ===
               "production"
@@ -189,7 +207,7 @@ export function ApiIntegrationsForm() {
           phonepe: {
             enabled: phonepeOn,
             merchantId: String(phonepeValue.merchantId ?? ""),
-            saltKey: String(phonepeValue.saltKey ?? ""),
+            saltKey: "",
             saltIndex: String(phonepeValue.saltIndex ?? ""),
             baseUrl: String(
               phonepeValue.baseUrl ?? "https://api.phonepe.com/apis/hermes",
@@ -200,7 +218,7 @@ export function ApiIntegrationsForm() {
           },
           whatsapp: {
             enabled: payload.whatsapp?.isEnabled ?? false,
-            accessToken: String(whatsappValue.accessToken ?? ""),
+            accessToken: "",
             phoneNumberId: String(whatsappValue.phoneNumberId ?? ""),
             templateName: String(whatsappValue.templateName ?? ""),
             templateLanguage: String(whatsappValue.templateLanguage ?? "en"),
@@ -449,7 +467,11 @@ export function ApiIntegrationsForm() {
               type="password"
               value={form.razorpay.keySecret}
               onChange={(e) => updateRazorpay("keySecret", e.target.value)}
-              placeholder="Leave blank to keep existing"
+              placeholder={
+                secretsSaved.razorpayKey
+                  ? "Saved on the server. Leave blank to keep it"
+                  : "Key secret"
+              }
             />
           </div>
           <div className="grid gap-2">
@@ -459,7 +481,11 @@ export function ApiIntegrationsForm() {
               type="password"
               value={form.razorpay.webhookSecret}
               onChange={(e) => updateRazorpay("webhookSecret", e.target.value)}
-              placeholder="From Razorpay Dashboard → Webhooks"
+              placeholder={
+                secretsSaved.razorpayWebhook
+                  ? "Saved on the server. Leave blank to keep it"
+                  : "From Razorpay Dashboard → Webhooks"
+              }
             />
           </div>
           <div className="grid gap-2">
@@ -556,8 +582,17 @@ export function ApiIntegrationsForm() {
               type="password"
               value={form.cashfree.clientSecret}
               onChange={(e) => updateCashfree("clientSecret", e.target.value)}
-              placeholder="Leave blank to keep existing"
+              placeholder={
+                secretsSaved.cashfree
+                  ? "Saved on the server. Leave blank to keep it"
+                  : "Client secret"
+              }
             />
+            {secretsSaved.cashfree ? (
+              <p className="text-xs text-muted-foreground">
+                The secret stays in admin settings and is not shown again.
+              </p>
+            ) : null}
           </div>
           <div className="grid gap-2">
             <Label htmlFor="cashfree-base-url">Base URL</Label>
@@ -643,7 +678,11 @@ export function ApiIntegrationsForm() {
               type="password"
               value={form.phonepe.saltKey}
               onChange={(e) => updatePhonePe("saltKey", e.target.value)}
-              placeholder="Leave blank to keep existing"
+              placeholder={
+                secretsSaved.phonepe
+                  ? "Saved on the server. Leave blank to keep it"
+                  : "Salt key"
+              }
             />
           </div>
           <div className="grid gap-2">
@@ -699,7 +738,11 @@ export function ApiIntegrationsForm() {
               type="password"
               value={form.whatsapp.accessToken}
               onChange={(e) => updateWhatsApp("accessToken", e.target.value)}
-              placeholder="Leave blank to keep existing"
+              placeholder={
+                secretsSaved.whatsapp
+                  ? "Saved on the server. Leave blank to keep it"
+                  : "Access token"
+              }
             />
           </div>
 

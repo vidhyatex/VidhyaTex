@@ -7,7 +7,7 @@ export default function AdminSettingsPage() {
   return (
     <AdminShell
       heading="Settings"
-      description="Stock control, bulk orders, and shop contact for the storefront."
+      description="Stock control, bulk orders, shop contact, and floating action buttons."
     >
       <div className="max-w-3xl space-y-8">
         <StockControlForm />

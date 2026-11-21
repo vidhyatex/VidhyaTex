@@ -36,7 +36,17 @@ export const SEO_STATIC_PAGES = [
     priority: 0.5,
   },
   {
-    path: "/shipping-returns",
+    path: "/shipping-delivery",
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  },
+  {
+    path: "/return-policy",
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  },
+  {
+    path: "/refund-cancellation",
     changeFrequency: "monthly" as const,
     priority: 0.5,
   },

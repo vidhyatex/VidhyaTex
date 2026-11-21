@@ -17,7 +17,7 @@ const iconBtn =
 
 /**
  * Menu sidebar: only main timings + email contact.
- * Extra notes live on Full details (/shipping-returns).
+ * Extra notes live on Full details (/shipping-delivery).
  */
 export function SideMenuOrderShipping({ className }: Props) {
   const contact = useStorefrontContact();

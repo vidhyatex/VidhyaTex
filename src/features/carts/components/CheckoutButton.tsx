@@ -53,10 +53,12 @@ type CheckoutButtonProps = React.ComponentProps<typeof Button> & {
 };
 
 function focusCartDeliveryPincode() {
-  const el = document.getElementById(CART_DELIVERY_PINCODE_INPUT_ID);
+  const el =
+    document.getElementById(CART_DELIVERY_PINCODE_INPUT_ID) ??
+    document.getElementById("cart-delivery-country");
   if (!(el instanceof HTMLElement)) return;
   el.scrollIntoView({ behavior: "smooth", block: "center" });
-  if (el instanceof HTMLInputElement) {
+  if (el instanceof HTMLInputElement || el instanceof HTMLSelectElement) {
     window.setTimeout(() => el.focus(), 200);
   }
 }
@@ -188,9 +190,9 @@ function CheckoutButton({
             reportCheckoutFunnelEvent({ type: "checkout_pin_blocked" });
             focusCartDeliveryPincode();
             toast({
-              title: "Enter delivery PIN",
+              title: "Confirm delivery location",
               description:
-                "Enter your 6-digit PIN in the cart summary to continue.",
+                "Select your delivery country (and PIN for India) in the cart summary to continue.",
             });
             return;
           }

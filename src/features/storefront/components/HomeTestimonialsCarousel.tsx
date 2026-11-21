@@ -10,6 +10,7 @@ import {
 } from "@/lib/brand/testimonial-panels";
 import { cn, keytoUrl } from "@/lib/utils";
 import { StorefrontImage } from "@/components/media/StorefrontImage";
+import Link from "next/link";
 import { HomeSectionHeader } from "./HomeSectionHeader";
 import { HomeScrollSnapStrip, ScrollSnapItem } from "./HomeScrollSnapStrip";
 import {
@@ -22,6 +23,8 @@ type TestimonialNode = DocumentType<typeof TestimonialCardFragment>;
 
 type Props = {
   testimonials: { node: TestimonialNode }[];
+  /** When false, only the cards strip is rendered (used on /testimonials). */
+  showHeader?: boolean;
 };
 
 const scrollSnapTestimonialItemClass =
@@ -228,44 +231,62 @@ function ModernVideoTestimonialCard({
   );
 }
 
-export function HomeTestimonialsCarousel({ testimonials }: Props) {
-  if (!testimonials.length) return null;
-
+export function HomeTestimonialsCarousel({
+  testimonials,
+  showHeader = true,
+}: Props) {
   return (
     <MotionSection className="w-full min-w-0 py-4 sm:py-8 md:py-10">
-      <HomeSectionHeader
-        title="Customer"
-        titleAccent="Testimonials"
-        showViewMore={false}
-      />
-      <HomeScrollSnapStrip ariaLabel="Customer testimonials from admin">
-        {testimonials.map(({ node }, index) => {
-          const isVideo =
-            node.kind === "video" && Boolean(node.video_url?.trim());
-          const panel = testimonialPanelAt(index);
+      {showHeader ? (
+        <HomeSectionHeader
+          title="Customer"
+          titleAccent="Testimonials"
+          href="/testimonials"
+          viewMoreLabel="Share yours"
+          showViewMore
+        />
+      ) : null}
+      {testimonials.length ? (
+        <HomeScrollSnapStrip ariaLabel="Customer testimonials">
+          {testimonials.map(({ node }, index) => {
+            const isVideo =
+              node.kind === "video" && Boolean(node.video_url?.trim());
+            const panel = testimonialPanelAt(index);
 
-          return (
-            <ScrollSnapItem
-              key={node.id}
-              className={
-                isVideo
-                  ? scrollSnapTestimonialVideoItemClass
-                  : scrollSnapTestimonialItemClass
-              }
-            >
-              <MotionRevealItem index={index} instant className="w-full">
-                <MotionHoverLift className="w-full">
-                  {isVideo ? (
-                    <ModernVideoTestimonialCard node={node} panel={panel} />
-                  ) : (
-                    <ModernTextTestimonialCard node={node} panel={panel} />
-                  )}
-                </MotionHoverLift>
-              </MotionRevealItem>
-            </ScrollSnapItem>
-          );
-        })}
-      </HomeScrollSnapStrip>
+            return (
+              <ScrollSnapItem
+                key={node.id}
+                className={
+                  isVideo
+                    ? scrollSnapTestimonialVideoItemClass
+                    : scrollSnapTestimonialItemClass
+                }
+              >
+                <MotionRevealItem index={index} instant className="w-full">
+                  <MotionHoverLift className="w-full">
+                    {isVideo ? (
+                      <ModernVideoTestimonialCard node={node} panel={panel} />
+                    ) : (
+                      <ModernTextTestimonialCard node={node} panel={panel} />
+                    )}
+                  </MotionHoverLift>
+                </MotionRevealItem>
+              </ScrollSnapItem>
+            );
+          })}
+        </HomeScrollSnapStrip>
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          Be the first to share a review —{" "}
+          <Link
+            href="/testimonials"
+            className="font-medium text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-gold"
+          >
+            Share yours
+          </Link>
+          .
+        </p>
+      )}
     </MotionSection>
   );
 }

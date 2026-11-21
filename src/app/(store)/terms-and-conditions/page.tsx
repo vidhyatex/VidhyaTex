@@ -139,18 +139,28 @@ export default async function TermsAndConditionsPage() {
 
       <section className="space-y-3">
         <h2 className="text-base font-semibold text-foreground">
-          6. Shipping, delivery &amp; returns
+          6. Shipping, delivery, returns, refunds &amp; cancellations
         </h2>
         <p>
-          Delivery timelines, courier charges, and our exchange/return rules are
-          described on our{" "}
+          Delivery timelines and courier details are in our{" "}
           <Link
-            href="/shipping-returns"
+            href="/shipping-delivery"
             className="text-primary hover:underline"
           >
-            Shipping &amp; Returns
-          </Link>{" "}
-          page, which forms part of these Terms. For replacement of damaged or
+            Shipping and Delivery Policy
+          </Link>
+          . Return and replacement rules are in our{" "}
+          <Link href="/return-policy" className="text-primary hover:underline">
+            Return Policy
+          </Link>
+          . Cancellation and refund rules are in our{" "}
+          <Link
+            href="/refund-cancellation"
+            className="text-primary hover:underline"
+          >
+            Refund and Cancellation Policy
+          </Link>
+          . These pages form part of these Terms. For replacement of damaged or
           wrong items, a complete unboxing video is required.
         </p>
       </section>
