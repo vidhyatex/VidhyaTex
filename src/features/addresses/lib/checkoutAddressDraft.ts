@@ -1,5 +1,5 @@
 import {
-  addressFormSchema,
+  addressFormFieldsSchema,
   type AddressFormValues,
 } from "../validations/addressFormSchema";
 
@@ -25,7 +25,7 @@ export function loadCheckoutAddressDraft(): Partial<AddressFormValues> | null {
     if (!raw) return null;
 
     const parsed = JSON.parse(raw) as unknown;
-    const result = addressFormSchema.partial().safeParse(parsed);
+    const result = addressFormFieldsSchema.partial().safeParse(parsed);
     if (!result.success) {
       localStorage.removeItem(STORAGE_KEY);
       return null;
