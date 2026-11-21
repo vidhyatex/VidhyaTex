@@ -69,7 +69,7 @@ export const addressFormSchema = z
         path: ["state"],
       });
     }
-    if (!/^[A-Za-z0-9][A-Za-z0-9 \-]{1,11}$/.test(values.postal_code.trim())) {
+    if (!/^[A-Za-z0-9][A-Za-z0-9 -]{1,11}$/.test(values.postal_code.trim())) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: "Enter a valid postal code (2–12 characters)",
