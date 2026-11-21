@@ -14,16 +14,18 @@ export function FloatingActionsProvider({
   floatingActions,
   children,
 }: {
-  floatingActions: FloatingActionsFlags;
+  floatingActions?: FloatingActionsFlags | null;
   children: ReactNode;
 }) {
   return (
-    <FloatingActionsContext.Provider value={floatingActions}>
+    <FloatingActionsContext.Provider
+      value={floatingActions ?? DEFAULT_FLOATING_ACTIONS}
+    >
       {children}
     </FloatingActionsContext.Provider>
   );
 }
 
 export function useFloatingActions() {
-  return useContext(FloatingActionsContext);
+  return useContext(FloatingActionsContext) ?? DEFAULT_FLOATING_ACTIONS;
 }

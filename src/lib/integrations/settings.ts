@@ -743,10 +743,15 @@ export const resolveStorefrontRuntimeBundle = cache(
 );
 
 export async function getStorefrontRuntimeBundleCached(): Promise<StorefrontRuntimeBundle> {
-  return withStorefrontCache("sf:runtime-bundle", loadStorefrontRuntimeBundle, {
-    revalidate: STOREFRONT_REVALIDATE_SECONDS,
-    tags: [CACHE_TAGS.settings],
-  });
+  // v2: includes floatingActions; bump key so stale Redis blobs without it are ignored.
+  return withStorefrontCache(
+    "sf:runtime-bundle:v2",
+    loadStorefrontRuntimeBundle,
+    {
+      revalidate: STOREFRONT_REVALIDATE_SECONDS,
+      tags: [CACHE_TAGS.settings],
+    },
+  );
 }
 
 export async function upsertIntegrationSetting(

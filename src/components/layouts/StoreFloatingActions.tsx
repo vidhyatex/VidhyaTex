@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { Mail, Phone, ShoppingBag } from "lucide-react";
 import { shopMailtoHref } from "@/lib/contact/links";
 import { useCartCount } from "@/features/carts/hooks/useCartCount";
+import { DEFAULT_FLOATING_ACTIONS } from "@/lib/admin/floating-actions";
 import { useFloatingActions } from "@/providers/FloatingActionsProvider";
 import { useStorefrontContact } from "@/providers/ShopContactProvider";
 import { FloatingContactPicker } from "./FloatingContactPicker";
@@ -34,17 +35,18 @@ type OpenPicker = "mail" | "call" | "whatsapp" | null;
 export function StoreFloatingActions() {
   const { isOpen: menuOpen } = useMobileMenu();
   const { hideStoreChrome } = useCheckoutChrome();
-  const flags = useFloatingActions();
+  const flags = useFloatingActions() ?? DEFAULT_FLOATING_ACTIONS;
   const contact = useStorefrontContact();
   const cartCount = useCartCount();
-  const mailHref = shopMailtoHref(contact.email);
+  const contacts = contact?.contacts ?? [];
+  const mailHref = shopMailtoHref(contact?.email);
   const [openPicker, setOpenPicker] = useState<OpenPicker>(null);
 
-  const hasPhoneContacts = contact.contacts.some(
+  const hasPhoneContacts = contacts.some(
     (person) => person.phone && person.phoneHref && person.phoneHref !== "tel:",
   );
 
-  const showMail = flags.mail && Boolean(mailHref && contact.email);
+  const showMail = flags.mail && Boolean(mailHref && contact?.email);
   const showPhone = flags.phone && hasPhoneContacts;
   const showWhatsapp = flags.whatsapp && hasPhoneContacts;
   const showCart = flags.cart;
@@ -59,7 +61,7 @@ export function StoreFloatingActions() {
   const items = useMemo(() => {
     const nodes: ReactNode[] = [];
 
-    if (showMail) {
+    if (showMail && contact?.email && mailHref) {
       nodes.push(
         <FloatingMailPicker
           key="mail"
@@ -122,7 +124,7 @@ export function StoreFloatingActions() {
     showPhone,
     showWhatsapp,
     showCart,
-    contact.email,
+    contact?.email,
     mailHref,
     openPicker,
     handlePickerChange,
