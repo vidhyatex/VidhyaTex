@@ -56,9 +56,35 @@ function pickRepresentativeProduct(products: ShopByPriceProductInput[]) {
   return sorted[Math.floor(sorted.length / 2)] ?? pool[0];
 }
 
+function shortRupees(amount: number): string {
+  if (amount >= 1000) {
+    const thousands = amount / 1000;
+    const text = Number.isInteger(thousands)
+      ? String(thousands)
+      : thousands.toFixed(1).replace(/\.0$/, "");
+    return `${text}K`;
+  }
+  return String(amount);
+}
+
+/**
+ * Short homepage-tile label: "Below 300", "500 - 800", "1.5K - 2K".
+ * Inclusive bucket maxima (299, 799, 1999) are shown as the next round number.
+ */
+export function formatShopByPriceTileLabel(min: number, max: number): string {
+  const upper = max % 10 === 9 ? max + 1 : max;
+  if (min <= 1) return `Below ${shortRupees(upper)}`;
+  return `${shortRupees(min)} - ${shortRupees(upper)}`;
+}
+
+/**
+ * @param gstFactor multiplier from stored price to the price shown to
+ * shoppers (1.05 for 5% GST). Buckets then match the labels on product cards.
+ */
 export function buildShopByPriceBuckets(
   products: ShopByPriceProductInput[],
   breakpoints: readonly number[] = SHOP_BY_PRICE_BREAKPOINTS,
+  gstFactor = 1,
 ): ShopByPriceBucket[] {
   if (products.length === 0 || breakpoints.length < 2) return [];
 
@@ -80,7 +106,7 @@ export function buildShopByPriceBuckets(
     const displayMax = displayMaxForBucket(min, nextBreakpoint, isLast);
 
     const inBucket = priced.filter((product) =>
-      isEffectivePriceInDisplayRange(product, min, displayMax),
+      isEffectivePriceInDisplayRange(product, min, displayMax, gstFactor),
     );
 
     if (!inBucket.length) continue;

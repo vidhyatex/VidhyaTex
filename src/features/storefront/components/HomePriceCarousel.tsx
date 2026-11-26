@@ -2,7 +2,10 @@
 
 import { StorefrontImage } from "@/components/media/StorefrontImage";
 import { ViewTransitionLink } from "@/components/ui/ViewTransitionLink";
-import type { ShopByPriceBucket } from "@/lib/storefront/shop-by-price-buckets";
+import {
+  formatShopByPriceTileLabel,
+  type ShopByPriceBucket,
+} from "@/lib/storefront/shop-by-price-buckets";
 import { HomeSectionHeader } from "./HomeSectionHeader";
 import {
   HomeScrollSnapStrip,
@@ -20,40 +23,17 @@ type Props = {
   buckets: ShopByPriceBucket[];
 };
 
-/**
- * Fixed marketing portraits + reference-style price labels.
- * Stable like brand logo art — not catalog product photos.
- */
-const SHOP_BY_PRICE_SHOWCASE = [
-  {
-    id: "below-500",
-    label: "Below 500",
-    href: "/shop?price_range=1-499&sort=PRICE_LOW_TO_HIGH",
-    imageSrc: "/images/shop-by-price/fixed-01.jpg",
-    imageAlt: "Sarees below ₹500",
-  },
-  {
-    id: "500-1k",
-    label: "500 - 1K",
-    href: "/shop?price_range=500-999&sort=PRICE_LOW_TO_HIGH",
-    imageSrc: "/images/shop-by-price/fixed-02.jpg",
-    imageAlt: "Sarees from ₹500 to ₹1,000",
-  },
-  {
-    id: "below-2k",
-    label: "Below 2K",
-    href: "/shop?price_range=1-1999&sort=PRICE_LOW_TO_HIGH",
-    imageSrc: "/images/shop-by-price/fixed-03.jpg",
-    imageAlt: "Sarees below ₹2,000",
-  },
-  {
-    id: "bridal",
-    label: "Bridal",
-    href: "/shop?price_range=3000-7000&sort=PRICE_LOW_TO_HIGH",
-    imageSrc: "/images/shop-by-price/fixed-04.jpg",
-    imageAlt: "Bridal saree collection",
-  },
+/** Fixed marketing portraits (brand art), reused in order for each real price tier. */
+const SHOP_BY_PRICE_ARTWORK = [
+  "/images/shop-by-price/fixed-01.jpg",
+  "/images/shop-by-price/fixed-02.jpg",
+  "/images/shop-by-price/fixed-03.jpg",
+  "/images/shop-by-price/fixed-04.jpg",
 ] as const;
+
+/** Need at least two real price tiers, otherwise "shop by price" is pointless. */
+const MIN_PRICE_TIERS = 2;
+const MAX_PRICE_TILES = 8;
 
 function PriceBucketCard({
   href,
@@ -94,8 +74,16 @@ function PriceBucketCard({
 }
 
 export function HomePriceCarousel({ buckets }: Props) {
-  // Showcase always matches reference (4 fixed tiles). Buckets only gate the section.
-  if (!buckets.length) return null;
+  // Tiles come from real catalog prices (GST-inclusive); empty tiers never exist.
+  if (buckets.length < MIN_PRICE_TIERS) return null;
+
+  const tiles = buckets.slice(0, MAX_PRICE_TILES).map((bucket, index) => ({
+    id: bucket.id,
+    label: formatShopByPriceTileLabel(bucket.min, bucket.max),
+    href: bucket.href,
+    imageSrc: SHOP_BY_PRICE_ARTWORK[index % SHOP_BY_PRICE_ARTWORK.length],
+    imageAlt: `Sarees priced ${bucket.label}`,
+  }));
 
   return (
     <MotionSection className="w-full min-w-0 py-4 sm:py-8 md:py-10">
@@ -107,7 +95,7 @@ export function HomePriceCarousel({ buckets }: Props) {
         viewMoreLabel="Browse all"
       />
       <HomeScrollSnapStrip ariaLabel="Shop by price ranges">
-        {SHOP_BY_PRICE_SHOWCASE.map((tile, index) => (
+        {tiles.map((tile, index) => (
           <ScrollSnapItem key={tile.id} className={scrollSnapPriceItemClass}>
             <MotionRevealItem index={index} instant className="w-full">
               <MotionHoverLift className="w-full">

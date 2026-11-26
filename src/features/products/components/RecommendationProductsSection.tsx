@@ -46,11 +46,16 @@ export default async function RecommendationProductsSection({
   ]);
 
   return (
-    <Header heading={`We Think You'll Love`}>
-      <div className="container">
+    // min-w-0: this renders inside the Shell CSS grid; without it the strip
+    // grows to the full width of all cards and cannot scroll.
+    <Header
+      heading={`We Think You'll Love`}
+      className="min-w-0 pb-[30px] pt-[80px]"
+    >
+      <div className="container min-w-0">
         <HomeScrollSnapStrip
           ariaLabel="We think you'll love"
-          className="-mx-8 px-8 sm:mx-0 sm:px-0"
+          className="-mx-12 px-4 sm:mx-0 sm:px-0"
           showArrows
         >
           {edges.map(({ node }) => (

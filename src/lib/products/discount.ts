@@ -50,21 +50,30 @@ export function getEffectiveProductPrice(
  */
 export function getRoundedEffectiveProductPrice(
   product: ProductDiscountFields,
+  /** GST-inclusive multiplier (1 = prices as stored / GST off). */
+  gstFactor = 1,
 ): number {
-  return Math.round(getEffectiveProductPrice(product));
+  const factor = Number.isFinite(gstFactor) && gstFactor > 0 ? gstFactor : 1;
+  // Round to paise first (matches toGstInclusiveAmount), then to whole rupees.
+  const shown = Math.round(getEffectiveProductPrice(product) * factor * 100) / 100;
+  return Math.round(shown);
 }
 
-/** Same inclusive range used for homepage buckets and /shop?price_range= pages. */
+/**
+ * Same inclusive range used for homepage buckets and /shop?price_range= pages.
+ * Pass `gstFactor` so ranges follow the price shoppers actually see.
+ */
 export function isEffectivePriceInDisplayRange(
   product: ProductDiscountFields,
   min: number,
   max: number,
+  gstFactor = 1,
 ): boolean {
   if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) {
     return false;
   }
 
-  const effectivePrice = getRoundedEffectiveProductPrice(product);
+  const effectivePrice = getRoundedEffectiveProductPrice(product, gstFactor);
   return effectivePrice >= min && effectivePrice <= max;
 }
 

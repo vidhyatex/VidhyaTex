@@ -38,7 +38,7 @@ async function CartPage() {
       />
 
       {/* Show on mobile too — empty-cart visitors (esp. Instagram) need a next step. */}
-      <div className="mt-6">
+      <div className="mt-6 min-w-0">
         <RecommendationProductsSection />
       </div>
     </Shell>

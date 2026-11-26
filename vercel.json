@@ -1,8 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
+  "buildCommand": "npm run build:vercel",
+  "installCommand": "npm ci",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- . \":(exclude).cursor\" \":(exclude).vscode\" \":(exclude).github\" \":(exclude)docs\" \":(exclude)workers\" \":(exclude)*.md\" \":(exclude)*.txt\" 2>/dev/null; test $? -eq 0",
   "regions": ["bom1"],
   "crons": [
     {

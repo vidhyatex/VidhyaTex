@@ -2,6 +2,11 @@ import { Suspense } from "react";
 import Header from "@/components/layouts/Header";
 import { Shell } from "@/components/layouts/Shell";
 import {
+  HomeScrollSnapStrip,
+  ScrollSnapItem,
+  scrollSnapRecommendationItemClass,
+} from "@/features/storefront/components/HomeScrollSnapStrip";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -330,16 +335,26 @@ async function ProductDetailPage({ params }: Props) {
 
       <Header heading={`We Think You'll Love`} />
 
-      <div className="container grid grid-cols-2 gap-x-8 pb-[calc(var(--mobile-nav-height)+5rem)] lg:grid-cols-4 md:pb-0">
-        {data.recommendations &&
-          data.recommendations.edges.map(({ node }) => (
-            <ProductCard
+      {/* min-w-0: Shell is a CSS grid; without it the strip grows to the full width of all cards and cannot scroll. */}
+      <div className="container min-w-0 pb-[calc(var(--mobile-nav-height)+5rem)] md:pb-0">
+        <HomeScrollSnapStrip
+          ariaLabel="We think you'll love"
+          className="-mx-12 px-4 sm:mx-0 sm:px-0"
+          showArrows
+        >
+          {data.recommendations?.edges.map(({ node }) => (
+            <ScrollSnapItem
               key={node.id}
-              product={node}
-              packLabel={recommendationPackLabels[node.id]}
-              sizePreview={recommendationSizePreviews[node.id] ?? null}
-            />
+              className={scrollSnapRecommendationItemClass}
+            >
+              <ProductCard
+                product={node}
+                packLabel={recommendationPackLabels[node.id]}
+                sizePreview={recommendationSizePreviews[node.id] ?? null}
+              />
+            </ScrollSnapItem>
           ))}
+        </HomeScrollSnapStrip>
       </div>
     </Shell>
   );

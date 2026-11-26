@@ -9,6 +9,7 @@ import {
   parsePaginationOffset,
 } from "./effective-price";
 import { categorizedPublishedProductConditions } from "./categorized-products";
+import { getStorefrontGstFactor } from "./gst-factor";
 import type { StorefrontProductSearchVariables } from "./search-params";
 import { normalizeStorefrontSearchTerm } from "./search-utils";
 
@@ -110,7 +111,8 @@ export async function fetchProductsByEffectivePriceRange(
 ): Promise<SearchQuery["productsCollection"]> {
   const min = Number(variables.lower);
   const max = Number(variables.upper);
-  const priceFilter = effectivePriceInRangeFilter(min, max);
+  const gstFactor = await getStorefrontGstFactor();
+  const priceFilter = effectivePriceInRangeFilter(min, max, gstFactor);
 
   if (!priceFilter) {
     return {

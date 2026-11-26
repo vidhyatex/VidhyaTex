@@ -12,9 +12,17 @@ END`;
 export function effectivePriceInRangeFilter(
   min: number,
   max: number,
+  /** GST-inclusive multiplier so ranges match the price shown to shoppers. */
+  gstFactor = 1,
 ): SQL | undefined {
   if (!Number.isFinite(min) || !Number.isFinite(max) || min > max) {
     return undefined;
+  }
+
+  if (Number.isFinite(gstFactor) && gstFactor > 0 && gstFactor !== 1) {
+    // Same math as toGstInclusiveAmount: paise first, then whole rupees.
+    const shown = sql`ROUND(${effectivePriceSql} * ${gstFactor}::numeric, 2)`;
+    return sql`ROUND(${shown}) >= ${min} AND ROUND(${shown}) <= ${max}`;
   }
 
   // Round to whole rupees so fractional discounted prices (e.g. ₹799.80)

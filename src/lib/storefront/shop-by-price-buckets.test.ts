@@ -1,6 +1,7 @@
 import {
   buildShopByPriceBuckets,
   formatPriceRangeLabel,
+  formatShopByPriceTileLabel,
   SHOP_BY_PRICE_BREAKPOINTS,
 } from "./shop-by-price-buckets";
 
@@ -112,6 +113,39 @@ describe("buildShopByPriceBuckets", () => {
       productCount: 1,
       imageKey: null,
     });
+  });
+});
+
+describe("GST-inclusive buckets", () => {
+  it("places a 1500 base price at 1575 (5% GST) in the 1500-1999 tier", () => {
+    const buckets = buildShopByPriceBuckets(
+      [{ id: "1", price: "1500", mediaKey: "a.jpg" }],
+      SHOP_BY_PRICE_BREAKPOINTS,
+      1.05,
+    );
+    expect(buckets).toHaveLength(1);
+    expect(buckets[0]).toMatchObject({ min: 1500, max: 1999 });
+  });
+
+  it("moves a product across a tier boundary once GST is added", () => {
+    // 980 base -> 1029 shown (>= 1000), so it must not be in the 800-999 tier.
+    const buckets = buildShopByPriceBuckets(
+      [{ id: "1", price: "980", mediaKey: "a.jpg" }],
+      SHOP_BY_PRICE_BREAKPOINTS,
+      1.05,
+    );
+    expect(buckets[0]).toMatchObject({ min: 1000, max: 1499 });
+  });
+});
+
+describe("formatShopByPriceTileLabel", () => {
+  it("builds short reference-style labels", () => {
+    expect(formatShopByPriceTileLabel(1, 299)).toBe("Below 300");
+    expect(formatShopByPriceTileLabel(500, 799)).toBe("500 - 800");
+    expect(formatShopByPriceTileLabel(800, 999)).toBe("800 - 1K");
+    expect(formatShopByPriceTileLabel(1000, 1499)).toBe("1K - 1.5K");
+    expect(formatShopByPriceTileLabel(1500, 1999)).toBe("1.5K - 2K");
+    expect(formatShopByPriceTileLabel(5000, 7000)).toBe("5K - 7K");
   });
 });
 
