@@ -46,6 +46,8 @@ type Props = {
   variant?: "default" | "compact";
   /** Brand colours on icons (sidebar / compact row) */
   colored?: boolean;
+  /** Extra classes on each link (e.g. a round badge behind the icon). */
+  linkClassName?: string;
 };
 
 function SocialMedias({
@@ -53,6 +55,7 @@ function SocialMedias({
   itemsClassName,
   variant = "default",
   colored = false,
+  linkClassName,
 }: Props) {
   const isCompact = variant === "compact";
   const social = useStorefrontSocial();
@@ -79,7 +82,10 @@ function SocialMedias({
             rel="noopener noreferrer"
             aria-label={`${label} — ${siteConfig.name}`}
             title={label}
-            className="rounded-md p-0.5 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            className={cn(
+              "rounded-md p-0.5 transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+              linkClassName,
+            )}
           >
             <Icon
               className={cn(

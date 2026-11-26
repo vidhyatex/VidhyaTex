@@ -14,18 +14,18 @@ export function LegalFooterLinks({ className = "" }: { className?: string }) {
   return (
     <nav
       aria-label="Legal policies"
-      className={`flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-muted-foreground ${className}`}
+      className={`flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-xs text-[#CFC3A7] ${className}`}
     >
       {LEGAL_LINKS.map((link, index) => (
         <span key={link.href} className="inline-flex items-center gap-3">
           {index > 0 ? (
-            <span aria-hidden="true" className="text-primary/30">
+            <span aria-hidden="true" className="text-[#C9A227]/50">
               |
             </span>
           ) : null}
           <Link
             href={link.href}
-            className="font-medium text-foreground/80 transition-colors hover:text-primary hover:underline"
+            className="font-medium text-[#F6EBCB] transition-colors hover:text-[#F5C518] hover:underline"
           >
             {link.label}
           </Link>

@@ -1,5 +1,10 @@
 import Header from "@/components/layouts/Header";
 import ProductCard from "./ProductCard";
+import {
+  HomeScrollSnapStrip,
+  ScrollSnapItem,
+  scrollSnapRecommendationItemClass,
+} from "@/features/storefront/components/HomeScrollSnapStrip";
 import { getDraftProductIdsSafe } from "@/lib/storefront/draft-product-ids";
 import { getRecommendationProductsCached } from "@/lib/storefront/recommendations";
 import { getProductPackLabelsByIds } from "@/lib/products/pack.server";
@@ -42,15 +47,25 @@ export default async function RecommendationProductsSection({
 
   return (
     <Header heading={`We Think You'll Love`}>
-      <div className="container grid grid-cols-2 gap-x-8 lg:grid-cols-4">
-        {edges.map(({ node }) => (
-          <ProductCard
-            key={node.id}
-            product={node}
-            packLabel={packLabels[node.id]}
-            sizePreview={sizePreviews[node.id] ?? null}
-          />
-        ))}
+      <div className="container">
+        <HomeScrollSnapStrip
+          ariaLabel="We think you'll love"
+          className="-mx-8 px-8 sm:mx-0 sm:px-0"
+          showArrows
+        >
+          {edges.map(({ node }) => (
+            <ScrollSnapItem
+              key={node.id}
+              className={scrollSnapRecommendationItemClass}
+            >
+              <ProductCard
+                product={node}
+                packLabel={packLabels[node.id]}
+                sizePreview={sizePreviews[node.id] ?? null}
+              />
+            </ScrollSnapItem>
+          ))}
+        </HomeScrollSnapStrip>
       </div>
     </Header>
   );

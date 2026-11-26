@@ -4,7 +4,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import { gql, DocumentType } from "@/gql";
 import { StorefrontImage } from "@/components/media/StorefrontImage";
 import { Icons } from "@/components/layouts/icons";
+import { Maximize2 } from "lucide-react";
 import { cn, keytoUrl } from "@/lib/utils";
+import { ProductImageLightbox } from "./ProductImageLightbox";
 import {
   productImageTransitionName,
   viewTransitionStyle,
@@ -38,6 +40,14 @@ const ProductImageShowcaseFragment = gql(/* GraphQL */ `
   }
 `);
 
+/**
+ * Product photos are 3:4 portrait. On mobile the frame is full width at 3:4
+ * (height capped only by the viewport) so the photo is shown large; desktop
+ * keeps its existing height cap.
+ */
+const MAIN_IMAGE_FRAME_CLASS =
+  "aspect-[3/4] max-h-[min(78dvh,40rem)] md:max-h-[min(70vh,36rem)]";
+
 type GalleryImage = {
   id: string;
   key: string;
@@ -67,6 +77,7 @@ function ProductImageShowcase({
   }
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const safeIndex =
     allImages.length === 0
       ? 0
@@ -93,7 +104,7 @@ function ProductImageShowcase({
       <div
         className={cn(
           "w-full min-w-0 overflow-hidden rounded-md bg-muted",
-          "aspect-[4/5] max-h-[min(36dvh,16rem)] md:aspect-[3/4] md:max-h-[min(70vh,36rem)]",
+          MAIN_IMAGE_FRAME_CLASS,
           className,
         )}
       />
@@ -152,7 +163,7 @@ function ProductImageShowcase({
         <div
           className={cn(
             "relative w-full overflow-hidden rounded-md bg-muted",
-            "aspect-[4/5] max-h-[min(36dvh,16rem)] md:aspect-[3/4] md:max-h-[min(70vh,36rem)]",
+            MAIN_IMAGE_FRAME_CLASS,
           )}
         >
           <StorefrontImage
@@ -165,6 +176,20 @@ function ProductImageShowcase({
             style={viewTransitionStyle(transitionName)}
             priority
           />
+
+          <button
+            type="button"
+            aria-label="View full size image"
+            onClick={() => setLightboxOpen(true)}
+            className="absolute inset-0 z-[1] cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+          >
+            <span
+              aria-hidden
+              className="pointer-events-none absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-md bg-background/90 text-foreground shadow ring-1 ring-black/10"
+            >
+              <Maximize2 className="h-4 w-4" />
+            </span>
+          </button>
 
           {hasMultiple ? (
             <>
@@ -195,6 +220,15 @@ function ProductImageShowcase({
             </>
           ) : null}
         </div>
+
+        <ProductImageLightbox
+          images={allImages}
+          index={safeIndex}
+          open={lightboxOpen}
+          onOpenChange={setLightboxOpen}
+          onIndexChange={setActiveImageIndex}
+          title={activeImage.alt || "Product image"}
+        />
 
         {/* Mobile: horizontal thumb strip under main */}
         {hasMultiple ? (
