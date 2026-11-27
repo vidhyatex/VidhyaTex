@@ -84,7 +84,7 @@ export function StoreFloatingActions() {
           isOpen={openPicker === "call"}
           onOpenChange={handlePickerChange("call")}
           triggerLabel="Call Vidhya Tex"
-          triggerClassName={`${floatingActionButtonClass} border border-border bg-card text-foreground shadow-[0_4px_16px_rgba(28,24,20,0.12)]`}
+          triggerClassName={`${floatingActionButtonClass} floating-glow floating-glow--phone border border-border bg-card text-foreground`}
           triggerIcon={<Phone className="h-5 w-5" strokeWidth={2} />}
         />,
       );
@@ -98,7 +98,7 @@ export function StoreFloatingActions() {
           isOpen={openPicker === "whatsapp"}
           onOpenChange={handlePickerChange("whatsapp")}
           triggerLabel="WhatsApp Vidhya Tex"
-          triggerClassName={`${floatingActionButtonClass} bg-[#25D366] text-white shadow-[0_4px_16px_rgba(37,211,102,0.35)]`}
+          triggerClassName={`${floatingActionButtonClass} floating-glow floating-glow--whatsapp bg-[#25D366] text-white`}
           triggerIcon={<Icons.whatsapp className="h-5 w-5" />}
         />,
       );

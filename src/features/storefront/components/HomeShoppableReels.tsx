@@ -12,7 +12,10 @@ import {
   scrollSnapReelItemClass,
 } from "./HomeScrollSnapStrip";
 import { MotionRevealItem, MotionSection } from "./MotionSection";
-import { ProductPriceDisplay } from "@/features/products/components/ProductPriceDisplay";
+import {
+  ProductDiscountBadge,
+  ProductPriceDisplay,
+} from "@/features/products/components/ProductPriceDisplay";
 import {
   productImageTransitionName,
   viewTransitionStyle,
@@ -40,40 +43,45 @@ function ReelProductCard({
 
   return (
     <ViewTransitionLink href={`/shop/${slug}`} className="group block w-full">
-      <article className="relative aspect-[9/16] w-full min-h-[220px] overflow-hidden rounded-2xl border border-brand-teal/25 bg-muted shadow-[0_16px_40px_-20px_rgba(201,162,39,0.4)]">
-        <StorefrontImage
-          src={imageSrc}
-          alt={featuredImage.alt || name}
-          fill
-          sizes="(max-width: 640px) 45vw, 220px"
-          optimizeWidth={400}
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.05]"
-          style={viewTransitionStyle(productImageTransitionName(id))}
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 z-[2] p-3 pt-12">
-          <p className="line-clamp-2 text-sm font-bold leading-snug text-white">
+      <article className="flex w-full flex-col overflow-hidden rounded-2xl border border-brand-gold/40 bg-white shadow-[0_16px_40px_-20px_rgba(201,162,39,0.45)]">
+        <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
+          <StorefrontImage
+            src={imageSrc}
+            alt={featuredImage.alt || name}
+            fill
+            sizes="(max-width: 640px) 45vw, 220px"
+            optimizeWidth={400}
+            className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.05]"
+            style={viewTransitionStyle(productImageTransitionName(id))}
+            loading="lazy"
+          />
+          <ProductDiscountBadge
+            product={product}
+            className="pointer-events-none absolute left-2 top-2 z-[1]"
+          />
+        </div>
+        <div className="flex flex-col gap-1.5 p-3">
+          <p className="line-clamp-2 min-h-[2.5rem] text-sm font-bold leading-snug text-foreground">
             {name}
           </p>
           <ProductPriceDisplay
             product={product}
-            className="mt-1 craft-price-pill--frost"
-            saleClassName="text-base font-extrabold text-white"
-            originalClassName="text-xs font-medium text-white/80 line-through"
+            layout="inline"
+            className="craft-price-pill--card"
+            saleClassName="font-extrabold"
           />
           {packLabel ? (
-            <p className="mt-0.5 text-xs font-medium text-white/85">
+            <p className="text-xs font-medium text-muted-foreground">
               {packLabel}
             </p>
           ) : null}
           <span
             className={cn(
-              "mt-2 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-brand-rose to-brand-gold px-3 py-1.5 text-[11px] font-semibold text-white",
-              "transition-transform duration-300 group-hover:scale-[1.03]",
+              "mt-1 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#1C1814] px-4 text-sm font-bold text-[#F5C518] shadow-md",
+              "transition-transform duration-300 group-hover:scale-[1.02] group-active:scale-[0.98]",
             )}
           >
-            <ShoppingBag className="h-3.5 w-3.5" />
+            <ShoppingBag className="h-4 w-4" />
             Shop now
           </span>
         </div>

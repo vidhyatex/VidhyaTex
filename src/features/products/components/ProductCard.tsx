@@ -111,7 +111,12 @@ export function ProductCard({
           </ListingProductLink>
         </CardTitle>
 
-        <ProductPriceDisplay product={product} />
+        <ProductPriceDisplay
+          product={product}
+          layout="inline"
+          className="craft-price-pill--card"
+          saleClassName="font-extrabold"
+        />
         {packLabel ? (
           <p className="mt-0.5 text-xs font-medium text-muted-foreground">
             {packLabel}

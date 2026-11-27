@@ -98,7 +98,12 @@ function FeaturedSlide({
             {name}
           </h3>
         </ViewTransitionLink>
-        <ProductPriceDisplay product={product} className="mt-1" />
+        <ProductPriceDisplay
+          product={product}
+          layout="inline"
+          className="craft-price-pill--card mt-1"
+          saleClassName="font-extrabold"
+        />
         {packLabel ? (
           <p className="mt-0.5 text-xs font-medium text-muted-foreground">
             {packLabel}
